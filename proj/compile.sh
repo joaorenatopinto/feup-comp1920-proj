@@ -1,3 +1,3 @@
-jjtree "Compiler.jtt"
-javacc "Compiler.jj"
-javac "*.java"
+jjtree Compiler.jtt
+javacc Compiler.jj
+javac *.java

@@ -83,56 +83,57 @@ TOKEN:
     
 }
 
-SimpleNode Program(): {System.out.println("Program.\n");}
+SimpleNode Program(): {System.out.println("PROGRAM\n");}
 {
     Start() { return jjtThis;}
 }
 
-void Start(): {System.out.println("Start\n");}
+void Start() : {System.out.println("START\n");}
 {
-    ImportDeclaration() ClassDeclaration() <LF>
+    MainClass() ( ClassDeclaration() )* <LF>
 }
 
-void ImportDeclaration(): {System.out.println("ImportDeclaration\n");}
+void MainClass() : {System.out.println("MAIN CLASS\n");}
 {
-    ( "import" /*A completar*/ ";" )*
+    "class" <IDENTIFIER> "{" "public" "static" "void" "main" "(" "String" "[" "]" <IDENTIFIER> ")" "{" Statement() "}" "}"
 }
 
-void ClassDeclaration(): {System.out.println("ClassDeclaration\n");}
+void ClassDeclaration() : {}
 {
     "class" <IDENTIFIER> [ "extends" <IDENTIFIER> ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}"
 }
 
-void VarDeclaration(): {System.out.println("VarDeclaration\n");}
+void VarDeclaration() : {System.out.println("VAR DECLARATION\n");}
 {
     Type() <IDENTIFIER> ";"
 }
 
-void MethodDeclaration(): {System.out.println("MethodDeclaration\n");}
+void MethodDeclaration() : {System.out.println("METHOD DECLARATION\n");}
 {
-    "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Expression() "," "}"
-    | "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}"
+    "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Expression() ";" "}"
+    | "public" "static" "void" "main" "(" "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}"
 }
 
-void Type(): {System.out.println("Type\n");}
+void Type() : {}
 {
     "int" "[" "]"
-    | "boolean"
+    | "bool ean"
     | "int"
     | <IDENTIFIER>
 }
 
-void Statement(): {System.out.println("Statement\n");}
+void Statement() : {}
 {
     "{" ( Statement() )* "}"
     | "if" "(" Expression() ")" Statement() "else" Statement()
-    | "while" "("Expression() ")" Statement()
+    | "while" "(" Expression() ")" Statement()
+    | "System.out.println" "(" Expression() ")" ";"
     | Expression() ";"
     | <IDENTIFIER> "=" Expression() ";"
-    | <IDENTIFIER> "[" Expression() "]" "=" Expression() ";"
+    | <IDENTIFIER> "[" Expression() "]" "=" Expression() ";" 
 }
 
-void Expression(): {System.out.println("Expression\n");}
+void Expression() : {}
 {
     <INTEGER> [Express()]
     | "true" [Express()]
@@ -145,10 +146,13 @@ void Expression(): {System.out.println("Expression\n");}
     | "(" Expression() ")" [Express()]
 }
 
-void Express() : {System.out.println("Express\n");}
+void Express() : {}
 {
     ( "&&" | "<" | "+" | "-" | "*" ) Expression() [Express()]
     | "[" Expression() "]" [Express()]
     | "." "length" [Express()] /* OPTIMIZAO CARALHOOOOO  */
     | "." <IDENTIFIER> "(" [ Expression() ( "," Expression() )* ] ")" [Express()]
 }
+
+
+// class Factorial{ public static void main(String[] a){ System.out.println(new Fac().ComputeFac(10)); } } class Fac { public int ComputeFac(int num){ int num_aux ; if (num < 1) num_aux = 1 ; else num_aux = num * (this.ComputeFac(num-1)) ; return num_aux ; } }
