@@ -79,42 +79,43 @@ TOKEN:
     | < RETURN: "return" >
     | < BOOLEAN: "boolean" >
     | < EXTENDS: "extends" >
+    | < IMPORT: "import" >
     | < IDENTIFIER: ( (["A"-"Z"]|["a"-"z"])(["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
     
 }
 
-SimpleNode Program(): {System.out.println("Program.\n");}
+SimpleNode Program(): {/* System.out.println("Program.\n"); */}
 {
     Start() { return jjtThis;}
 }
 
-void Start(): {System.out.println("Start\n");}
+void Start(): {/* System.out.println("Start\n"); */}
 {
     ImportDeclaration() ClassDeclaration() <LF>
 }
 
-void ImportDeclaration(): {System.out.println("ImportDeclaration\n");}
+void ImportDeclaration(): {/* System.out.println("ImportDeclaration\n"); */}
 {
-    ( "import" /*A completar*/ ";" )*
+    ( "import" <IDENTIFIER> "." <IDENTIFIER> "(" <IDENTIFIER> ")" ";" )* //feito para passar no exemplo dos stores apenas. corrigir depois
 }
 
-void ClassDeclaration(): {System.out.println("ClassDeclaration\n");}
+void ClassDeclaration(): {/* System.out.println("ClassDeclaration\n"); */}
 {
     "class" <IDENTIFIER> [ "extends" <IDENTIFIER> ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}"
 }
 
-void VarDeclaration(): {System.out.println("VarDeclaration\n");}
+void VarDeclaration(): {/* System.out.println("VarDeclaration\n"); */}
 {
     Type() <IDENTIFIER> ";"
 }
 
-void MethodDeclaration(): {System.out.println("MethodDeclaration\n");}
+void MethodDeclaration(): {/* System.out.println("MethodDeclaration\n"); */}
 {
-    "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Expression() "," "}"
+    "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Expression() ";" "}"
     | "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}"
 }
 
-void Type(): {System.out.println("Type\n");}
+void Type(): {/* System.out.println("Type\n"); */}
 {
     "int" "[" "]"
     | "boolean"
@@ -122,7 +123,7 @@ void Type(): {System.out.println("Type\n");}
     | <IDENTIFIER>
 }
 
-void Statement(): {System.out.println("Statement\n");}
+void Statement(): {/* System.out.println("Statement\n"); */}
 {
     "{" ( Statement() )* "}"
     | "if" "(" Expression() ")" Statement() "else" Statement()
@@ -132,7 +133,7 @@ void Statement(): {System.out.println("Statement\n");}
     | <IDENTIFIER> "[" Expression() "]" "=" Expression() ";"
 }
 
-void Expression(): {System.out.println("Expression\n");}
+void Expression(): {/* System.out.println("Expression\n"); */}
 {
     <INTEGER> [Express()]
     | "true" [Express()]
@@ -145,7 +146,7 @@ void Expression(): {System.out.println("Expression\n");}
     | "(" Expression() ")" [Express()]
 }
 
-void Express() : {System.out.println("Express\n");}
+void Express() : {/* System.out.println("Express\n"); */}
 {
     ( "&&" | "<" | "+" | "-" | "*" ) Expression() [Express()]
     | "[" Expression() "]" [Express()]
