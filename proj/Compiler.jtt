@@ -96,7 +96,7 @@ void Start(): {/* System.out.println("Start\n"); */}
 
 void ImportDeclaration(): {/* System.out.println("ImportDeclaration\n"); */}
 {
-    ( "import" <IDENTIFIER> "." <IDENTIFIER> "(" <IDENTIFIER> ")" ";" )* //feito para passar no exemplo dos stores apenas. corrigir depois
+    ( "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" )*//feito para passar no exemplo dos stores apenas. corrigir depois
 }
 
 void ClassDeclaration(): {/* System.out.println("ClassDeclaration\n"); */}
