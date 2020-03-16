@@ -1,1 +1,7 @@
-import static BoardBase.sameArray(int[]) boolean; import static ioPlus.requestNumber() int; import static ioPlus.printResult(int) void; import static BoardBase.sameArray(int[]) boolean; import static BoardBase.printBoard(int[],int[],int[]) void; import static BoardBase.printWinner(int) void; import static MathUtils.random(int,int) int; import Quicksort; import Quicksort.printL(int[]) void; import io.println(int); class Fac { public int ComputeFac(int num){ int num_aux ; if (num < 1) num_aux = 1; else num_aux = num * (this.ComputeFac(num-1)); return num_aux; } public static void main(String[] args){ io.println(new Fac().ComputeFac(10)); } }
+import io.println(int);
+class Fac {
+ public int ComputeFac(int num){
+    row[column]=pieces[whoseturn];
+    return tiagoefixe;
+    }
+}

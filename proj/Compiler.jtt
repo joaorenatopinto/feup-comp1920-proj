@@ -54,13 +54,12 @@ PARSER_END(Compiler)
 
 SKIP :
 {
-    " " | "\r" | "\t" | "   "
+    " " | "\r" | "\t" | "\n"
 }
 
 TOKEN:
 {
     < INTEGER: (["0"-"9"])+ >
-    | < LF: "\n" >
     | < IF: "if" >
     | < INT: "int" >
     | < NEW: "new" >
@@ -80,7 +79,7 @@ TOKEN:
     | < BOOLEAN: "boolean" >
     | < EXTENDS: "extends" >
     | < IMPORT: "import" >
-    | < IDENTIFIER: ( (["A"-"Z"]|["a"-"z"])(["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
+    | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
     
 }
 
@@ -91,7 +90,7 @@ SimpleNode Program(): {/* System.out.println("Program.\n"); */}
 
 void Start(): {/* System.out.println("Start\n"); */}
 {
-    ImportDeclaration() ClassDeclaration() <LF>
+    ImportDeclaration() ClassDeclaration() <EOF>
 }
 
 void ImportDeclaration(): {/* System.out.println("ImportDeclaration\n"); */}
@@ -128,9 +127,10 @@ void Statement(): {/* System.out.println("Statement\n"); */}
     "{" ( Statement() )* "}"
     | "if" "(" Expression() ")" Statement() "else" Statement()
     | "while" "("Expression() ")" Statement()
-    | Expression() ";"
-    | <IDENTIFIER> "=" Expression() ";"
     | <IDENTIFIER> "[" Expression() "]" "=" Expression() ";"
+    | <IDENTIFIER> "=" Expression() ";"
+    | Expression() ";"  
+    // | <IDENTIFIER> "[" Expression() "]" "=" <IDENTIFIER> "[" Expression() "]" ";"
 }
 
 void Expression(): {/* System.out.println("Expression\n"); */}
@@ -148,7 +148,7 @@ void Expression(): {/* System.out.println("Expression\n"); */}
 
 void Express() : {/* System.out.println("Express\n"); */}
 {
-    ( "&&" | "<" | "+" | "-" | "*" ) Expression() [Express()]
+    ( "&&" | "<" | "+" | "-" | "*" | "/" ) Expression() [Express()]
     | "[" Expression() "]" [Express()]
     | "." "length" [Express()] /* OPTIMIZAO CARALHOOOOO  */
     | "." <IDENTIFIER> "(" [ Expression() ( "," Expression() )* ] ")" [Express()]
