@@ -163,7 +163,7 @@ void Express() #void : {}
     ( "&&" Expression() #And(1) | "<" Expression() #Less(1) | "+" Expression() #Plus(1) | "-" Expression() #Minus(1)  | "*" Expression() #Mult(1) | "/" Expression() #Div(1) ) [Express()]
     | "[" Expression() "]" #AcessArray(1) [Express() #GroupCondition(2)]
     | "." "length" #Length [Express() #GroupCondition(2)]
-    | "." <IDENTIFIER> "(" [ Arguments() ] ")" #AcessMethod() [Express() #GroupCondition(2)]
+    | "." <IDENTIFIER> "(" [ Arguments() ] ")" #AcessMethod(1) [Express() #GroupCondition(2)]
 }
 
 void Arguments() : {}
