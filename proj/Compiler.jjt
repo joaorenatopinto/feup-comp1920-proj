@@ -55,6 +55,14 @@ PARSER_END(Compiler)
 SKIP :
 {
     " " | "\r" | "\t" | "\n"
+    | < "//" (~["\r", "\n"])* >
+    | < "/*" > : ML_COMMENT_STATE
+}
+
+<ML_COMMENT_STATE> SKIP :
+{
+  < "*/" > : DEFAULT
+| < ~[] >   
 }
 
 TOKEN:
@@ -80,6 +88,7 @@ TOKEN:
     | < EXTENDS: "extends" >
     | < IMPORT: "import" >
     | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
+    | < SINGLE_COMMENT: "//" >
     
 }
 
@@ -88,33 +97,46 @@ SimpleNode Program(): {/* System.out.println("Program.\n"); */}
     Start() { return jjtThis;}
 }
 
-void Start() #void : {/* System.out.println("Start\n"); */}
+void Start() 
+// #void
+ : {/* System.out.println("Start\n"); */}
 {
-    ImportDeclaration() ClassDeclaration() <EOF> #File(2)
+    ImportDeclaration() ClassDeclaration() <EOF> 
+    // #File(2)
 }
 
-void ImportDeclaration() #void : {/* System.out.println("ImportDeclaration\n"); */}
+void ImportDeclaration() 
+// void
+ : {/* System.out.println("ImportDeclaration\n"); */}
 {
     ( "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" )*//feito para passar no exemplo dos stores apenas. corrigir depois
 }
 
-void ClassDeclaration() #void : {/* System.out.println("ClassDeclaration\n"); */}
+void ClassDeclaration() 
+// #void
+ : {/* System.out.println("ClassDeclaration\n"); */}
 {
     "class" <IDENTIFIER> [ "extends" <IDENTIFIER> ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}"
 }
 
-void VarDeclaration() #void : {/* System.out.println("VarDeclaration\n"); */}
+void VarDeclaration() 
+// #void
+ : {/* System.out.println("VarDeclaration\n"); */}
 {
     Type() <IDENTIFIER> ";"
 }
 
-void MethodDeclaration() #void : {/* System.out.println("MethodDeclaration\n"); */}
+void MethodDeclaration() 
+// #void
+ : {/* System.out.println("MethodDeclaration\n"); */}
 {
     "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Expression() ";" "}"
     | "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}"
 }
 
-void Type() #void : {/* System.out.println("Type\n"); */}
+void Type() 
+// #void
+ : {/* System.out.println("Type\n"); */}
 {
     "int" "[" "]"
     | "boolean"
@@ -122,17 +144,25 @@ void Type() #void : {/* System.out.println("Type\n"); */}
     | <IDENTIFIER>
 }
 
-void Statement() #void : {/* System.out.println("Statement\n"); */}
+void Statement() 
+// #void
+ : {/* System.out.println("Statement\n"); */}
 {
     "{" ( Statement() )* "}"
-    | "if" "(" Expression() ")" Statement() "else" Statement() #IfElse(2)
-    | "while" "("Expression() ")" Statement() #While
-    | <IDENTIFIER> "[" Expression() "]" "=" Expression() ";" #Assign
-    | <IDENTIFIER> "=" Expression() ";" #Assign
+    | "if" "(" Expression() ")" Statement() "else" Statement()
+    //  #IfElse(2)
+    | "while" "("Expression() ")" Statement() 
+    // #While
+    | <IDENTIFIER> "[" Expression() "]" "=" Expression() ";" 
+    // #Assign
+    | <IDENTIFIER> "=" Expression() ";" 
+    // #Assign
     | Expression() ";"  
 }
 
-void Expression() #void : {/* System.out.println("Expression\n"); */}
+void Expression() 
+// #void
+ : {/* System.out.println("Expression\n"); */}
 {
     <INTEGER> [Express()]
     | "true" [Express()]
@@ -145,7 +175,9 @@ void Expression() #void : {/* System.out.println("Expression\n"); */}
     | "(" Expression() ")" [Express()]
 }
 
-void Express() #void : {/* System.out.println("Express\n"); */}
+void Express() 
+// #void 
+: {/* System.out.println("Express\n"); */}
 {
     ( "&&" | "<" | "+" | "-" | "*" | "/" ) Expression() [Express()]
     | "[" Expression() "]" [Express()]

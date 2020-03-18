@@ -1,3 +1,3 @@
-jjtree Compiler.jtt
+jjtree Compiler.jjt
 javacc Compiler.jj
 javac *.java
