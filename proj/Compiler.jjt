@@ -88,55 +88,46 @@ TOKEN:
     | < EXTENDS: "extends" >
     | < IMPORT: "import" >
     | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
-    | < SINGLE_COMMENT: "//" >
     
 }
 
-SimpleNode Program(): {/* System.out.println("Program.\n"); */}
+SimpleNode Program(): {}
 {
     Start() { return jjtThis;}
 }
 
-void Start() 
-// #void
- : {/* System.out.println("Start\n"); */}
+void Start() : {}
 {
-    ImportDeclaration() ClassDeclaration() <EOF> 
-    // #File(2)
+    Imports() ClassDeclaration() <EOF> #File(2)
 }
 
-void ImportDeclaration() 
-// void
- : {/* System.out.println("ImportDeclaration\n"); */}
+void Imports() : {}
 {
-    ( "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" )*//feito para passar no exemplo dos stores apenas. corrigir depois
+    ( ImportDeclaration() )*
 }
 
-void ClassDeclaration() 
-// #void
- : {/* System.out.println("ClassDeclaration\n"); */}
+void ImportDeclaration() : {}
+{
+    "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
+}
+
+void ClassDeclaration() : {}
 {
     "class" <IDENTIFIER> [ "extends" <IDENTIFIER> ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}"
 }
 
-void VarDeclaration() 
-// #void
- : {/* System.out.println("VarDeclaration\n"); */}
+void VarDeclaration() : {}
 {
     Type() <IDENTIFIER> ";"
 }
 
-void MethodDeclaration() 
-// #void
- : {/* System.out.println("MethodDeclaration\n"); */}
+void MethodDeclaration() : {}
 {
     "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Expression() ";" "}"
     | "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}"
 }
 
-void Type() 
-// #void
- : {/* System.out.println("Type\n"); */}
+void Type() #void: {}
 {
     "int" "[" "]"
     | "boolean"
@@ -144,43 +135,38 @@ void Type()
     | <IDENTIFIER>
 }
 
-void Statement() 
-// #void
- : {/* System.out.println("Statement\n"); */}
+void Statement() : {}
 {
     "{" ( Statement() )* "}"
-    | "if" "(" Expression() ")" Statement() "else" Statement()
-    //  #IfElse(2)
-    | "while" "("Expression() ")" Statement() 
-    // #While
-    | <IDENTIFIER> "[" Expression() "]" "=" Expression() ";" 
-    // #Assign
-    | <IDENTIFIER> "=" Expression() ";" 
-    // #Assign
+    | "if" "(" Expression() ")" Statement() #If(2) "else" Statement() #Else(1)
+    | "while" "("Expression() ")" Statement() #While(2)
+    | <IDENTIFIER> "[" Expression() "]" #Identifier(1) "=" Expression() ";" #Assign(2)
+    | <IDENTIFIER> #Identifier "=" Expression() ";" #Assign(2)
     | Expression() ";"  
 }
 
-void Expression() 
-// #void
- : {/* System.out.println("Expression\n"); */}
+void Expression() #void : {}
 {
-    <INTEGER> [Express()]
-    | "true" [Express()]
-    | "false" [Express()]
-    | <IDENTIFIER> [Express()]
-    | "this" [Express()]
-    | "new" "int" "[" Expression() "]" [Express()]
-    | "new" <IDENTIFIER> "(" ")" [Express()]
-    | "!" Expression() [Express()]
-    | "(" Expression() ")" [Express()]
+    <INTEGER> #Int [Express() #GroupCondition(2)]
+    | "true" #True [Express() #GroupCondition(2)]
+    | "false" #False [Express() #GroupCondition(2)]
+    | <IDENTIFIER> #Identifier [Express() #GroupCondition(2)]
+    | "this" #This [Express() #GroupCondition(2)]
+    | "new" "int" "[" Expression() "]" #Array(1) [Express() #GroupCondition(2)]
+    | "new" <IDENTIFIER> "(" ")" #Object [Express() #GroupCondition(2)]
+    | "!" Expression() #Neg(1) [Express() #GroupCondition(2)]
+    | "(" Expression() ")" #Group(1) [Express() #GroupCondition(2)]
 }
 
-void Express() 
-// #void 
-: {/* System.out.println("Express\n"); */}
+void Express() #void : {}
 {
-    ( "&&" | "<" | "+" | "-" | "*" | "/" ) Expression() [Express()]
-    | "[" Expression() "]" [Express()]
-    | "." "length" [Express()] /* OPTIMIZAO CARALHOOOOO  */
-    | "." <IDENTIFIER> "(" [ Expression() ( "," Expression() )* ] ")" [Express()]
+    ( "&&" Expression() #And(1) | "<" Expression() #Less(1) | "+" Expression() #Plus(1) | "-" Expression() #Minus(1)  | "*" Expression() #Mult(1) | "/" Expression() #Div(1) ) [Express()]
+    | "[" Expression() "]" #AcessArray(1) [Express() #GroupCondition(2)]
+    | "." "length" #Length [Express() #GroupCondition(2)]
+    | "." <IDENTIFIER> "(" [ Arguments() ] ")" #AcessMethod() [Express() #GroupCondition(2)]
+}
+
+void Arguments() : {}
+{
+    Expression() ("," Expression())*
 }
