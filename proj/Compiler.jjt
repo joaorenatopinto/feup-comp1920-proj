@@ -1,6 +1,6 @@
 options
 {
-    LOOKAHEAD=2;
+    LOOKAHEAD=1;
 }
 
 PARSER_BEGIN(Compiler)
@@ -129,16 +129,18 @@ void VarDeclaration() : {}
 }
 
 void MethodDeclaration() #void : {}
-{
-    "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}"
-    | "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}" 
+{  
+    "public"  
+    (
+    Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}"
+    | "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "}" 
+    ) 
 }
 
 void Type() #void: {}
-{
-    "int" "[" "]"
-    | "boolean"
-    | "int"
+{  
+    "boolean"
+    | "int" ["[" "]"]
     | <IDENTIFIER>
 }
 
@@ -147,44 +149,48 @@ void Statement() : {}
     "{" ( Statement() )* "}"
     | "if" "(" Cal1() ")" Statement() #If(2) "else" Statement() #Else(1)
     | "while" "("Cal1() ")" Statement() #While(2)
-    | <IDENTIFIER> "[" Cal1() "]" #Identifier(1) "=" Cal1() ";" #Assign(2)
-    | <IDENTIFIER> #Identifier "=" Cal1() ";" #Assign(2)
+    | LOOKAHEAD(2) <IDENTIFIER> "[" Cal1() "]" #Identifier(1) "=" Cal1() ";" #Assign(2)
+    | LOOKAHEAD(2) <IDENTIFIER> #Identifier "=" Cal1() ";" #Assign(2)
     | Cal1() ";"  
 }
- 
+
 void Cal1() #void: {} { 
     Cal2()
     (
-        "&&" Cal2() #And(2)
-        | "<" Cal2() #Less(2)
+        LOOKAHEAD(2) "&&" Cal2() #And(2)
     )*
 }
-
-void Cal2() #void: {} {
-    Cal3() 
+ 
+void Cal2() #void: {} { 
+    Cal3()
     (
-        ("+" Cal3() #Add(2)
-        | "-" Cal3() #Sub(2)) 
+        LOOKAHEAD(2) "<" Cal3() #Less(2)
     )*
 }
 
+// a < b && c < d
 void Cal3() #void: {} {
-    Cal4()
+    Cal4() 
     (
-        "*" Cal4() #Mul(2)
-        | "/" Cal4() #Div(2)
+        LOOKAHEAD(2) ( 
+            "+" Cal4() #Add(2)
+            | "-" Cal4() #Sub(2)
+        )
     )*
 }
-
-// void Cal3() #void: {} { 
-//     Cal4()
-//     [
-//         "&&" Cal1() #And(2)
-//         | "<" Cal1() #Less(2)
-//     ]
-// }
 
 void Cal4() #void: {} {
+    Cal5()
+    (
+        LOOKAHEAD(2) ( 
+            "*" Cal5() #Mul(2)
+            | "/" Cal5() #Div(2) 
+        )
+    )*
+}
+
+
+void Cal5() #void: {} {
     "(" Cal1() ")"
     | Expression1()
 }
@@ -192,29 +198,36 @@ void Cal4() #void: {} {
 
 void Expression1() #void : {}
 {
-    <INTEGER> #Int [Express1() #GroupCondition(2)]
-    | "true" #True [Express1() #GroupCondition(2)]
-    | "false" #False [Express1() #GroupCondition(2)]
-    | <IDENTIFIER> #Identifier [Express1() #GroupCondition(2)]
-    | "this" #This [Express1() #GroupCondition(2)]
-    | "new" "int" "[" Cal1() "]" #Array(1) [Express1() #GroupCondition(2)]
-    | "new" <IDENTIFIER> "(" ")" #Object [Express1() #GroupCondition(2)]
-    | "!" Cal1() #Neg(1) [Express1() #GroupCondition(2)]
-    // | "(" Expression() ")" #Group(1) [Express() #GroupCondition(2)]
+    <INTEGER> #Int [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    | "true" #True [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    | "false" #False [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    | <IDENTIFIER> #Identifier [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    | "this" #This [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    | "new" (
+        "int" "[" Cal1() "]" #Array(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+        | <IDENTIFIER> "(" ")" #Object [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    )
+    // | "new" "int" "[" Cal1() "]" #Array(1) [Express1() #GroupCondition(2)]
+    // | "new" <IDENTIFIER> "(" ")" #Object [Express1() #GroupCondition(2)]
+    | "!" Cal1() #Neg(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
 }
 
 
 void Express1() #void : {}
-{
-    "[" Cal1() "]" #AcessArray(1) [Express1() #GroupCondition(2)]
-    | "." "length" #Length [Express1() #GroupCondition(2)]
-    | AcessMethod() [Express1() #GroupCondition(2)]
+{ 
+    "[" Cal1() "]" #AcessArray(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    | "." (
+        "length" #Length [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+        | AcessMethod() [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    )
+    // | "." "length" #Length [Express1() #GroupCondition(2)]
+    // | AcessMethod() [Express1() #GroupCondition(2)]
 }
 
 
 void AcessMethod() : {}
 {
-    "." <IDENTIFIER> "(" [ Arguments() ] ")"
+    <IDENTIFIER> "(" [ Arguments() ] ")"
 }
 
 
