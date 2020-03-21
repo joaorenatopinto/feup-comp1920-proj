@@ -10,9 +10,13 @@ import java.io.*;
 
 public class Compiler
 {
+    static int nErrors;
+    static int MAX_ERRORS = 10;
+
     public static HashMap<String, Integer> symbol_table = new HashMap<String, Integer>();
 
     public static void main(String args[]) throws ParseException, IOException {
+        nErrors = 0;
         System.out.println("Parser for Mini Java grammar");
         System.out.println("Your shitty code's AST:");
         System.setIn(new FileInputStream(new File(args[0])));
@@ -20,7 +24,76 @@ public class Compiler
         SimpleNode root = comp.Program(); // returns reference to root node
 
         root.dump(""); // prints the tree on the screen
-        
+    }
+
+    static void reportError(ParseException e, String statement, boolean recover) {
+        System.out.println("Syntatic error on " + statement + " statement.\n\n" +  e.toString());
+        nErrors++;
+      
+        if (recover) {
+          recoverFromError();
+        }
+      
+        if (nErrors >= MAX_ERRORS) {
+          System.out.println("Reached maximum number of errors (" + MAX_ERRORS + "). Terminating.");
+          System.exit(1);
+        }
+      }
+    
+    static void recoverFromError() {
+        Token t;
+        Token t2;
+        // do {
+        //     // t = getToken(1);
+        //     // if (t.kind == RPARENTHESIS) {
+        //     //     t2 = getToken(1);
+        //     //     if (t2.kind == LBRACKET | t2.kind == SEMICOLON) {
+        //     //         return;
+        //     //     }
+        //     // }
+        //     // t = getNextToken();
+
+        //     t = getToken(1);
+        //     if (t.kind == RPARENTHESIS)
+        //         break;
+                
+        //     System.out.print(t.kind + " ");
+        //     t = getNextToken();
+        // } while (t.kind != RPARENTHESIS);
+        // t = getNextToken();
+
+        t = getToken(1);
+
+        do {
+
+            do {
+
+                System.out.print(t.kind + " ");
+
+                t2 = getToken(1);
+
+                if (t2.kind == LBRACKET)
+                    return;
+                
+                if (t.kind == RPARENTHESIS)
+                    break;
+                    
+                t = getNextToken();
+
+            } while (t.kind != RPARENTHESIS );
+
+            t = getToken(1);
+
+            if (t.kind == RPARENTHESIS)
+                t = getNextToken();
+
+        } while (t.kind == RPARENTHESIS);
+
+////////////////////////
+        // do {
+        //     t = getNextToken();
+
+        // } while (t.kind != SEMICOLON && t != null && t.kind != EOF);
     }
     
 }
@@ -45,6 +118,7 @@ SKIP :
 TOKEN:
 {
     < INTEGER: (["0"-"9"])+ >
+    | < SEMICOLON: ";" >
     | < IF: "if" >
     | < INT: "int" >
     | < NEW: "new" >
@@ -64,7 +138,11 @@ TOKEN:
     | < BOOLEAN: "boolean" >
     | < EXTENDS: "extends" >
     | < IMPORT: "import" >
-    | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
+    | <LPARENTHESIS: "(" >
+    | <RPARENTHESIS: ")" >
+    | <LBRACKET: "{" >
+    | <RBRACKET: "}" >
+    | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["$"]|["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
     
 }
 
@@ -88,23 +166,28 @@ void ImportDeclaration() : {}
     "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
 }
 
-void ClassDeclaration() : {}
+void ClassDeclaration() : {/* Token t1; Token t2; */}
 {
-    "class" <IDENTIFIER> [ "extends" <IDENTIFIER> ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}"
+    "class" /* t1 =*/<IDENTIFIER> [ "extends" /* t2= */<IDENTIFIER> ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}" {/* jjtThis.id = t1.image; jjtThis.ext = t2.image; */}
 }
 
-void VarDeclaration() : {}
+void VarDeclaration() : {/* Token t1; */}
 {
-    Type() <IDENTIFIER> ";"
+    Type() /* t1= */<IDENTIFIER> ";" {/* jjtThis.id = t1.image; */}
 }
 
-void MethodDeclaration() #void : {}
+void MethodDeclaration() : {/* Token t1; */}
 {  
     "public"  
     (
-    Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}"
+    Type() /* t1= */<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {/* jjtThis.id = t1.image; */}
     | "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "}" 
     ) 
+}
+
+void MethodArgs() : {}
+{
+    Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )*
 }
 
 void Type() #void: {}
@@ -118,10 +201,20 @@ void Statement() : {}
 {
     "{" ( Statement() )* "}"
     | "if" "(" Cal1() ")" Statement() #If(2) "else" Statement() #Else(1)
-    | "while" "("Cal1() ")" Statement() #While(2)
+    | WhileStatement()        
     | LOOKAHEAD(2) <IDENTIFIER> "[" Cal1() "]" #Identifier(1) "=" Cal1() ";" #Assign(2)
     | LOOKAHEAD(2) <IDENTIFIER> #Identifier "=" Cal1() ";" #Assign(2)
     | Cal1() ";"  
+}
+
+void WhileStatement() : {} {
+    <WHILE> <LPARENTHESIS> 
+    try {
+        Cal1() <RPARENTHESIS>
+     } catch (ParseException e) {
+       reportError(e, "WHILE", true);
+     }
+     Statement()
 }
 
 void Cal1() #void: {} { 
