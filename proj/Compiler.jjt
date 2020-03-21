@@ -27,49 +27,28 @@ public class Compiler
         root.dump(""); // prints the tree on the screen
     }
 
-    static void reportError(ParseException e, String statement, boolean recover) {
-        System.out.println("Syntatic error on " + statement + " statement.\n\n" +  e.toString());
-        nErrors++;
+    static void reportError(ParseException e) {
+
+        System.out.println("Syntatic error on while statement.\n\n" +  e.toString());
+        
+        recoverError();
       
-        if (recover) {
-          recoverFromError();
-        }
-      
-        if (nErrors >= MAX_ERRORS) {
+        if (++nErrors > MAX_ERRORS) {
           System.out.println("Reached maximum number of errors (" + MAX_ERRORS + "). Terminating.");
           System.exit(1);
         }
-      }
+
+    }
     
-    static void recoverFromError() {
+    static void recoverError() {
         Token t;
         Token t2;
-        // do {
-        //     // t = getToken(1);
-        //     // if (t.kind == RPARENTHESIS) {
-        //     //     t2 = getToken(1);
-        //     //     if (t2.kind == LBRACKET | t2.kind == SEMICOLON) {
-        //     //         return;
-        //     //     }
-        //     // }
-        //     // t = getNextToken();
-
-        //     t = getToken(1);
-        //     if (t.kind == RPARENTHESIS)
-        //         break;
-                
-        //     System.out.print(t.kind + " ");
-        //     t = getNextToken();
-        // } while (t.kind != RPARENTHESIS);
-        // t = getNextToken();
 
         t = getToken(1);
 
         do {
 
             do {
-
-                System.out.print(t.kind + " ");
 
                 t2 = getToken(1);
 
@@ -90,11 +69,6 @@ public class Compiler
 
         } while (t.kind == RPARENTHESIS);
 
-////////////////////////
-        // do {
-        //     t = getNextToken();
-
-        // } while (t.kind != SEMICOLON && t != null && t.kind != EOF);
     }
     
 }
@@ -215,7 +189,7 @@ void WhileStatement() : {} {
     try {
         Cal1() <RPARENTHESIS>
      } catch (ParseException e) {
-       reportError(e, "WHILE", true);
+       reportError(e);
      }
      Statement()
 }
