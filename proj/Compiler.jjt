@@ -31,6 +31,13 @@ public class Compiler
         else if(node.jjtGetNumChildren() == 1) {// only one child
             return this.eval((SimpleNode) node.jjtGetChild(0));
         }
+       Int
+     Statement
+      Assign
+       Identifier
+        Int
+       Int
+     Statement
 
         SimpleNode lhs = (SimpleNode) node.jjtGetChild(0); //left child
         SimpleNode rhs = (SimpleNode) node.jjtGetChild(1); // right child
@@ -121,10 +128,10 @@ void VarDeclaration() : {}
     Type() <IDENTIFIER> ";"
 }
 
-void MethodDeclaration() : {}
+void MethodDeclaration() #void : {}
 {
-    "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Expression() ";" "}"
-    | "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}"
+    "public" Type() <IDENTIFIER> "(" [ Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )* ] ")" "{" ( VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}"
+    | "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( VarDeclaration() )* ( Statement() )* "}" 
 }
 
 void Type() #void: {}
@@ -138,34 +145,72 @@ void Type() #void: {}
 void Statement() : {}
 {
     "{" ( Statement() )* "}"
-    | "if" "(" Expression() ")" Statement() #If(2) "else" Statement() #Else(1)
-    | "while" "("Expression() ")" Statement() #While(2)
-    | <IDENTIFIER> "[" Expression() "]" #Identifier(1) "=" Expression() ";" #Assign(2)
-    | <IDENTIFIER> #Identifier "=" Expression() ";" #Assign(2)
-    | Expression() ";"  
+    | "if" "(" Cal1() ")" Statement() #If(2) "else" Statement() #Else(1)
+    | "while" "("Cal1() ")" Statement() #While(2)
+    | <IDENTIFIER> "[" Cal1() "]" #Identifier(1) "=" Cal1() ";" #Assign(2)
+    | <IDENTIFIER> #Identifier "=" Cal1() ";" #Assign(2)
+    | Cal1() ";"  
+}
+ 
+void Cal1() #void: {} { 
+    Cal2()
+    (
+        "&&" Cal2() #And(2)
+        | "<" Cal2() #Less(2)
+    )*
 }
 
-void Expression() #void : {}
-{
-    <INTEGER> #Int [Express() #GroupCondition(2)]
-    | "true" #True [Express() #GroupCondition(2)]
-    | "false" #False [Express() #GroupCondition(2)]
-    | <IDENTIFIER> #Identifier [Express() #GroupCondition(2)]
-    | "this" #This [Express() #GroupCondition(2)]
-    | "new" "int" "[" Expression() "]" #Array(1) [Express() #GroupCondition(2)]
-    | "new" <IDENTIFIER> "(" ")" #Object [Express() #GroupCondition(2)]
-    | "!" Expression() #Neg(1) [Express() #GroupCondition(2)]
-    | "(" Expression() ")" #Group(1) [Express() #GroupCondition(2)]
+void Cal2() #void: {} {
+    Cal3() 
+    (
+        ("+" Cal3() #Add(2)
+        | "-" Cal3() #Sub(2)) 
+    )*
 }
 
-void Express() #void : {}
-{
-    ( "&&" Expression() #And(1) | "<" Expression() #Less(1) | "+" Expression() #Plus(1) | 
-    "-" Expression() #Minus(1)  | "*" Expression() #Mult(1) | "/" Expression() #Div(1) ) [Express()]
-    | "[" Expression() "]" #AcessArray(1) [Express() #GroupCondition(2)]
-    | "." "length" #Length [Express() #GroupCondition(2)]
-    | AcessMethod() [Express() #GroupCondition(2)]
+void Cal3() #void: {} {
+    Cal4()
+    (
+        "*" Cal4() #Mul(2)
+        | "/" Cal4() #Div(2)
+    )*
 }
+
+// void Cal3() #void: {} { 
+//     Cal4()
+//     [
+//         "&&" Cal1() #And(2)
+//         | "<" Cal1() #Less(2)
+//     ]
+// }
+
+void Cal4() #void: {} {
+    "(" Cal1() ")"
+    | Expression1()
+}
+
+
+void Expression1() #void : {}
+{
+    <INTEGER> #Int [Express1() #GroupCondition(2)]
+    | "true" #True [Express1() #GroupCondition(2)]
+    | "false" #False [Express1() #GroupCondition(2)]
+    | <IDENTIFIER> #Identifier [Express1() #GroupCondition(2)]
+    | "this" #This [Express1() #GroupCondition(2)]
+    | "new" "int" "[" Cal1() "]" #Array(1) [Express1() #GroupCondition(2)]
+    | "new" <IDENTIFIER> "(" ")" #Object [Express1() #GroupCondition(2)]
+    | "!" Cal1() #Neg(1) [Express1() #GroupCondition(2)]
+    // | "(" Expression() ")" #Group(1) [Express() #GroupCondition(2)]
+}
+
+
+void Express1() #void : {}
+{
+    "[" Cal1() "]" #AcessArray(1) [Express1() #GroupCondition(2)]
+    | "." "length" #Length [Express1() #GroupCondition(2)]
+    | AcessMethod() [Express1() #GroupCondition(2)]
+}
+
 
 void AcessMethod() : {}
 {
@@ -173,8 +218,7 @@ void AcessMethod() : {}
 }
 
 
-
 void Arguments() : {}
 {
-    Expression() ("," Expression())*
+    Cal1() ("," Cal1())*
 }
