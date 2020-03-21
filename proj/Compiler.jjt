@@ -1,6 +1,7 @@
 options
 {
     LOOKAHEAD=1;
+    MULTI=true;
 }
 
 PARSER_BEGIN(Compiler)
@@ -121,6 +122,7 @@ TOKEN:
     | < SEMICOLON: ";" >
     | < IF: "if" >
     | < INT: "int" >
+    | < INT_ARRAY: "int" "[" "]" >
     | < NEW: "new" >
     | < VOID: "void" >
     | < ELSE: "else" >
@@ -166,21 +168,21 @@ void ImportDeclaration() : {}
     "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
 }
 
-void ClassDeclaration() : {/* Token t1; Token t2; */}
+void ClassDeclaration() : {Token t1; Token t2;}
 {
-    "class" /* t1 =*/<IDENTIFIER> [ "extends" /* t2= */<IDENTIFIER> ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}" {/* jjtThis.id = t1.image; jjtThis.ext = t2.image; */}
+    "class" t1=<IDENTIFIER> [ "extends" t2=<IDENTIFIER> {jjtThis.ast_ext = t2.image;} ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}" {jjtThis.ast_id = t1.image;}
 }
 
-void VarDeclaration() : {/* Token t1; */}
+void VarDeclaration() : {Token t1; Token t2;}
 {
-    Type() /* t1= */<IDENTIFIER> ";" {/* jjtThis.id = t1.image; */}
+    t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image; System.out.println(jjtThis.ast_type);}
 }
 
-void MethodDeclaration() : {/* Token t1; */}
+void MethodDeclaration() : {Token t1;}
 {  
     "public"  
     (
-    Type() /* t1= */<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {/* jjtThis.id = t1.image; */}
+    Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {jjtThis.ast_id = t1.image;}
     | "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "}" 
     ) 
 }
@@ -190,11 +192,12 @@ void MethodArgs() : {}
     Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )*
 }
 
-void Type() #void: {}
+Token Type() #void: {Token t1;}
 {  
-    "boolean"
-    | "int" ["[" "]"]
-    | <IDENTIFIER>
+    t1=<BOOLEAN> { return t1; }
+    | t1=<INT_ARRAY> { return t1; }
+    | t1=<INT> { return t1; }
+    | t1=<IDENTIFIER> { return t1; }
 }
 
 void Statement() : {}
