@@ -6,53 +6,23 @@ options
 PARSER_BEGIN(Compiler)
 
 import java.util.*;
+import java.io.*;
 
 public class Compiler
 {
     public static HashMap<String, Integer> symbol_table = new HashMap<String, Integer>();
 
-    public static void main(String args[]) throws ParseException {
+    public static void main(String args[]) throws ParseException, IOException {
         System.out.println("Parser for Mini Java grammar");
-        System.out.println("Write your shitty code:");
+        System.out.println("Your shitty code's AST:");
+        System.setIn(new FileInputStream(new File(args[0])));
         Compiler comp = new Compiler(System.in);
         SimpleNode root = comp.Program(); // returns reference to root node
 
         root.dump(""); // prints the tree on the screen
-
-        //System.out.println("Expression value: "+myCalc.eval(root));
+        
     }
-    /*
-    int eval(SimpleNode node) {
-        if(node.id == CalculatorTreeConstants.JJTNEG) {
-            return -1 * eval((SimpleNode) node.jjtGetChild(0));
-        }
-        else if(node.jjtGetNumChildren() == 0) // leaf node with integer value
-            return node.val;
-        else if(node.jjtGetNumChildren() == 1) {// only one child
-            return this.eval((SimpleNode) node.jjtGetChild(0));
-        }
-       Int
-     Statement
-      Assign
-       Identifier
-        Int
-       Int
-     Statement
-
-        SimpleNode lhs = (SimpleNode) node.jjtGetChild(0); //left child
-        SimpleNode rhs = (SimpleNode) node.jjtGetChild(1); // right child
-
-        switch(node.id) {
-            case CalculatorTreeConstants.JJTADD : return eval( lhs ) + eval( rhs );
-            case CalculatorTreeConstants.JJTSUB: return eval( lhs ) - eval( rhs );
-            case CalculatorTreeConstants.JJTMUL : return eval( lhs ) * eval( rhs );
-            case CalculatorTreeConstants.JJTDIV : return eval( lhs ) / eval( rhs );
-            default : // abort
-                System.out.println("Ilegal operator!");
-                System.exit(1);
-        }
-        return 0;
-    }*/
+    
 }
 
 
@@ -168,7 +138,7 @@ void Cal2() #void: {} {
     )*
 }
 
-// a < b && c < d
+
 void Cal3() #void: {} {
     Cal4() 
     (
@@ -207,8 +177,6 @@ void Expression1() #void : {}
         "int" "[" Cal1() "]" #Array(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
         | <IDENTIFIER> "(" ")" #Object [LOOKAHEAD(2) Express1() #GroupCondition(2)]
     )
-    // | "new" "int" "[" Cal1() "]" #Array(1) [Express1() #GroupCondition(2)]
-    // | "new" <IDENTIFIER> "(" ")" #Object [Express1() #GroupCondition(2)]
     | "!" Cal1() #Neg(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
 }
 
@@ -220,8 +188,6 @@ void Express1() #void : {}
         "length" #Length [LOOKAHEAD(2) Express1() #GroupCondition(2)]
         | AcessMethod() [LOOKAHEAD(2) Express1() #GroupCondition(2)]
     )
-    // | "." "length" #Length [Express1() #GroupCondition(2)]
-    // | AcessMethod() [Express1() #GroupCondition(2)]
 }
 
 
