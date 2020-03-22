@@ -24,17 +24,16 @@ public interface CompilerTreeConstants
   public int JJTMUL = 20;
   public int JJTDIV = 21;
   public int JJTINT = 22;
-  public int JJTGROUPCONDITION = 23;
-  public int JJTTRUE = 24;
-  public int JJTFALSE = 25;
-  public int JJTTHIS = 26;
-  public int JJTARRAY = 27;
-  public int JJTOBJECT = 28;
-  public int JJTNEG = 29;
-  public int JJTACESSARRAY = 30;
-  public int JJTLENGTH = 31;
-  public int JJTACESSMETHOD = 32;
-  public int JJTARGUMENTS = 33;
+  public int JJTBOOL = 23;
+  public int JJTTHIS = 24;
+  public int JJTARRAY = 25;
+  public int JJTOBJECT = 26;
+  public int JJTNEG = 27;
+  public int JJTGROUPCONDITION = 28;
+  public int JJTACESSARRAY = 29;
+  public int JJTLENGTH = 30;
+  public int JJTACESSMETHOD = 31;
+  public int JJTARGUMENTS = 32;
 
 
   public String[] jjtNodeName = {
@@ -61,17 +60,16 @@ public interface CompilerTreeConstants
     "Mul",
     "Div",
     "Int",
-    "GroupCondition",
-    "True",
-    "False",
+    "Bool",
     "This",
     "Array",
     "Object",
     "Neg",
+    "GroupCondition",
     "AcessArray",
     "Length",
     "AcessMethod",
     "Arguments",
   };
 }
-/* JavaCC - OriginalChecksum=e5089cb8e97236851465fe263597e4f0 (do not edit this line) */
+/* JavaCC - OriginalChecksum=c9690e28e87c429e5122ac67d94823c4 (do not edit this line) */

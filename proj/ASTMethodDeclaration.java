@@ -3,6 +3,7 @@
 public
 class ASTMethodDeclaration extends SimpleNode {
   public String ast_id;
+  public String ast_return_type;
 
   public ASTMethodDeclaration(int id) {
     super(id);

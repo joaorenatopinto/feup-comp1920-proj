@@ -149,14 +149,14 @@ void ClassDeclaration() : {Token t1; Token t2;}
 
 void VarDeclaration() : {Token t1; Token t2;}
 {
-    t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image; System.out.println(jjtThis.ast_type);}
+    t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image;}
 }
 
-void MethodDeclaration() : {Token t1;}
+void MethodDeclaration() : {Token t1; Token t2;}
 {  
     "public"  
     (
-    Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {jjtThis.ast_id = t1.image;}
+    t2=Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {jjtThis.ast_id = t1.image; jjtThis.ast_return_type = t2.image;}
     | "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "}" 
     ) 
 }
@@ -232,31 +232,34 @@ void Cal4() #void: {} {
 
 void Cal5() #void: {} {
     "(" Cal1() ")"
-    | Expression1()
+    | Expression()
 }
 
 
-void Expression1() #void : {}
+void Expression() #void : {Token t1;}
 {
-    <INTEGER> #Int [LOOKAHEAD(2) Express1() #GroupCondition(2)]
-    | "true" #True [LOOKAHEAD(2) Express1() #GroupCondition(2)]
-    | "false" #False [LOOKAHEAD(2) Express1() #GroupCondition(2)]
-    | <IDENTIFIER> #Identifier [LOOKAHEAD(2) Express1() #GroupCondition(2)]
-    | "this" #This [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    (
+    t1=<INTEGER>  { jjtThis.ast_value = Integer.parseInt(t1.image); } #Int
+    | <TRUE> { jjtThis.ast_value = true; } #Bool
+    | <FALSE> { jjtThis.ast_value = false; } #Bool
+    | t1=<IDENTIFIER> { jjtThis.ast_value = t1.image; } #Identifier 
+    | "this" #This
     | "new" (
-        "int" "[" Cal1() "]" #Array(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
-        | <IDENTIFIER> "(" ")" #Object [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+        "int" "[" Cal1() "]" #Array(1)
+        | <IDENTIFIER> "(" ")" #Object
+    ) 
+    | "!" Cal1() #Neg(1)
     )
-    | "!" Cal1() #Neg(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
 }
 
 
-void Express1() #void : {}
+void Expression_aux() #void : {}
 { 
-    "[" Cal1() "]" #AcessArray(1) [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+    "[" Cal1() "]" #AcessArray(1) [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
     | "." (
-        "length" #Length [LOOKAHEAD(2) Express1() #GroupCondition(2)]
-        | AcessMethod() [LOOKAHEAD(2) Express1() #GroupCondition(2)]
+        "length" #Length [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+        | AcessMethod() [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
     )
 }
 
