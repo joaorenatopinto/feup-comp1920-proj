@@ -29,7 +29,7 @@ public class ExampleTest {
 	public int evalString(String input) {
 		
 		try {
-			SimpleNode root = new Calculator(Utils.toInputStream(input)).Expression(); // returns reference to root node
+			SimpleNode root = new Compiler(Utils.toInputStream(input)).Program(); // returns reference to root node
 			return Main.eval(root);
 		} catch(ParseException e) {
 			// Convert checked exception into runtime exception

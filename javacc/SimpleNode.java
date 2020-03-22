@@ -7,17 +7,13 @@ class SimpleNode implements Node {
   protected Node[] children;
   protected int id;
   protected Object value;
-  protected Calculator parser;
-
-    // added
-    public int val;
-    public Operator op = null;
+  protected Compiler parser;
 
   public SimpleNode(int i) {
     id = i;
   }
 
-  public SimpleNode(Calculator p, int i) {
+  public SimpleNode(Compiler p, int i) {
     this(i);
     parser = p;
   }
@@ -59,9 +55,7 @@ class SimpleNode implements Node {
      toString(String), otherwise overriding toString() is probably all
      you need to do. */
 
-  public String toString() {
-    return CalculatorTreeConstants.jjtNodeName[id];
-  }
+  public String toString() { return CompilerTreeConstants.jjtNodeName[id]; }
   public String toString(String prefix) { return prefix + toString(); }
 
   /* Override this method if you want to customize how the node dumps
@@ -78,7 +72,7 @@ class SimpleNode implements Node {
       }
     }
   }
-
+  
   public int getId() {
     return id;
   }

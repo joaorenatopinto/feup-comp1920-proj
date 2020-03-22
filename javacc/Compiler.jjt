@@ -1,0 +1,276 @@
+options
+{
+    LOOKAHEAD=1;
+    MULTI=true;
+}
+
+PARSER_BEGIN(Compiler)
+
+import java.util.*;
+import java.io.*;
+
+public class Compiler
+{
+    static int nErrors;
+    static int MAX_ERRORS = 10;
+
+    public static HashMap<String, Integer> symbol_table = new HashMap<String, Integer>();
+
+    public static void main(String args[]) throws ParseException, IOException {
+        nErrors = 0;
+        System.out.println("Parser for Mini Java grammar");
+        System.out.println("Your shitty code's AST:");
+        System.setIn(new FileInputStream(new File(args[0])));
+        Compiler comp = new Compiler(System.in);
+        SimpleNode root = comp.Program(); // returns reference to root node
+
+        root.dump(""); // prints the tree on the screen
+    }
+
+    void reportError(ParseException e) {
+
+        System.out.println("Syntatic error on while statement.\n\n" +  e.toString());
+        
+        recoverError();
+      
+        if (++nErrors > MAX_ERRORS) {
+          System.out.println("Reached maximum number of errors (" + MAX_ERRORS + "). Terminating.");
+          System.exit(1);
+        }
+
+    }
+    
+    void recoverError() {
+        Token t;
+        Token t2;
+
+        t = getToken(1);
+
+        do {
+
+            do {
+
+                t2 = getToken(1);
+
+                if (t2.kind == LBRACKET)
+                    return;
+                
+                if (t.kind == RPARENTHESIS)
+                    break;
+                    
+                t = getNextToken();
+
+            } while (t.kind != RPARENTHESIS );
+
+            t = getToken(1);
+
+            if (t.kind == RPARENTHESIS)
+                t = getNextToken();
+
+        } while (t.kind == RPARENTHESIS);
+
+    }
+    
+}
+
+
+
+PARSER_END(Compiler)
+
+SKIP :
+{
+    " " | "\r" | "\t" | "\n"
+    | < "//" (~["\r", "\n"])* >
+    | < "/*" > : ML_COMMENT_STATE
+}
+
+<ML_COMMENT_STATE> SKIP :
+{
+  < "*/" > : DEFAULT
+| < ~[] >   
+}
+
+TOKEN:
+{
+    < INTEGER: (["0"-"9"])+ >
+    | < SEMICOLON: ";" >
+    | < IF: "if" >
+    | < INT: "int" >
+    | < INT_ARRAY: "int" "[" "]" >
+    | < NEW: "new" >
+    | < VOID: "void" >
+    | < ELSE: "else" >
+    | < TRUE: "true" >
+    | < MAIN: "main" >
+    | < THIS: "this" >
+    | < WHILE: "while" >
+    | < FALSE: "false" >
+    | < CLASS: "class" >
+    | < PUBLIC: "public" >
+    | < STATIC: "static" >
+    | < STRING: "String" >
+    | < LENGTH: "length" >
+    | < RETURN: "return" >
+    | < BOOLEAN: "boolean" >
+    | < EXTENDS: "extends" >
+    | < IMPORT: "import" >
+    | <LPARENTHESIS: "(" >
+    | <RPARENTHESIS: ")" >
+    | <LBRACKET: "{" >
+    | <RBRACKET: "}" >
+    | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["$"]|["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
+    
+}
+
+SimpleNode Program(): {}
+{
+    Start() { return jjtThis;}
+}
+
+void Start() : {}
+{
+    Imports() ClassDeclaration() <EOF> #File(2)
+}
+
+void Imports() : {}
+{
+    ( ImportDeclaration() )*
+}
+
+void ImportDeclaration() : {}
+{
+    "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
+}
+
+void ClassDeclaration() : {Token t1; Token t2;}
+{
+    "class" t1=<IDENTIFIER> [ "extends" t2=<IDENTIFIER> {jjtThis.ast_ext = t2.image;} ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}" {jjtThis.ast_id = t1.image;}
+}
+
+void VarDeclaration() : {Token t1; Token t2;}
+{
+    t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image;}
+}
+
+void MethodDeclaration() : {Token t1; Token t2;}
+{  
+    "public"  
+    (
+    t2=Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {jjtThis.ast_id = t1.image; jjtThis.ast_return_type = t2.image;}
+    | "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "}" 
+    ) 
+}
+
+void MethodArgs() : {}
+{
+    Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )*
+}
+
+Token Type() #void: {Token t1;}
+{  
+    t1=<BOOLEAN> { return t1; }
+    | t1=<INT_ARRAY> { return t1; }
+    | t1=<INT> { return t1; }
+    | t1=<IDENTIFIER> { return t1; }
+}
+
+void Statement() : {}
+{
+    "{" ( Statement() )* "}"
+    | "if" "(" Cal1() ")" Statement() #If(2) "else" Statement() #Else(1)
+    | WhileStatement()        
+    | LOOKAHEAD(2) <IDENTIFIER> "[" Cal1() "]" #Identifier(1) "=" Cal1() ";" #Assign(2)
+    | LOOKAHEAD(2) <IDENTIFIER> #Identifier "=" Cal1() ";" #Assign(2)
+    | Cal1() ";"  
+}
+
+void WhileStatement() : {} {
+    <WHILE> <LPARENTHESIS> 
+    try {
+        Cal1() <RPARENTHESIS>
+     } catch (ParseException e) {
+       reportError(e);
+     }
+     Statement()
+}
+
+void Cal1() #void: {} { 
+    Cal2()
+    (
+        LOOKAHEAD(2) "&&" Cal2() #And(2)
+    )*
+}
+ 
+void Cal2() #void: {} { 
+    Cal3()
+    (
+        LOOKAHEAD(2) "<" Cal3() #Less(2)
+    )*
+}
+
+
+void Cal3() #void: {} {
+    Cal4() 
+    (
+        LOOKAHEAD(2) ( 
+            "+" Cal4() #Add(2)
+            | "-" Cal4() #Sub(2)
+        )
+    )*
+}
+
+void Cal4() #void: {} {
+    Cal5()
+    (
+        LOOKAHEAD(2) ( 
+            "*" Cal5() #Mul(2)
+            | "/" Cal5() #Div(2) 
+        )
+    )*
+}
+
+
+void Cal5() #void: {} {
+    "(" Cal1() ")"
+    | Expression()
+}
+
+
+void Expression() #void : {Token t1;}
+{
+    (
+    t1=<INTEGER>  { jjtThis.ast_value = Integer.parseInt(t1.image); } #Int
+    | <TRUE> { jjtThis.ast_value = true; } #Bool
+    | <FALSE> { jjtThis.ast_value = false; } #Bool
+    | t1=<IDENTIFIER> { jjtThis.ast_value = t1.image; } #Identifier 
+    | "this" #This
+    | "new" (
+        "int" "[" Cal1() "]" #Array(1)
+        | <IDENTIFIER> "(" ")" #Object
+    ) 
+    | "!" Cal1() #Neg(1)
+    )
+    [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+}
+
+
+void Expression_aux() #void : {}
+{ 
+    "[" Cal1() "]" #AcessArray(1) [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+    | "." (
+        "length" #Length [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+        | AcessMethod() [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+    )
+}
+
+
+void AcessMethod() : {}
+{
+    <IDENTIFIER> "(" [ Arguments() ] ")"
+}
+
+
+void Arguments() : {}
+{
+    Cal1() ("," Cal1())*
+}
