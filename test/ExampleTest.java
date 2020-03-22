@@ -6,11 +6,11 @@ import org.junit.Test;
 public class ExampleTest {
 
 
-    @Test
-    public void testExpressions() {
-		assertEquals(5, evalString("2+3\n"));
-		assertEquals(2, evalString("6-4\n"));		
-    }
+    // @Test
+    // public void testExpressions() {
+	// 	assertEquals(5, evalString("2+3\n"));
+	// 	assertEquals(2, evalString("6-4\n"));		
+    // }
 
 
     @Test

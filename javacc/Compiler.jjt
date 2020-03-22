@@ -11,16 +11,16 @@ import java.io.*;
 
 public class Compiler
 {
-    static int nErrors;
+    int nErrors = 0;
     static int MAX_ERRORS = 10;
 
     public static HashMap<String, Integer> symbol_table = new HashMap<String, Integer>();
 
     public static void main(String args[]) throws ParseException, IOException {
-        nErrors = 0;
-        System.out.println("Parser for Mini Java grammar");
-        System.out.println("Your shitty code's AST:");
-        System.setIn(new FileInputStream(new File(args[0])));
+        // nErrors = 0;
+        // System.out.println("Parser for Mini Java grammar");
+        // System.out.println("Your shitty code's AST:");
+        // System.setIn(new FileInputStream(new File(args[0])));
         Compiler comp = new Compiler(System.in);
         SimpleNode root = comp.Program(); // returns reference to root node
 

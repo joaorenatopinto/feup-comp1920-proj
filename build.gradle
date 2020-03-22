@@ -39,6 +39,8 @@ sourceSets {
    main {
       java {
          srcDir 'src'
+         srcDir 'generated/javacc'
+         srcDir 'generated/jjtree'
       }
    }
 	
@@ -65,9 +67,7 @@ jar {
 // Copy JAR to root folder
 task copyJar() {
 
-    doFirst {     resources {
-         srcDir 'test'
-      }      
+    doFirst {    
 		copy {
 			println 'Copying JAR file to ./'
 			from jar
