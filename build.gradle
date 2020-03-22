@@ -46,6 +46,9 @@ sourceSets {
       java {
          srcDir 'test'
       }
+      resources {
+         srcDir 'test'
+      }      
    }
     
 }
@@ -62,7 +65,9 @@ jar {
 // Copy JAR to root folder
 task copyJar() {
 
-    doFirst {
+    doFirst {     resources {
+         srcDir 'test'
+      }      
 		copy {
 			println 'Copying JAR file to ./'
 			from jar

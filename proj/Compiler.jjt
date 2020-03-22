@@ -27,11 +27,11 @@ public class Compiler
         root.dump(""); // prints the tree on the screen
     }
 
-    static void reportError(ParseException e) {
+    static void handleError(ParseException e, boolean recover) {
 
         System.out.println("Syntatic error on while statement.\n\n" +  e.toString());
         
-        recoverError();
+        if (recover) recoverError();
       
         if (++nErrors > MAX_ERRORS) {
           System.out.println("Reached maximum number of errors (" + MAX_ERRORS + "). Terminating.");
@@ -189,7 +189,7 @@ void WhileStatement() : {} {
     try {
         Cal1() <RPARENTHESIS>
      } catch (ParseException e) {
-       reportError(e);
+       handleError(e, false);
      }
      Statement()
 }

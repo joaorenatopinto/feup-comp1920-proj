@@ -19,11 +19,11 @@ public class Compiler/*@bgen(jjtree)*/implements CompilerTreeConstants, Compiler
         root.dump(""); // prints the tree on the screen
     }
 
-    static void reportError(ParseException e) {
+    static void handleError(ParseException e, boolean recover) {
 
         System.out.println("Syntatic error on while statement.\u005cn\u005cn" +  e.toString());
 
-        recoverError();
+        if (recover) recoverError();
 
         if (++nErrors > MAX_ERRORS) {
           System.out.println("Reached maximum number of errors (" + MAX_ERRORS + "). Terminating.");
@@ -807,7 +807,7 @@ public class Compiler/*@bgen(jjtree)*/implements CompilerTreeConstants, Compiler
         Cal1();
         jj_consume_token(RPARENTHESIS);
       } catch (ParseException e) {
-       reportError(e);
+       handleError(e, false);
       }
       Statement();
     } catch (Throwable jjte000) {
