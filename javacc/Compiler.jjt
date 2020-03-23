@@ -189,7 +189,7 @@ void WhileStatement() : {} {
     try {
         Cal1() <RPARENTHESIS>
      } catch (ParseException e) {
-       handleError(e, tree);
+       handleError(e, true);
      }
      Statement()
 }
