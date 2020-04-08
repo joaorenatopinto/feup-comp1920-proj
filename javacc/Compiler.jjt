@@ -1,4 +1,4 @@
-options
+    options
 {
     LOOKAHEAD=1;
     MULTI=true;
@@ -14,8 +14,6 @@ public class Compiler
     int nErrors = 0;
     static int MAX_ERRORS = 10;
 
-    public static HashMap<String, Integer> symbol_table = new HashMap<String, Integer>();
-
     public static void main(String args[]) throws ParseException, IOException {
         // nErrors = 0;
         // System.out.println("Parser for Mini Java grammar");
@@ -23,7 +21,9 @@ public class Compiler
         // System.setIn(new FileInputStream(new File(args[0])));
         Compiler comp = new Compiler(System.in);
         SimpleNode root = comp.Program(); // returns reference to root node
-
+        System.out.println("before");
+        SemanticProcessor processor = new SemanticProcessor(root);
+        System.out.println("after");
         root.dump(""); // prints the tree on the screen
     }
 
@@ -114,10 +114,10 @@ TOKEN:
     | < BOOLEAN: "boolean" >
     | < EXTENDS: "extends" >
     | < IMPORT: "import" >
-    | <LPARENTHESIS: "(" >
-    | <RPARENTHESIS: ")" >
-    | <LBRACKET: "{" >
-    | <RBRACKET: "}" >
+    | < LPARENTHESIS: "(" >
+    | < RPARENTHESIS: ")" >
+    | < LBRACKET: "{" >
+    | < RBRACKET: "}" >
     | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["$"]|["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
     
 }
@@ -152,13 +152,21 @@ void VarDeclaration() : {Token t1; Token t2;}
     t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image;}
 }
 
-void MethodDeclaration() : {Token t1; Token t2;}
+void Main() : {Token t1; Token t2;}
+{
+    "public" "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "}" 
+}
+
+void Method () : {Token t1; Token t2;}
+{
+    "public" t2=Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}"
+}
+
+void MethodDeclaration() #void : {Token t1; Token t2;}
 {  
-    "public"  
-    (
-    t2=Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {jjtThis.ast_id = t1.image; jjtThis.ast_return_type = t2.image;}
-    | "static" "void" "main" "("  "String" "[" "]" <IDENTIFIER> ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "}" 
-    ) 
+    LOOKAHEAD(2)
+    Main()
+    | Method()
 }
 
 void MethodArgs() : {}
@@ -174,13 +182,15 @@ Token Type() #void: {Token t1;}
     | t1=<IDENTIFIER> { return t1; }
 }
 
-void Statement() : {}
+void Statement() : {Token t1;}
 {
     "{" ( Statement() )* "}"
     | "if" "(" Cal1() ")" Statement() #If(2) "else" Statement() #Else(1)
-    | WhileStatement()        
+    | WhileStatement()
     | LOOKAHEAD(2) <IDENTIFIER> "[" Cal1() "]" #Identifier(1) "=" Cal1() ";" #Assign(2)
-    | LOOKAHEAD(2) <IDENTIFIER> #Identifier "=" Cal1() ";" #Assign(2)
+    | LOOKAHEAD(2) t1=<IDENTIFIER> #Identifier "=" Cal1() ";" #Assign(2) {
+
+    }
     | Cal1() ";"  
 }
 

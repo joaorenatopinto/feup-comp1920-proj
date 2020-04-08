@@ -9,13 +9,16 @@ public class Main {
 		Compiler myComp = new Compiler(System.in);
 		
 		try {
-		SimpleNode root = myComp.Program(); // returns reference to root node
+        SimpleNode root = myComp.Program(); // returns reference to root node
+        
         	
 		root.dump(""); // prints the tree on the screen
-
+        SemanticProcessor processor = new SemanticProcessor(root);
 		// System.out.println("Expression value: "+Main.eval(root));
 		
 		}catch(Exception e) {
+            System.out.println("Catch merdoso");
+            e.printStackTrace();
 		}
 	}
 
