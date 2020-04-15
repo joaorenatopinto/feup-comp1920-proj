@@ -12,14 +12,26 @@ class ASTIf extends SimpleNode {
 
   @Override
   public int process() {
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
+    int left_val;
+    // int right_val;  
+    if(this.children[0].getClass().equals(ASTIdentifier.class)) {
+      ASTIdentifier left = (ASTIdentifier)this.children[0];
+      if (SemanticProcessor.types_table.get(left.ast_value) == null)
+        throw new RuntimeException("Variable in ASTIf not previous declared");
+      // left = ()
+      if (SemanticProcessor.types_table.get(left.ast_value) == "boolean")
+        left_val = SemanticProcessor.values_table.get(left.ast_value);
+      else
+        throw new RuntimeException("Left child (" + left.ast_value + ") in ASTIf is not an Boolean");
+    }
+    else {
+      SimpleNode left = (SimpleNode)this.children[0];
+      left_val = left.process();
+    }
+    for (int i = 1; i < this.children.length; i++) {
       ((SimpleNode)this.children[i]).process();
     }
     return 1;
   }
-
-
 }
 /* JavaCC - OriginalChecksum=9b2b06fe1f37a5c88d35bf1701a179f5 (do not edit this line) */

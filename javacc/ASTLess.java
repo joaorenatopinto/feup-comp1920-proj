@@ -23,7 +23,7 @@ class ASTLess extends SimpleNode {
       if (SemanticProcessor.types_table.get(left.ast_value) == null)
         throw new RuntimeException("Variable in ASTIdentifier not previous declared");
       // left = ()
-      if (SemanticProcessor.types_table.get(left.ast_value) == "Integer")
+      if (SemanticProcessor.types_table.get(left.ast_value) == "int")
         left_val = SemanticProcessor.values_table.get(left.ast_value);
       else
         throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
@@ -35,7 +35,7 @@ class ASTLess extends SimpleNode {
 
     if(this.children[1].getClass().equals(ASTIdentifier.class)) {
       ASTIdentifier right = (ASTIdentifier)this.children[1];
-      if (SemanticProcessor.types_table.get(right.ast_value) == "Integer")
+      if (SemanticProcessor.types_table.get(right.ast_value) == "int")
         right_val = SemanticProcessor.values_table.get(right.ast_value);
       else
         throw new RuntimeException("Right child (" + right.ast_value + ") in ASTLess is not an Integer");

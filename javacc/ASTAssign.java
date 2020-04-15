@@ -18,7 +18,7 @@ class ASTAssign extends SimpleNode {
  
     System.out.println(identifier);
     if (SemanticProcessor.types_table.get(identifier)==null)
-      throw new RuntimeException("Variable in ASTIdentifier not previous declared");
+      throw new RuntimeException("Variable in ASTIdentifier (" + identifier + ") not previous declared");
       
     String type = SemanticProcessor.types_table.get(identifier);
 

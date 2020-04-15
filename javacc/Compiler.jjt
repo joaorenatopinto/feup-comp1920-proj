@@ -182,18 +182,18 @@ Token Type() #void: {Token t1;}
     | t1=<IDENTIFIER> { return t1; }
 }
 
-void Statement() #void : {Token t1;}
+void Statement() : {Token t1;}
 {
     "{" ( Statement() )* "}"
     | "if" "(" Cal1() ")" Statement() #If(2) "else" Statement() #Else(1)
     | WhileStatement() #While(1)
-    | Assign()
-    | Cal1() ";"  
+    | LOOKAHEAD(2) Assign()
+    | LOOKAHEAD(2) Cal1() ";"  
 }
 
 void Assign() : {Token t1; Token t2;}
 {
-    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" "=" Cal1() ";"
+    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" "=" Cal1() ";" 
     | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";" {jjtThis.identifier = t1.image;}
 }
 
