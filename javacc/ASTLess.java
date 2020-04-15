@@ -13,12 +13,41 @@ class ASTLess extends SimpleNode {
   
   @Override
   public int process() {
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
+    //SimpleNode left = (SimpleNode)this.children[0];
+    //SimpleNode right = (SimpleNode)this.children[1];
+    int left_val;
+    int right_val;
+
+    if(this.children[0].getClass().equals(ASTIdentifier.class)) {
+      ASTIdentifier left = (ASTIdentifier)this.children[0];
+      if (SemanticProcessor.types_table.get(left.ast_value) == null)
+        throw new RuntimeException("Variable in ASTIdentifier not previous declared");
+      // left = ()
+      if (SemanticProcessor.types_table.get(left.ast_value) == "Integer")
+        left_val = SemanticProcessor.values_table.get(left.ast_value);
+      else
+        throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
     }
-    return 1;
+    else {
+      SimpleNode left = (SimpleNode)this.children[0];
+      left_val = left.process();
+    }
+
+    if(this.children[1].getClass().equals(ASTIdentifier.class)) {
+      ASTIdentifier right = (ASTIdentifier)this.children[1];
+      if (SemanticProcessor.types_table.get(right.ast_value) == "Integer")
+        right_val = SemanticProcessor.values_table.get(right.ast_value);
+      else
+        throw new RuntimeException("Right child (" + right.ast_value + ") in ASTLess is not an Integer");
+    }
+    else{
+      SimpleNode right = (SimpleNode)this.children[1];
+      right_val = right.process();
+    } 
+    
+
+    if(left_val < right_val) return 1;
+    else return 0;
   }
 
 

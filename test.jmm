@@ -1,7 +1,6 @@
-import static ioPlus.printHelloWorld(void) void;
 class HelloWorld {
 	public static void main(String[] args) {
-    int i;
-		ioPlus.printHelloWorld();
+		int i;
+    	i = 3+4;
 	}
 }

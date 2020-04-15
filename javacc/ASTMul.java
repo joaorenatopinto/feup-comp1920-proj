@@ -14,12 +14,17 @@ class ASTMul extends SimpleNode {
   
   @Override
   public int process() {
+    SimpleNode left = (SimpleNode)this.children[0];
+    SimpleNode right = (SimpleNode)this.children[1];
+    return left.process() * right.process();
+    /*
     System.out.println(this.getClass());
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
       ((SimpleNode)this.children[i]).process();
     }
     return 1;
+    */
   }
 
 

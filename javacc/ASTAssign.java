@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTAssign extends SimpleNode {
+  public String identifier;
+
   public ASTAssign(int id) {
     super(id);
   }
@@ -12,11 +14,28 @@ class ASTAssign extends SimpleNode {
 
   @Override
   public int process() {
+    SimpleNode right = ((SimpleNode)this.children[0]);
+ 
+    System.out.println(identifier);
+    if (SemanticProcessor.types_table.get(identifier)==null)
+      throw new RuntimeException("Variable in ASTIdentifier not previous declared");
+      
+    String type = SemanticProcessor.types_table.get(identifier);
+
+    int right_return = right.process();
+
+    if(type == "boolean" && right_return != 0 && right_return != 1) {
+      throw new RuntimeException("Afonso não gosta de falsos, se dizes que és bool, tens de ser");
+    } 
+    else {
+      SemanticProcessor.values_table.put(identifier, right_return); 
+    }
+    /*
     System.out.println(this.getClass());
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
       ((SimpleNode)this.children[i]).process();
-    }
+    }*/
     return 1;
   }
 

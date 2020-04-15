@@ -14,14 +14,13 @@ class ASTNeg extends SimpleNode {
   
   @Override
   public int process() {
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
+    SimpleNode child = (SimpleNode)this.children[0];
+    int child_return = child.process();
+
+    if(child_return != 0 && child_return != 1) {
+        throw new RuntimeException("Não podes negar numeros, isso só o afonso é que pode");
     }
-    return 1;
+    else return child_return^1;
   }
-
-
 }
 /* JavaCC - OriginalChecksum=e2edacf504bf837f510ac7c133d6a866 (do not edit this line) */

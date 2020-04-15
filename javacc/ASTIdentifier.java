@@ -21,7 +21,5 @@ class ASTIdentifier extends SimpleNode {
     }
     return 1;
   }
-
-
 }
 /* JavaCC - OriginalChecksum=7e952cd1fd5beaef4dc07a9cecd7720b (do not edit this line) */
