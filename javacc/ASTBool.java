@@ -14,12 +14,8 @@ class ASTBool extends SimpleNode {
 
   @Override
   public int process() {
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
-    }
-    return 1;
+    if(ast_value) return 1;
+    return 0;
   }
 
 
