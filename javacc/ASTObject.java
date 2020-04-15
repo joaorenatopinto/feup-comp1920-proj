@@ -10,5 +10,19 @@ class ASTObject extends SimpleNode {
     super(p, id);
   }
 
+
+ 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
+
 }
 /* JavaCC - OriginalChecksum=fdc7b288391d11055e1bc77fbb789925 (do not edit this line) */

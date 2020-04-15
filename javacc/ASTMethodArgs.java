@@ -10,5 +10,17 @@ class ASTMethodArgs extends SimpleNode {
     super(p, id);
   }
 
+  
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
 }
 /* JavaCC - OriginalChecksum=b6ff4d6b573e735e7e85760ac5e431bc (do not edit this line) */

@@ -6,11 +6,7 @@ public class SemanticProcessor {
     public static HashMap<String, String> types_table = new HashMap<String, String>();
 
     public SemanticProcessor(SimpleNode root) {
-        SimpleNode left = (root.children[0].getClass()) root.children[0];
-
-        System.out.println("ROOT");
-
-        if(left != null) processNode(left);
+        root.process();
     }
 
     //Not anymore arabian shit bellow - by Afonso Mendonça
@@ -51,5 +47,10 @@ public class SemanticProcessor {
         types_table.put(node.ast_id, node.ast_type);
         System.out.println(types_table.toString());
         return 1;
-    } 
+    }   
+
+    public int processNode(SimpleNode node) {
+        return 1;
+    }
+
 }

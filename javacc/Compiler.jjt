@@ -22,7 +22,7 @@ public class Compiler
         Compiler comp = new Compiler(System.in);
         SimpleNode root = comp.Program(); // returns reference to root node
         System.out.println("before");
-        SemanticProcessor processor = new SemanticProcessor(root);
+        //SemanticProcessor processor = new SemanticProcessor(root);
         System.out.println("after");
         root.dump(""); // prints the tree on the screen
     }

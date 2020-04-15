@@ -10,5 +10,15 @@ class ASTAcessArray extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
 }
 /* JavaCC - OriginalChecksum=c486535c6ff220f48d2a53e89df3a0a9 (do not edit this line) */

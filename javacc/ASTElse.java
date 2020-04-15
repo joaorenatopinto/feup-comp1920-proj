@@ -10,5 +10,17 @@ class ASTElse extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
+
 }
 /* JavaCC - OriginalChecksum=746407fe194e9657eb60ee77424cc0af (do not edit this line) */

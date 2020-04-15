@@ -11,5 +11,17 @@ class ASTProgram extends SimpleNode {
     super(p, id);
   }
 
+ 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
 }
 /* JavaCC - OriginalChecksum=0ff3fb6d727a39b95630f7e0f8f0ca41 (do not edit this line) */

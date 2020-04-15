@@ -13,5 +13,17 @@ class ASTClassDeclaration extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
+
 }
 /* JavaCC - OriginalChecksum=4add34b7f2166641d417a72fcd82c2ee (do not edit this line) */

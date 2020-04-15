@@ -12,5 +12,16 @@ class ASTInt extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
 }
 /* JavaCC - OriginalChecksum=bb1b1031a7ba96402230e94bfa7be433 (do not edit this line) */

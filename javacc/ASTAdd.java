@@ -10,5 +10,17 @@ class ASTAdd extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
+
 }
 /* JavaCC - OriginalChecksum=80a71ab8e00fa3a5afb551a1b463c78a (do not edit this line) */

@@ -10,5 +10,17 @@ class ASTImports extends SimpleNode {
     super(p, id);
   }
 
+  
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
 }
 /* JavaCC - OriginalChecksum=98d5cf4c9fa523da1567a8049ec874e9 (do not edit this line) */

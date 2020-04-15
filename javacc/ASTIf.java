@@ -10,5 +10,16 @@ class ASTIf extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
 }
 /* JavaCC - OriginalChecksum=9b2b06fe1f37a5c88d35bf1701a179f5 (do not edit this line) */

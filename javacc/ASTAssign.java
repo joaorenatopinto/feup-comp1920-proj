@@ -10,5 +10,17 @@ class ASTAssign extends SimpleNode {
     super(p, id);
   }
 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
+
 }
 /* JavaCC - OriginalChecksum=4793199788c28cc272f0923738dc0777 (do not edit this line) */

@@ -10,5 +10,19 @@ class ASTImportDeclaration extends SimpleNode {
     super(p, id);
   }
 
+ 
+  
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
+
 }
 /* JavaCC - OriginalChecksum=86993ffe1259d54573d5e2a8c410b5ae (do not edit this line) */

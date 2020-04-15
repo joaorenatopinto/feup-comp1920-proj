@@ -13,5 +13,17 @@ class ASTMethodDeclaration extends SimpleNode {
     super(p, id);
   }
 
+  
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
 }
 /* JavaCC - OriginalChecksum=05fea3f0d6b32bf64f2c307d3069ee4c (do not edit this line) */

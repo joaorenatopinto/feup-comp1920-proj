@@ -10,5 +10,16 @@ class ASTLength extends SimpleNode {
     super(p, id);
   }
 
+ 
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
 }
 /* JavaCC - OriginalChecksum=355dc3240ae72e2bab32488505528258 (do not edit this line) */

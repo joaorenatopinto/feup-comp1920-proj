@@ -10,5 +10,16 @@ class ASTStatement extends SimpleNode {
     super(p, id);
   }
 
+
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
 }
 /* JavaCC - OriginalChecksum=6bd0657f0f8b1cd87c74ca9d0f191615 (do not edit this line) */

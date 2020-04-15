@@ -10,5 +10,18 @@ class ASTNeg extends SimpleNode {
     super(p, id);
   }
 
+ 
+  
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
+
 }
 /* JavaCC - OriginalChecksum=e2edacf504bf837f510ac7c133d6a866 (do not edit this line) */

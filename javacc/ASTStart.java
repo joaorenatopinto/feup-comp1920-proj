@@ -10,5 +10,16 @@ class ASTStart extends SimpleNode {
     super(p, id);
   }
 
+
+  @Override
+  public int process() {
+    System.out.println(this.getClass());
+    if (this.children == null) return 1;
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).process();
+    }
+    return 1;
+  }
+
 }
 /* JavaCC - OriginalChecksum=02fdd6e140d57cf9e3643793912f1608 (do not edit this line) */
