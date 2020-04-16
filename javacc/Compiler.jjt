@@ -193,7 +193,7 @@ void Statement() : {Token t1;}
 
 void Assign() : {Token t1; Token t2;}
 {
-    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" "=" Cal1() ";" 
+    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" "=" Cal1() ";" {jjtThis.identifier = t1.image;}
     | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";" {jjtThis.identifier = t1.image;}
 }
 

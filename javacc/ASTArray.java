@@ -12,12 +12,8 @@ class ASTArray extends SimpleNode {
 
   @Override
   public int process() {
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
-    }
-    return 1;
+    SimpleNode child = ((SimpleNode)this.children[0]);
+    return child.process();
   }
 
 

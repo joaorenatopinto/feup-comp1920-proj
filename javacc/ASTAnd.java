@@ -23,7 +23,7 @@ public class ASTAnd extends SimpleNode {
 
       Symbol left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
 
-      if (left_sym.type == "boolean") {
+      if (left_sym.type.equals("boolean")) {
           if (left_sym.init) {
             left_val = left_sym.value;
           } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
@@ -41,7 +41,7 @@ public class ASTAnd extends SimpleNode {
 
       Symbol right_sym = SemanticProcessor.symbols_table.get(right.ast_value);
 
-      if (right_sym.type == "boolean") {
+      if (right_sym.type.equals("boolean")) {
         if (right_sym.init) {
           right_val = right_sym.value;
         } else throw new RuntimeException("Variable " + right.ast_value + " was not initialized");

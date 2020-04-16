@@ -4,9 +4,11 @@ class HelloWorld {
 		int j;
 		int tu;
 		int z;
+		int[] arrayzinhoGiro;
 		boolean renato;
 		boolean otario;
 		boolean renato_e_otario;
+		arrayzinhoGiro = new int[5];
     	i = 3 + 4;
 		i = i + 5;
 		j = i - 2;

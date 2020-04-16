@@ -21,7 +21,7 @@ class ASTIf extends SimpleNode {
 
       Symbol left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
       
-      if (left_sym.type == "boolean") {
+      if (left_sym.type.equals("boolean")) {
         if (left_sym.init) {
           left_val = left_sym.value;
         } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");

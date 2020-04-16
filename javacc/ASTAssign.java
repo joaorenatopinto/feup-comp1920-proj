@@ -14,19 +14,39 @@ class ASTAssign extends SimpleNode {
 
   @Override
   public int process() {
-    SimpleNode right = ((SimpleNode)this.children[0]);
+    SimpleNode left = null;
+    SimpleNode right = null;
+    
+    if(this.children.length == 2) {
+      left = ((SimpleNode)this.children[0]);
+      right = ((SimpleNode)this.children[1]);
+    }
+    else {
+      right = ((SimpleNode)this.children[0]);
+    }
+
+    Symbol symbol_obj = null;
+    SymbolArray array_obj = null;
  
     System.out.println(identifier);
-    if (SemanticProcessor.symbols_table.get(identifier) == null)
-      throw new RuntimeException("Variable in ASTIdentifier (" + identifier + ") not previous declared");
-  
-    Symbol symbol_obj = SemanticProcessor.symbols_table.get(identifier);
+    if (SemanticProcessor.symbols_table.get(identifier) != null)
+      symbol_obj = SemanticProcessor.symbols_table.get(identifier);
+    else if (SemanticProcessor.arrays_table.get(identifier) != null)
+      array_obj = SemanticProcessor.arrays_table.get(identifier);
 
     int right_return = right.process();
 
-    if(symbol_obj.type == "boolean" && right_return != 0 && right_return != 1) {
+    if(symbol_obj!=null && symbol_obj.type.equals("boolean") && right_return != 0 && right_return != 1) {
       throw new RuntimeException("Afonso não gosta de falsos, se dizes que és bool, tens de ser");
-    } 
+    }
+    else if(array_obj!=null && array_obj.type.equals("int[]")) {
+      if(right.getClass() == ASTArray.class){
+        array_obj.initialize(right.process());
+      }
+      else {
+        array_obj.assignValueToIndex(left.process(), right.process());
+      }
+    }
     else {
       symbol_obj.initialize(right_return);
     }
