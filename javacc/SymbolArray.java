@@ -30,6 +30,6 @@ class SymbolArray extends Symbol {
     
     @Override
     public String toString() {
-        return "piroca";
+        return elements.toString();
     }
 }
