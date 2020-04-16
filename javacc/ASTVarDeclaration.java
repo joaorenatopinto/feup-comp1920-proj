@@ -16,14 +16,10 @@ class ASTVarDeclaration extends SimpleNode {
   
   @Override
   public int process() {
-    SemanticProcessor.types_table.put(ast_id, ast_type);
-    //System.out.println(this.getClass());
-    //if (this.children == null) return 1;
-    /*
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
-    }
-    */
+    if(ast_type == "int[]")
+      SemanticProcessor.symbols_table.put(ast_id, new SymbolArray(ast_id));
+    else
+      SemanticProcessor.symbols_table.put(ast_id, new Symbol(ast_id, ast_type));
     return 1;
   }
 

@@ -20,14 +20,17 @@ class ASTLess extends SimpleNode {
 
     if(this.children[0].getClass().equals(ASTIdentifier.class)) {
       ASTIdentifier left = (ASTIdentifier)this.children[0];
-      if (SemanticProcessor.types_table.get(left.ast_value) == null)
+      if (SemanticProcessor.symbols_table.get(left.ast_value) == null)
         throw new RuntimeException("Variable in ASTIdentifier not previous declared");
-      // left = ()
-      if (SemanticProcessor.types_table.get(left.ast_value) == "int")
-        left_val = SemanticProcessor.values_table.get(left.ast_value);
-      else
-        throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
-    }
+      
+      Symbol left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
+
+      if (left_sym.type == "int") {
+        if (left_sym.init) {
+          left_val = left_sym.value;
+        } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
+      } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
+    } //else if(arrayacess){}
     else {
       SimpleNode left = (SimpleNode)this.children[0];
       left_val = left.process();
@@ -35,11 +38,19 @@ class ASTLess extends SimpleNode {
 
     if(this.children[1].getClass().equals(ASTIdentifier.class)) {
       ASTIdentifier right = (ASTIdentifier)this.children[1];
-      if (SemanticProcessor.types_table.get(right.ast_value) == "int")
-        right_val = SemanticProcessor.values_table.get(right.ast_value);
+      if (SemanticProcessor.symbols_table.get(right.ast_value) == null)
+        throw new RuntimeException("Variable in ASTIdentifier not previous declared");
+
+      Symbol right_sym = SemanticProcessor.symbols_table.get(right.ast_value);
+
+      if (right_sym.type == "int") {
+        if (right_sym.init) {
+          right_val = right_sym.value;
+        }else throw new RuntimeException("Variable " + right.ast_value + " was not initialized");
+      }
       else
         throw new RuntimeException("Right child (" + right.ast_value + ") in ASTLess is not an Integer");
-    }
+    } //else if(arrayacess){}
     else{
       SimpleNode right = (SimpleNode)this.children[1];
       right_val = right.process();

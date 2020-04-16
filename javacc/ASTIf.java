@@ -13,16 +13,19 @@ class ASTIf extends SimpleNode {
   @Override
   public int process() {
     int left_val;
-    // int right_val;  
+    // int right_val;
     if(this.children[0].getClass().equals(ASTIdentifier.class)) {
       ASTIdentifier left = (ASTIdentifier)this.children[0];
-      if (SemanticProcessor.types_table.get(left.ast_value) == null)
+      if (SemanticProcessor.symbols_table.get(left.ast_value) == null)
         throw new RuntimeException("Variable in ASTIf not previous declared");
-      // left = ()
-      if (SemanticProcessor.types_table.get(left.ast_value) == "boolean")
-        left_val = SemanticProcessor.values_table.get(left.ast_value);
-      else
-        throw new RuntimeException("Left child (" + left.ast_value + ") in ASTIf is not an Boolean");
+
+      Symbol left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
+      
+      if (left_sym.type == "boolean") {
+        if (left_sym.init) {
+          left_val = left_sym.value;
+        } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
+      } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTIf is not a Boolean");
     }
     else {
       SimpleNode left = (SimpleNode)this.children[0];
