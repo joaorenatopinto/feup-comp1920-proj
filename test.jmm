@@ -1,10 +1,17 @@
 class HelloWorld {
 	public static void main(String[] args) {
 		int i;
+		int j;
+		int tu;
+		int z;
 		boolean renato;
 		boolean otario;
 		boolean renato_e_otario;
-    	i = 3+4;
+    	i = 3 + 4;
+		i = i + 5;
+		j = i - 2;
+		tu = j / 2;
+		z = j * 4;
 		renato = false;
 		otario = true;
 		renato_e_otario = renato && otario;
