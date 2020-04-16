@@ -15,12 +15,8 @@ class ASTMethodDeclaration extends SimpleNode {
 
   
   @Override
-  public int process() {
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
-    }
+  public int process() { //TODO: ir buscar os argumentos aos fihos
+    //SemanticProcessor.methods_table.put(ast_id, new SymbolMethod(ast_id, ast_return_type));
     return 1;
   }
 
