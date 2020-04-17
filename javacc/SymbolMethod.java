@@ -3,7 +3,8 @@ import java.util.*;
 public class SymbolMethod extends Symbol{
     String id;
     String ret_type;
-    List<String> arguments;
+    List<Symbol> arguments;     
+    List<Symbol> inscope_symbols;
 
     public SymbolMethod(String id, String return_type, List<String> args){
         super(id, "method");

@@ -2,6 +2,7 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTMethodArgs extends SimpleNode {
+
   public ASTMethodArgs(int id) {
     super(id);
   }
@@ -13,11 +14,10 @@ class ASTMethodArgs extends SimpleNode {
   
   @Override
   public int process() {
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
-    }
+    //List<String> arroz;
+    /*for ( SimpleNode child : this.children ) {
+       arroz.add(child.process());
+    }*/
     return 1;
   }
 

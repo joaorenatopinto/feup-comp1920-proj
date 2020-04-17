@@ -13,7 +13,7 @@ class ASTAssign extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String scope) {
     SimpleNode left = null;
     SimpleNode right = null;
     

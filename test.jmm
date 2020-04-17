@@ -18,4 +18,9 @@ class HelloWorld {
 		otario = true;
 		renato_e_otario = renato && otario;
 	}
+
+	public int renato_tiago_iguaL_amor(int x, int y, int z) {
+		x = x + y + z;
+		return x;
+	}
 }

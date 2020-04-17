@@ -1,4 +1,4 @@
-    options
+        options
 {
     LOOKAHEAD=1;
     MULTI=true;
@@ -159,11 +159,14 @@ void Main() : {Token t1; Token t2;}
 
 void Method () : {Token t1; Token t2;}
 {
-    "public" t2=Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}"
+    "public" t2=Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {
+        jjtThis.ast_id = t1.image;
+        jjtThis.ast_type = t2.image;
+    }   
 }
 
 void MethodDeclaration() #void : {Token t1; Token t2;}
-{  
+{   
     LOOKAHEAD(2)
     Main()
     | Method()
