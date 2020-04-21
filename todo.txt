@@ -1,0 +1,8 @@
+- Verificar se método existe quando um é chamado
+- Meter main a ser processado depois dos outros métodos para este os poder usar
+    - Process inicial a ir buscar todos os métodos que existem para puderem ser chamados fora de ordem
+- Acess array
+- Ver se argumentos enviados para os métodos chamados batem certo com os tipos e afins
+- Return type dos métodos bate certo com o return declarado no header do método
+- Ver merda dos imports que o stor mandou ou o caralho
+- Retornar valor do (ponto)length (ou pelo menos ver se está a ser pedido o length de um identifier associado a um array)
