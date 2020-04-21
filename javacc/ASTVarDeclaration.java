@@ -17,12 +17,21 @@ class ASTVarDeclaration extends SimpleNode {
   @Override
   public int process() {
     System.out.println(ast_type);
-    if(ast_type.equals("int[]"))
-      SemanticProcessor.arrays_table.put(ast_id, new SymbolArray(ast_id));
-    else
-      SemanticProcessor.symbols_table.put(ast_id, new Symbol(ast_id, ast_type));
+    if(!SemanticProcessor.insideMethod) {
+      if(ast_type.equals("int[]"))
+        SemanticProcessor.arrays_table.put(ast_id, new SymbolArray(ast_id));
+      else
+        SemanticProcessor.symbols_table.put(ast_id, new Symbol(ast_id, ast_type));
+    }
+    else {
+      if(ast_type.equals("int[]"))
+        SemanticProcessor.methods_arrays_table.put(ast_id, new SymbolArray(ast_id));
+      else
+        SemanticProcessor.methods_symbols_table.put(ast_id, new Symbol(ast_id, ast_type));
+    }
     return 1;
-  }   
+  }
+
 
 }
 /* JavaCC - OriginalChecksum=5159ccc9095207e91ac101c5c6843086 (do not edit this line) */

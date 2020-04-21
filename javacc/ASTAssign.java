@@ -12,8 +12,7 @@ class ASTAssign extends SimpleNode {
     super(p, id);
   }
 
-  @Override
-  public int process(String scope) {
+  public int process() {
     SimpleNode left = null;
     SimpleNode right = null;
     
@@ -29,11 +28,17 @@ class ASTAssign extends SimpleNode {
     SymbolArray array_obj = null;
  
     System.out.println(identifier);
-    if (SemanticProcessor.symbols_table.get(identifier) != null)
+    if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(identifier) != null)
+      symbol_obj = SemanticProcessor.methods_symbols_table.get(identifier);
+    else if (SemanticProcessor.insideMethod && SemanticProcessor.methods_arrays_table.get(identifier) != null)
+      array_obj = SemanticProcessor.methods_arrays_table.get(identifier);
+    else if (SemanticProcessor.symbols_table.get(identifier) != null)
       symbol_obj = SemanticProcessor.symbols_table.get(identifier);
     else if (SemanticProcessor.arrays_table.get(identifier) != null)
       array_obj = SemanticProcessor.arrays_table.get(identifier);
-
+    else 
+      throw new RuntimeException("Variable in ASTAssign (" + identifier + ") not previous declared");
+      
     int right_return = right.process();
 
     if(symbol_obj!=null && symbol_obj.type.equals("boolean") && right_return != 0 && right_return != 1) {

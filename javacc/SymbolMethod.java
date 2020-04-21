@@ -6,7 +6,7 @@ public class SymbolMethod extends Symbol{
     List<Symbol> arguments;     
     List<Symbol> inscope_symbols;
 
-    public SymbolMethod(String id, String return_type, List<String> args){
+    public SymbolMethod(String id, String return_type, List<Symbol> args){
         super(id, "method");
         this.ret_type = return_type;
         this.arguments = args;
@@ -16,8 +16,8 @@ public class SymbolMethod extends Symbol{
     public String toString() {
         String aux = ret_type;
         aux += " " + id;
-        for (String arg : arguments) {
-            aux += arg;
+        for (Symbol arg : arguments) {
+            aux += arg.toString();
             aux += ", ";
         }
         return aux;
