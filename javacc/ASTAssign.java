@@ -58,8 +58,5 @@ class ASTAssign extends SimpleNode {
 
     return 1;
   }
-
-
-
 }
 /* JavaCC - OriginalChecksum=4793199788c28cc272f0923738dc0777 (do not edit this line) */

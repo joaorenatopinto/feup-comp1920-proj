@@ -13,17 +13,22 @@ class ASTSub extends SimpleNode {
  
   @Override
   public int process() {
-        //SimpleNode left = (SimpleNode)this.children[0];
+    //SimpleNode left = (SimpleNode)this.children[0];
     //SimpleNode right = (SimpleNode)this.children[1];
     int left_val;
     int right_val;
 
     if(this.children[0].getClass().equals(ASTIdentifier.class)) {
+      Symbol left_sym;
       ASTIdentifier left = (ASTIdentifier)this.children[0];
-      if (SemanticProcessor.symbols_table.get(left.ast_value) == null)
-        throw new RuntimeException("Variable in ASTIdentifier not previous declared");
+      if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(left.ast_value) != null) {
+        left_sym = SemanticProcessor.methods_symbols_table.get(left.ast_value);
+      }
+      else if(SemanticProcessor.symbols_table.get(left.ast_value) != null) {
+        left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
+      }
+      else throw new RuntimeException("Variable in ASTAdd not previous declared (" + left.ast_value + ")");
       
-      Symbol left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
 
       if (left_sym.type.equals("int")) {
         if (left_sym.init) {
@@ -37,11 +42,15 @@ class ASTSub extends SimpleNode {
     }
 
     if(this.children[1].getClass().equals(ASTIdentifier.class)) {
+      Symbol right_sym;
       ASTIdentifier right = (ASTIdentifier)this.children[1];
-      if (SemanticProcessor.symbols_table.get(right.ast_value) == null)
-        throw new RuntimeException("Variable in ASTIdentifier not previous declared");
-
-      Symbol right_sym = SemanticProcessor.symbols_table.get(right.ast_value);
+      if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(right.ast_value) != null) {
+        right_sym = SemanticProcessor.methods_symbols_table.get(right.ast_value);
+      }
+      else if(SemanticProcessor.symbols_table.get(right.ast_value) != null) {
+        right_sym = SemanticProcessor.symbols_table.get(right.ast_value);
+      }
+      else throw new RuntimeException("Variable in ASTIdentifier not previous declared");
 
       if (right_sym.type.equals("int")) {
         if (right_sym.init) {

@@ -17,7 +17,7 @@ class ASTMethod extends SimpleNode {
   }
 
   @Override
-  public int process() {//TODO: ir buscar os argumentos aos fihos
+  public int process() {
     SemanticProcessor.insideMethod = true;
     List<Symbol> method_args = new ArrayList<>();
     
