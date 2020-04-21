@@ -20,6 +20,13 @@ class ASTMain extends SimpleNode {
       curr_node.process();
     }
 
+    System.out.println(this.id + ": ");
+    System.out.println(SemanticProcessor.methods_symbols_table);
+    System.out.println(SemanticProcessor.methods_arrays_table);
+    System.out.println("~~~~~~~");
+
+    SemanticProcessor.methods_symbols_table.clear();
+    SemanticProcessor.methods_arrays_table.clear();
     SemanticProcessor.insideMethod = false;
 
     return 1;

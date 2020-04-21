@@ -18,4 +18,19 @@ class HelloWorld {
 		otario = true;
 		renato_e_otario = renato && otario;
 	}
+
+	public int renato_tiago_iguaL_amor(int x, int y, int z) {
+		int tiago;
+		boolean caralho;
+		boolean dawoijundaw;
+		boolean yeah;
+		boolean lolxd;
+		int afonso;
+		caralho = true;
+		yeah= false;
+		afonso = 3;
+		tiago = 10 + afonso;
+		lolxd = caralho && yeah;
+		return x;
+	}
 }

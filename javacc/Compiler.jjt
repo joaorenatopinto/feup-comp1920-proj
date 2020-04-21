@@ -174,7 +174,12 @@ void MethodDeclaration() #void : {Token t1; Token t2;}
 
 void MethodArgs() : {}
 {
-    Type() <IDENTIFIER> ( "," Type() <IDENTIFIER> )*
+    Arg() ( "," Arg() )*
+}
+
+void Arg() : {Token t1; Token t2;}
+{
+    t1=Type() t2=<IDENTIFIER> {jjtThis.ast_type = t1.image; jjtThis.ast_id = t2.image;}
 }
 
 Token Type() #void: {Token t1;}

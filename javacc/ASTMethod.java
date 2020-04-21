@@ -21,18 +21,19 @@ class ASTMethod extends SimpleNode {
     SemanticProcessor.insideMethod = true;
     List<Symbol> method_args = new ArrayList<>();
     
-    for (int i = 0; i < ((SimpleNode)this.children[2]).children.length/2; i++) {
-      String type = ((Token)(((SimpleNode)this.children[2]).children[i*2])).image;
-      ASTIdentifier identifier = (ASTIdentifier)((SimpleNode)this.children[2]).children[i*2+1];
+    for (int i = 0; i < ((SimpleNode)this.children[0]).children.length; i++) {
+      ASTArg arg = (ASTArg)((SimpleNode)this.children[0]).children[i];
+      String type = arg.ast_type;
+      String identifier = arg.ast_id;
       if(type.equals("int[]")) {
-        SymbolArray curSymbol = new SymbolArray(identifier.ast_value);
+        SymbolArray curSymbol = new SymbolArray(identifier);
         curSymbol.initialize(0);
-        SemanticProcessor.methods_arrays_table.put(curSymbol.id, curSymbol);
+        SemanticProcessor.methods_arrays_table.put(identifier, curSymbol);
         method_args.add(curSymbol);
       } else {
-        Symbol curSymbol = new Symbol(identifier.ast_value, type);
+        Symbol curSymbol = new Symbol(identifier, type);
         curSymbol.initialize(0);
-        SemanticProcessor.methods_symbols_table.put(curSymbol.id, curSymbol);
+        SemanticProcessor.methods_symbols_table.put(identifier, curSymbol);
         method_args.add(curSymbol);
       }    
     }
@@ -40,10 +41,15 @@ class ASTMethod extends SimpleNode {
     SemanticProcessor.methods_table.put(ast_id, new SymbolMethod(ast_id, ast_type, method_args));
 
     SimpleNode curr_node;
-    for (int i = 3; i < this.children.length; i++) {
+    for (int i = 1; i < this.children.length; i++) {
       curr_node = (SimpleNode)this.children[i];
       curr_node.process();
     }
+
+    System.out.println(this.id + ": ");
+    System.out.println(SemanticProcessor.methods_symbols_table);
+    System.out.println(SemanticProcessor.methods_arrays_table);
+    System.out.println("~~~~~~~");
 
     SemanticProcessor.methods_symbols_table.clear();
     SemanticProcessor.methods_arrays_table.clear();

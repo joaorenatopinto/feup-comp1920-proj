@@ -17,9 +17,5 @@ public class SemanticProcessor {
         System.out.println(symbols_table);
         System.out.println(arrays_table);
         System.out.println(methods_table);
-        System.out.println("Methods:");
-        System.out.println(methods_symbols_table);
-        System.out.println(methods_arrays_table);
-
     }
 }
