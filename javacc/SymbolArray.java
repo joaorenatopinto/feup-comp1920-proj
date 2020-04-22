@@ -30,6 +30,8 @@ class SymbolArray extends Symbol {
     
     @Override
     public String toString() {
+        if(elements == null)
+        return "";
         String aux = "";
         aux += '[';
         for (int i : elements) {

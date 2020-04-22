@@ -14,24 +14,45 @@ class ASTAcessArray extends SimpleNode {
 
   @Override
   public int process() {
-    if(this.children[0].getClass().equals(ASTIdentifier.class)) {
-      Symbol left_sym;
-      ASTIdentifier left = (ASTIdentifier)this.children[0];
-      if (SemanticProcessor.insideMethod && SemanticProcessor.methods_arrays_table.get(left.ast_value) != null) {
-        left_sym = SemanticProcessor.methods_arrays_table.get(left.ast_value);
+      int left_val;
+      SymbolArray left_sym;
+      if (SemanticProcessor.insideMethod && SemanticProcessor.methods_arrays_table.get(ast_identifier) != null) {
+        left_sym = SemanticProcessor.methods_arrays_table.get(ast_identifier);
       }
-      else if(SemanticProcessor.arrays_table.get(left.ast_value) != null) {
-        left_sym = SemanticProcessor.arrays_table.get(left.ast_value);
+      else if(SemanticProcessor.arrays_table.get(ast_identifier) != null) {
+        left_sym = SemanticProcessor.arrays_table.get(ast_identifier);
       }
-      else throw new RuntimeException("Array in ASTAcessArray not previous declared (" + left.ast_value + ")");
+      else throw new RuntimeException("Array in ASTAcessArray not previous declared (" + ast_identifier + ")");
 
-      if (left_sym.type.equals("int []")) {
+      if (left_sym.type.equals("int[]")) {
         if (left_sym.init) {
-          left_val = left_sym.value;
-        } else throw new RuntimeException("Array " + left.ast_value + " was not initialized");
-      } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Array");
-    }
-    return 1;
+          if(this.children[0].getClass().equals(ASTIdentifier.class)) {
+            Symbol symb;
+            ASTIdentifier left = (ASTIdentifier)this.children[0];
+            if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(left.ast_value) != null) {
+              symb = SemanticProcessor.methods_symbols_table.get(left.ast_value);
+            }
+            else if(SemanticProcessor.symbols_table.get(left.ast_value) != null) {
+              symb = SemanticProcessor.symbols_table.get(left.ast_value);
+            }
+            else throw new RuntimeException("Variable in ASTAdd not previous declared (" + left.ast_value + ")");
+            
+      
+            if (symb.type.equals("int")) {
+              if (symb.init) {
+                left_val = symb.value;
+              } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
+            } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
+          } //else if(arrayacess){}
+          else {
+            SimpleNode left = (SimpleNode)this.children[0];
+            left_val = left.process();
+          } 
+          if(left_val >= 0 && left_val < left_sym.size){
+            return left_sym.elements[left_val];
+          } else throw new RuntimeException("Index out of bounds: Index " + left_val + " for length :" + left_sym.size);
+        } else throw new RuntimeException("Array " + ast_identifier + " was not initialized");
+      } else throw new RuntimeException("Left child (" + ast_identifier + ") in ASTArrayAcess is not an Array");
   }
 }
 /* JavaCC - OriginalChecksum=c486535c6ff220f48d2a53e89df3a0a9 (do not edit this line) */
