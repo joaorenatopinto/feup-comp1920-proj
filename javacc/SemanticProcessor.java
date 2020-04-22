@@ -45,13 +45,13 @@ public class SemanticProcessor {
                     String identifier = arg.ast_id;
                     if(type.equals("int[]")) {
                       SymbolArray curSymbol = new SymbolArray(identifier);
-                      curSymbol.initialize(0);
-                      SemanticProcessor.methods_arrays_table.put(identifier, curSymbol);
+                      //curSymbol.initialize(0);
+                      //SemanticProcessor.methods_arrays_table.put(identifier, curSymbol);
                       method_args.add(curSymbol);
                     } else {
                       Symbol curSymbol = new Symbol(identifier, type);
-                      curSymbol.initialize(0);
-                      SemanticProcessor.methods_symbols_table.put(identifier, curSymbol);
+                      //curSymbol.initialize(0);
+                      //SemanticProcessor.methods_symbols_table.put(identifier, curSymbol);
                       method_args.add(curSymbol);
                     }    
                   }
