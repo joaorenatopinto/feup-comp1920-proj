@@ -13,5 +13,9 @@ class ASTArg extends SimpleNode {
     super(p, id);
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=0bf41f7424a5b64a4a6b4c45fe0012b6 (do not edit this line) */

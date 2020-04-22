@@ -21,5 +21,9 @@ class ASTLength extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=355dc3240ae72e2bab32488505528258 (do not edit this line) */

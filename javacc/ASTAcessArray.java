@@ -16,5 +16,9 @@ class ASTAcessArray extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=c486535c6ff220f48d2a53e89df3a0a9 (do not edit this line) */

@@ -20,7 +20,9 @@ class ASTArguments extends SimpleNode {
     return 1;
   }
 
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=4310625e7c2f0d72bb5195e7beec63ed (do not edit this line) */

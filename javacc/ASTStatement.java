@@ -21,5 +21,9 @@ class ASTStatement extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=6bd0657f0f8b1cd87c74ca9d0f191615 (do not edit this line) */

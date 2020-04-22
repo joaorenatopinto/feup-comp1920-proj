@@ -13,9 +13,17 @@ public class SemanticProcessor {
     public static boolean insideMethod = false;
 
     public SemanticProcessor(SimpleNode root) {
-        root.process();
+        initialProcessing(root);
+        //root.process();
         System.out.println(symbols_table);
         System.out.println(arrays_table);
         System.out.println(methods_table);
+    }
+
+    public void initialProcessing(SimpleNode root) {
+        ASTClassDeclaration class_root = (ASTClassDeclaration)((SimpleNode)((SimpleNode)root.children[0]).children[0]).children[1];
+        for(int i = 0; i < class_root.children.length; i++) {
+            System.out.println((SimpleNode)class_root.children[i].getNodeType());
+        }
     }
 }

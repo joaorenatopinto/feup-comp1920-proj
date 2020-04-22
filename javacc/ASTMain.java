@@ -32,5 +32,9 @@ class ASTMain extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=58f127b3047114438a993e42197cc3f7 (do not edit this line) */

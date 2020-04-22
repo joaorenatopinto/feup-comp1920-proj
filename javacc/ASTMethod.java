@@ -57,6 +57,10 @@ class ASTMethod extends SimpleNode {
 
     return 1;
   }
+
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
   
 }
 /* JavaCC - OriginalChecksum=dee4677a4569967c602fa79e0250dbf5 (do not edit this line) */

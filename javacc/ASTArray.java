@@ -16,7 +16,9 @@ class ASTArray extends SimpleNode {
     return child.process();
   }
 
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=dfd7c194a9e81f0ae42693455694e768 (do not edit this line) */

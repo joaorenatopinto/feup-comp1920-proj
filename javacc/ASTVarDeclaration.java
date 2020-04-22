@@ -32,6 +32,9 @@ class ASTVarDeclaration extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=5159ccc9095207e91ac101c5c6843086 (do not edit this line) */

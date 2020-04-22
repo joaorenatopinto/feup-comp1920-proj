@@ -68,7 +68,9 @@ class ASTAdd extends SimpleNode {
     return left_val + right_val;
   }
 
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=80a71ab8e00fa3a5afb551a1b463c78a (do not edit this line) */

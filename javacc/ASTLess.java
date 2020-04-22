@@ -69,6 +69,9 @@ class ASTLess extends SimpleNode {
     else return 0;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=55151cda9b74838fc120e731d3367712 (do not edit this line) */

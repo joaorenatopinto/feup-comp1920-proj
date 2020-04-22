@@ -64,5 +64,9 @@ public class ASTAnd extends SimpleNode {
     else return 0;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=ed084117f04b5765ad1446a1a0ce70a2 (do not edit this line) */

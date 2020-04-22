@@ -22,7 +22,8 @@ class ASTObject extends SimpleNode {
     return 1;
   }
 
-
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 }
 /* JavaCC - OriginalChecksum=fdc7b288391d11055e1bc77fbb789925 (do not edit this line) */

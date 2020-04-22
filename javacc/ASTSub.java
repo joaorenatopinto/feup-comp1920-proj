@@ -68,5 +68,10 @@ class ASTSub extends SimpleNode {
 
     return left_val - right_val;
   }
+
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=eddc764b75eee724cb26e25a44bb7deb (do not edit this line) */

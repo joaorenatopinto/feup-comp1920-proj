@@ -20,6 +20,9 @@ class ASTFile extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=2e4f67f03c974a65ee9e189fd2a71d9f (do not edit this line) */

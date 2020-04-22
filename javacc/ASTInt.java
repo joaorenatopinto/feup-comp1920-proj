@@ -17,6 +17,9 @@ class ASTInt extends SimpleNode {
     return ast_value;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=bb1b1031a7ba96402230e94bfa7be433 (do not edit this line) */

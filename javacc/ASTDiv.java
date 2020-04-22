@@ -68,7 +68,9 @@ class ASTDiv extends SimpleNode {
     return left_val / right_val;
   }
 
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=a5403788ff3e0338429f3a63033fbeab (do not edit this line) */
