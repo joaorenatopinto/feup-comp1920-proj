@@ -257,7 +257,7 @@ void Cal5() #void: {} {
 }
 
 
-void Expression() #void : {Token t1;}
+void Expression() #void : {Token t1=null; String identifier;}
 {
     (
     t1=<INTEGER>  { jjtThis.ast_value = Integer.parseInt(t1.image); } #Int
@@ -265,22 +265,21 @@ void Expression() #void : {Token t1;}
     | <FALSE> { jjtThis.ast_value = false; } #Bool
     | t1=<IDENTIFIER> { jjtThis.ast_value = t1.image; } #Identifier 
     | "this" #This
-    | "new" (
+    | "new" (   
         "int" "[" Cal1() "]" #Array(1)
         | <IDENTIFIER> "(" ")" #Object
     ) 
     | "!" Cal1() #Neg(1)
-    )
-    [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+    ) { if(t1==null) identifier="none"; else identifier = t1.image; }
+    [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
 }
 
-
-void Expression_aux() #void : {}
+void Expression_aux(String identifier) #void : {}
 { 
-    "[" Cal1() "]" #AcessArray(1) [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+    "[" Cal1() "]" { jjtThis.ast_identifier = identifier; } #AcessArray(1) [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)] 
     | "." (
-        "length" #Length [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
-        | AcessMethod() [LOOKAHEAD(2) Expression_aux() #GroupCondition(2)]
+        "length" #Length [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
+        | AcessMethod() [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
     )
 }
 
