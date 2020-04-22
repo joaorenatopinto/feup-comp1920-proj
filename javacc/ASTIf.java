@@ -12,29 +12,45 @@ class ASTIf extends SimpleNode {
 
   @Override
   public int process() {
-    int left_val;
-    // int right_val;
-    if(this.children[0].getClass().equals(ASTIdentifier.class)) {
-      ASTIdentifier left = (ASTIdentifier)this.children[0];
-      if (SemanticProcessor.symbols_table.get(left.ast_value) == null)
-        throw new RuntimeException("Variable in ASTIf not previous declared");
 
-      Symbol left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
-      
-      if (left_sym.type.equals("boolean")) {
-        if (left_sym.init) {
-          left_val = left_sym.value;
-        } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
-      } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTIf is not a Boolean");
-    }
-    else {
-      SimpleNode left = (SimpleNode)this.children[0];
-      left_val = left.process();
-    }
+    SimpleNode child = (SimpleNode)this.children[0];
+    // int left_val;
+    // int right_val;
+    child.process();
+
     for (int i = 1; i < this.children.length; i++) {
       ((SimpleNode)this.children[i]).process();
     }
+
+    if (child.getType() != Symbol.BOOLEAN){
+      throw new RuntimeException("ASTIf is not a Boolean");
+    }
+    
     return 1;
+
+    // int left_val;
+    // // int right_val;
+    // if(this.children[0].getClass().equals(ASTIdentifier.class)) {
+    //   ASTIdentifier left = (ASTIdentifier)this.children[0];
+    //   if (SemanticProcessor.symbols_table.get(left.ast_value) == null)
+    //     throw new RuntimeException("Variable in ASTIf not previous declared");
+
+    //   Symbol left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
+      
+    //   if (left_sym.type.equals("boolean")) {
+    //     if (left_sym.init) {
+    //       left_val = left_sym.value;
+    //     } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
+    //   } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTIf is not a Boolean");
+    // }
+    // else {
+    //   SimpleNode left = (SimpleNode)this.children[0];
+    //   left_val = left.process();
+    // }
+    // for (int i = 1; i < this.children.length; i++) {
+    //   ((SimpleNode)this.children[i]).process();
+    // }
+    // return 1;
   }
 
   public String getNodeType() {

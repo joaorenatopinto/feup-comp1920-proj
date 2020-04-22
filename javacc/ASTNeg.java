@@ -14,17 +14,29 @@ class ASTNeg extends SimpleNode {
   
   @Override
   public int process() {
-    SimpleNode child = (SimpleNode)this.children[0];
-    int child_return = child.process();
 
-    if(child_return != 0 && child_return != 1) {
-        throw new RuntimeException("Não podes negar numeros, isso só o afonso é que pode");
+    SimpleNode child = (SimpleNode)this.children[0];
+    // int left_val;
+    // int right_val;
+    child.process();
+
+    if (child.getType() != Symbol.BOOLEAN){
+      throw new RuntimeException("ASTNeg is not a Boolean");
     }
-    else return child_return^1;
+    
+    return 1;
+
+    // SimpleNode child = (SimpleNode)this.children[0];
+    // int child_return = child.process();
+
+    // if(child_return != 0 && child_return != 1) {
+    //     throw new RuntimeException("Não podes negar numeros, isso só o afonso é que pode");
+    // }
+    // else return child_return^1;
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String getType(){
+    return Symbol.BOOLEAN;
   }
 }
 /* JavaCC - OriginalChecksum=e2edacf504bf837f510ac7c133d6a866 (do not edit this line) */

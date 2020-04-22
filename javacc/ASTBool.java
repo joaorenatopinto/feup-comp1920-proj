@@ -18,8 +18,8 @@ class ASTBool extends SimpleNode {
     return 0;
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String getType(){
+    return Symbol.BOOLEAN;
   }
 
 }

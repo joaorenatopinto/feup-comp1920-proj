@@ -1,21 +1,19 @@
-class Symbol {
-    String id;
-    String type; // int ; boolean ; int[] -> Array.java
-    boolean init;
-    int value;
+abstract class Symbol {
 
-    public Symbol(String id, String type) {
-        this.id = id;
+    static String INT = "int";
+    static String INT_ARRAY = "int[]";
+    static String BOOLEAN = "boolean";
+    static String CLASS = "class";
+    static String METHOD = "method";
+    
+    String identifier;
+    String type; 
+    boolean isVar;  // can be var or method
+
+    public Symbol(String identifier, String type, boolean isVar) {
+        this.identifier = identifier;
         this.type = type;
-        this.init = false;
+        this.isVar = isVar;
     }
 
-    public void initialize(int value) {
-        this.init = true;
-        this.value = value;
-    }
-
-    public String toString() {
-        return Integer.toString(value);
-    }
 }

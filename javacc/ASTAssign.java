@@ -13,51 +13,84 @@ class ASTAssign extends SimpleNode {
   }
 
   public int process() {
-    SimpleNode left = null;
-    SimpleNode right = null;
+    System.out.println(this.getClass());
+
+    int index = 0;
+
+    if (this.children.length == 2){
+      ((SimpleNode)this.children[0]).process();
+      index++;
+    }
+
+    SimpleNode child = (SimpleNode)this.children[index];
+
+    child.process();
+
+    Symbol symbolLeft = getSymbolFromTable(identifier);
+
+    if (symbolLeft == null)
+      throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared");
+
+    if (!child.getType().equals(symbolLeft.type)){
+      throw new RuntimeException("ASTAssign is not equal (" + symbolLeft.type + ", " + child.getType() + ")");
+    }
     
-    if(this.children.length == 2) {
-      left = ((SimpleNode)this.children[0]);
-      right = ((SimpleNode)this.children[1]);
-    }
-    else {
-      right = ((SimpleNode)this.children[0]);
-    }
-
-    Symbol symbol_obj = null;
-    SymbolArray array_obj = null;
- 
-    System.out.println(identifier);
-    if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(identifier) != null)
-      symbol_obj = SemanticProcessor.methods_symbols_table.get(identifier);
-    else if (SemanticProcessor.insideMethod && SemanticProcessor.methods_arrays_table.get(identifier) != null)
-      array_obj = SemanticProcessor.methods_arrays_table.get(identifier);
-    else if (SemanticProcessor.symbols_table.get(identifier) != null)
-      symbol_obj = SemanticProcessor.symbols_table.get(identifier);
-    else if (SemanticProcessor.arrays_table.get(identifier) != null)
-      array_obj = SemanticProcessor.arrays_table.get(identifier);
-    else 
-      throw new RuntimeException("Variable in ASTAssign (" + identifier + ") not previous declared");
-      
-    int right_return = right.process();
-
-    if(symbol_obj!=null && symbol_obj.type.equals("boolean") && right_return != 0 && right_return != 1) {
-      throw new RuntimeException("Afonso não gosta de falsos, se dizes que és bool, tens de ser");
-    }
-    else if(array_obj!=null && array_obj.type.equals("int[]")) {
-      if(right.getClass() == ASTArray.class){
-        array_obj.initialize(right.process());
-      }
-      else {
-        array_obj.assignValueToIndex(left.process(), right.process());
-        System.out.println("Dei assign a " + left.process()  +" o valor " + right.process());
-      }
-    }
-    else {
-      symbol_obj.initialize(right_return);
-    }
-
     return 1;
+
+    // SimpleNode left = (SimpleNode)this.children[0];
+    // SimpleNode right = (SimpleNode)this.children[1];
+    // int left_val;
+    // int right_val;
+    // left.process();
+    // right.process();
+
+
+
+    // SimpleNode left = null;
+    // SimpleNode right = null;
+    
+    // if(this.children.length == 2) {
+    //   left = ((SimpleNode)this.children[0]);
+    //   right = ((SimpleNode)this.children[1]);
+    // }
+    // else {
+    //   right = ((SimpleNode)this.children[0]);
+    // }
+
+    // Symbol symbol_obj = null;
+    // SymbolArray array_obj = null;
+ 
+    // System.out.println(identifier);
+    // if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(identifier) != null)
+    //   symbol_obj = SemanticProcessor.methods_symbols_table.get(identifier);
+    // else if (SemanticProcessor.insideMethod && SemanticProcessor.methods_arrays_table.get(identifier) != null)
+    //   array_obj = SemanticProcessor.methods_arrays_table.get(identifier);
+    // else if (SemanticProcessor.symbols_table.get(identifier) != null)
+    //   symbol_obj = SemanticProcessor.symbols_table.get(identifier);
+    // else if (SemanticProcessor.arrays_table.get(identifier) != null)
+    //   array_obj = SemanticProcessor.arrays_table.get(identifier);
+    // else 
+    //   throw new RuntimeException("Variable in ASTAssign (" + identifier + ") not previous declared");
+      
+    // int right_return = right.process();
+
+    // if(symbol_obj!=null && symbol_obj.type.equals("boolean") && right_return != 0 && right_return != 1) {
+    //   throw new RuntimeException("Afonso não gosta de falsos, se dizes que és bool, tens de ser");
+    // }
+    // else if(array_obj!=null && array_obj.type.equals("int[]")) {
+    //   if(right.getClass() == ASTArray.class){
+    //     array_obj.initialize(right.process());
+    //   }
+    //   else {
+    //     array_obj.assignValueToIndex(left.process(), right.process());
+    //     System.out.println("Dei assign a " + left.process()  +" o valor " + right.process());
+    //   }
+    // }
+    // else {
+    //   symbol_obj.initialize(right_return);
+    // }
+
+    // return 1;
   }
 
   public String getNodeType() {

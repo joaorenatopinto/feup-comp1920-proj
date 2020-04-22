@@ -16,7 +16,7 @@ class ASTMethodDeclaration extends SimpleNode {
 
   
   @Override
-  public int process() {//TODO: ir buscar os argumentos aos fihos
+  public int process() {
     List<String> arroz;
     /*for ( SimpleNode child : this.children ) {
        arroz.add(child.process());

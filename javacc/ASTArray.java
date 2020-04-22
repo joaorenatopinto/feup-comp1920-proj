@@ -16,8 +16,8 @@ class ASTArray extends SimpleNode {
     return child.process();
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String getType(){
+    return Symbol.INT_ARRAY; // TODO boolean array?
   }
 
 }

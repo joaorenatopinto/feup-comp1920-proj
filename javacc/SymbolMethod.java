@@ -1,26 +1,23 @@
 import java.util.*;
 
 public class SymbolMethod extends Symbol{
-    String id;
-    String ret_type;
-    List<Symbol> arguments;     
-    List<Symbol> inscope_symbols;
+    
+    List<Symbol> arguments;
 
-    public SymbolMethod(String id, String return_type, List<Symbol> args){
-        super(id, "method");
-        this.ret_type = return_type;
-        this.arguments = args;
+    public SymbolMethod(String identifier, String return_type, List<Symbol> arguments){
+        super(identifier, return_type, false);
+        this.arguments = arguments;
     }
  
-    @Override
-    public String toString() {
-        String aux = ret_type;
-        aux += " " + id;
-        for (Symbol arg : arguments) {
-            aux += arg.toString();
-            aux += ", ";
-        }
-        return aux;
-    }
+    // @Override
+    // public String toString() {
+    //     String aux = ret_type;
+    //     aux += " " + id;
+    //     for (Symbol arg : arguments) {
+    //         aux += arg.toString();
+    //         aux += ", ";
+    //     }
+    //     return aux;
+    // }
 
 }

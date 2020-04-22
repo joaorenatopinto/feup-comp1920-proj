@@ -17,8 +17,8 @@ class ASTInt extends SimpleNode {
     return ast_value;
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String getType(){
+    return Symbol.INT;
   }
 
 }

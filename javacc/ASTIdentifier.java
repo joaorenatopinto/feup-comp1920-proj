@@ -22,8 +22,13 @@ class ASTIdentifier extends SimpleNode {
     return 1;
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String getType(){ 
+    Symbol symbol = getSymbolFromTable(ast_value);
+
+    if (symbol == null)
+      return ast_value + " not initialized";
+
+    return symbol.type;
   }
 
 }
