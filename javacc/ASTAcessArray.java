@@ -14,6 +14,7 @@ class ASTAcessArray extends SimpleNode {
 
   @Override
   public int process() {
+    System.out.println(this.getClass());
       int left_val;
       SymbolArray left_sym;
       if (SemanticProcessor.insideMethod && SemanticProcessor.methods_arrays_table.get(ast_identifier) != null) {

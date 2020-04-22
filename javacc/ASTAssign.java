@@ -50,6 +50,7 @@ class ASTAssign extends SimpleNode {
       }
       else {
         array_obj.assignValueToIndex(left.process(), right.process());
+        System.out.println("Dei assign a " + left.process()  +" o valor " + right.process());
       }
     }
     else {

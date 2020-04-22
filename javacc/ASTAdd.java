@@ -34,12 +34,16 @@ class ASTAdd extends SimpleNode {
           left_val = left_sym.value;
         } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
       } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
-    } //else if(arrayacess){}
+    } else if(this.children[0].getClass().equals(ASTAcessArray.class)){
+      System.out.println("Vou buscar ao array");
+      ASTAcessArray left = (ASTAcessArray)this.children[0];
+      left_val = left.process();
+    }
     else {
       SimpleNode left = (SimpleNode)this.children[0];
       left_val = left.process();
     }
-
+    System.out.println("AQUIIIIIIIIII: " + this.children[1].getClass());
     if(this.children[1].getClass().equals(ASTIdentifier.class)) {
       Symbol right_sym;
       ASTIdentifier right = (ASTIdentifier)this.children[1];
@@ -58,7 +62,11 @@ class ASTAdd extends SimpleNode {
       }
       else
         throw new RuntimeException("Right child (" + right.ast_value + ") in ASTLess is not an Integer");
-    } //else if(arrayacess){}
+    } else if(this.children[1].getClass().equals(ASTAcessArray.class)){
+      System.out.println("Vou buscar ao array");
+      ASTAcessArray right = (ASTAcessArray)this.children[1];
+      right_val = right.process();
+    }
     else{
       SimpleNode right = (SimpleNode)this.children[1];
       right_val = right.process();

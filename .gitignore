@@ -17,4 +17,4 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 .idea
-.settings
+.settings/org.eclipse.buildship.core.prefs
