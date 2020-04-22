@@ -1,6 +1,9 @@
 - Verificar se método existe quando um é chamado
-- Meter main a ser processado depois dos outros métodos para este os poder usar
-    - Process inicial a ir buscar todos os métodos que existem para puderem ser chamados fora de ordem
+
+
+
+- Meter main a ser processado depois dos outros métodos para este os poder usar FEITO
+    - Process inicial a ir buscar todos os métodos que existem para puderem ser chamados fora de ordem FEITO
 
 
 
