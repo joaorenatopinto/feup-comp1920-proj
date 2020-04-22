@@ -6,7 +6,7 @@ import java.util.List;
 public
 class ASTMethod extends SimpleNode {
   public String ast_id;
-  public String ast_type ;
+  public String ast_type;
 
   public ASTMethod(int id) {
     super(id);

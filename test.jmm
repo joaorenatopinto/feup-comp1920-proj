@@ -33,4 +33,11 @@ class HelloWorld {
 		lolxd = caralho && yeah;
 		return x;
 	}
+
+	public boolean test_method(int k, boolean w) {
+		int s;
+		s = k + 10;
+		w = false;
+		return w;
+	}
 }
