@@ -8,10 +8,10 @@
 
 
 
-- Acess array
-    - declared
-    - init 
-    - dentro do size
+- Acess array FEITO
+    - declared FEITO
+    - init  FEITO
+    - dentro do size FEITO
 - Ver se argumentos enviados para os métodos chamados batem certo com os tipos e afins
 - Return type dos métodos bate certo com o return declarado no header do método
 - Ver merda dos imports que o stor mandou ou o caralho
