@@ -36,5 +36,10 @@ class ASTIf extends SimpleNode {
     }
     return 1;
   }
+
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=9b2b06fe1f37a5c88d35bf1701a179f5 (do not edit this line) */

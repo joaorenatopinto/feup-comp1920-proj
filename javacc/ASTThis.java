@@ -20,5 +20,9 @@ class ASTThis extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=92c995de9628d38c8dea47cb7b4e2f95 (do not edit this line) */

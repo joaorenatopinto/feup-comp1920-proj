@@ -23,6 +23,9 @@ class ASTGroupCondition extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=222f506a4c1c7a3b91484b46866c563e (do not edit this line) */

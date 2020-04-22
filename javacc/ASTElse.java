@@ -18,7 +18,9 @@ class ASTElse extends SimpleNode {
     return 1;
   }
 
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=746407fe194e9657eb60ee77424cc0af (do not edit this line) */

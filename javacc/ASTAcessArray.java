@@ -55,5 +55,9 @@ class ASTAcessArray extends SimpleNode {
         } else throw new RuntimeException("Array " + ast_identifier + " was not initialized");
       } else throw new RuntimeException("Left child (" + ast_identifier + ") in ASTArrayAcess is not an Array");
   }
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=c486535c6ff220f48d2a53e89df3a0a9 (do not edit this line) */

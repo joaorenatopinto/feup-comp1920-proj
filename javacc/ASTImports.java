@@ -21,6 +21,9 @@ class ASTImports extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=98d5cf4c9fa523da1567a8049ec874e9 (do not edit this line) */

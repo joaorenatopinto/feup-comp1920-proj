@@ -22,5 +22,9 @@ class ASTNeg extends SimpleNode {
     }
     else return child_return^1;
   }
+
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 }
 /* JavaCC - OriginalChecksum=e2edacf504bf837f510ac7c133d6a866 (do not edit this line) */

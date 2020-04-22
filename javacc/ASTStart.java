@@ -21,5 +21,9 @@ class ASTStart extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
+
 }
 /* JavaCC - OriginalChecksum=02fdd6e140d57cf9e3643793912f1608 (do not edit this line) */

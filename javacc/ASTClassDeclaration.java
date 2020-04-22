@@ -23,7 +23,9 @@ class ASTClassDeclaration extends SimpleNode {
     return 1;
   }
 
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=4add34b7f2166641d417a72fcd82c2ee (do not edit this line) */

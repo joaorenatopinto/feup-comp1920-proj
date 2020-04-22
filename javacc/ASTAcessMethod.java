@@ -20,7 +20,8 @@ class ASTAcessMethod extends SimpleNode {
     return 1;
   }
 
-
-
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 }
 /* JavaCC - OriginalChecksum=5a72632e1aaebf06ca4ffdc6eef531b9 (do not edit this line) */

@@ -70,6 +70,9 @@ class ASTMul extends SimpleNode {
     return left_val * right_val;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=527e8cfe6da7f441329c9e9dfcd06281 (do not edit this line) */

@@ -21,6 +21,9 @@ class ASTMethodArgs extends SimpleNode {
     return 1;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=b6ff4d6b573e735e7e85760ac5e431bc (do not edit this line) */

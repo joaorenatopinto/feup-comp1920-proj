@@ -18,6 +18,9 @@ class ASTBool extends SimpleNode {
     return 0;
   }
 
+  public String getNodeType() {
+    return this.getClass().toString();
+  }
 
 }
 /* JavaCC - OriginalChecksum=e2d69096d5c57c4b88fb9ebba8f767ec (do not edit this line) */
