@@ -25,9 +25,16 @@ class ASTClassDeclaration extends SimpleNode {
         ((SimpleNode)this.children[i]).preProcess(ast_id);
       }
     }
+    /*
     System.out.println("~");
+    for ( String key : symbols_table.keySet() ) {
+      if (symbols_table.get(key) instanceof SymbolMethod){
+        System.out.println(((SymbolMethod)symbols_table.get(key)).className);
+      }
+    }
     System.out.println(symbols_table);
     System.out.println("~");
+    */
   }
   
   @Override

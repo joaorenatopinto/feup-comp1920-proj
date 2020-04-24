@@ -24,6 +24,16 @@ class ASTStart extends SimpleNode {
     for(int i = 0; i < this.children.length; i++) {
       ((SimpleNode)this.children[i]).process();
     }
+
+    System.out.println("~");
+    for ( String key : symbols_table.keySet() ) {
+      if (symbols_table.get(key) instanceof SymbolMethod){
+        System.out.println(((SymbolMethod)symbols_table.get(key)).className);
+      }
+    }
+    System.out.println(symbols_table);
+    System.out.println("~");
+
     return 1;
   }
 

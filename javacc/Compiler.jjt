@@ -105,6 +105,7 @@ TOKEN:
     | < THIS: "this" >
     | < WHILE: "while" >
     | < FALSE: "false" >
+    | < COMMA: "," >
     | < CLASS: "class" >
     | < PUBLIC: "public" >
     | < STATIC: "static" >
@@ -137,9 +138,20 @@ void Imports() : {}
     ( ImportDeclaration() )*
 }
 
-void ImportDeclaration() : {}
+void ImportDeclaration() : {Token t;}
 {
-    "import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
+    //"import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
+    "import" ["static" { jjtThis.isStatic=true; } ] t=<IDENTIFIER>{jjtThis.className=t.image;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;}] ([<LPARENTHESIS> [ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;}} ]) ";"
+}
+
+void ImportArgs(): {}
+{
+    ImportArg() ("," ImportArg() )* 
+}
+
+void ImportArg(): {Token t;}
+{
+    t=Type() { jjtThis.ast_type = t.image; }
 }
 
 void ClassDeclaration() : {Token t1; Token t2;}
