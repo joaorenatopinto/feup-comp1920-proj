@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTObject extends SimpleNode {
+  String ast_identifier;
+
   public ASTObject(int id) {
     super(id);
   }
@@ -22,8 +24,10 @@ class ASTObject extends SimpleNode {
     return 1;
   }
 
-  public String getType(){ // TODO
-    return "OBJECT NOT IMPLEMENTED";
+  public String getType(){ 
+    if (ast_identifier == null)
+      return "OBJECT NOT IMPLEMENTED";
+    return ast_identifier;
   }
 }
 /* JavaCC - OriginalChecksum=fdc7b288391d11055e1bc77fbb789925 (do not edit this line) */

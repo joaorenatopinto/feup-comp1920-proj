@@ -267,7 +267,7 @@ void Expression() #void : {Token t1=null; String identifier;}
     | "this" #This
     | "new" (   
         "int" "[" Cal1() "]" #Array(1)
-        | <IDENTIFIER> "(" ")" #Object
+        | t1=<IDENTIFIER> "(" ")" { jjtThis.ast_identifier = t1.image; } #Object
     ) 
     | "!" Cal1() #Neg(1)
     ) { if(t1==null) identifier="none"; else identifier = t1.image; }

@@ -9,6 +9,7 @@ class HelloWorld {
 		boolean otario;
 		boolean renato_e_otario;
 		arrayzinhoGiro = new int[5];
+		arrayzinhoGiro.length;
     	i = 3 + 4;
 		i = i + 5;
 		j = i - 2;
@@ -25,12 +26,20 @@ class HelloWorld {
 		boolean dawoijundaw;
 		boolean yeah;
 		boolean lolxd;
+		HelloWorld hellowo;
 		int afonso;
 		caralho = true;
 		yeah= false;
 		afonso = 3;
 		tiago = 10 + afonso;
 		lolxd = caralho && yeah;
+		hellowo = new HelloWorld();
+		hellowo.ola();
+		new HelloWorld().ola();	
 		return x;
+	}
+	
+	public int ola(){
+		return 1;
 	}
 }

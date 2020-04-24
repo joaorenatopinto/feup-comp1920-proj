@@ -18,3 +18,13 @@
 - Return type dos métodos bate certo com o return declarado no header do método
 - Ver merda dos imports que o stor mandou ou o caralho
 - Retornar valor do (ponto)length (ou pelo menos ver se está a ser pedido o length de um identifier associado a um array)
+
+NOVO:
+
+[- Resolver parentesis foderem a length e acess method]
+- Guardar classes(/construtores) e métodos que sejam importados
+- Ao declarar uma classe verificar se é a classe do ficheiro a ser processado ou uma classe importada nos imports
+- Ao usar um método ver se foi declarado nos imports (e ver se os argumentso e returns batem certo)
+- Acess Method  
+
+ABRAÇO
