@@ -77,6 +77,12 @@ class SimpleNode implements Node {
     return id;
   }
 
+  public void preProcess(){
+    for(int i = 0; i < this.children.length; i++) {
+      ((SimpleNode)this.children[i]).preProcess();
+    }
+  }
+
   public int process() {
     System.out.println(this.getClass() + " : SIMPLENODE");
     if (this.children == null) return 1;

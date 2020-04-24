@@ -21,51 +21,35 @@ class ASTMethod extends SimpleNode {
   @Override
   public int process() { //TODO adicionar este method ao pai
     System.out.println(this.getClass());
-    // SemanticProcessor.insideMethod = true;
-    //List<Symbol> method_args = new ArrayList<>();
-    
-    // for (int i = 0; i < ((SimpleNode)this.children[0]).children.length; i++) {
-    //   ASTArg arg = (ASTArg)((SimpleNode)this.children[0]).children[i];
-    //   String type = arg.ast_type;
-    //   String identifier = arg.ast_id;
-    //   if(type.equals("int[]")) {
-    //     SymbolArray curSymbol = new SymbolArray(identifier);
-    //     curSymbol.initialize(0);
-    //     SemanticProcessor.methods_arrays_table.put(identifier, curSymbol);
-    //     //method_args.add(curSymbol);
-    //   } else {
-    //     Symbol curSymbol = new Symbol(identifier, type);
-    //     curSymbol.initialize(0);
-    //     SemanticProcessor.methods_symbols_table.put(identifier, curSymbol);
-    //     //method_args.add(curSymbol);
-    //   }    
-    // }
-    
-    //SemanticProcessor.methods_table.put(ast_id, new SymbolMethod(ast_id, ast_type, method_args));
-
     SimpleNode curr_node;
-    for (int i = 1; i < this.children.length; i++) {
+    for (int i = 0; i < this.children.length; i++) {
       curr_node = (SimpleNode)this.children[i];
       curr_node.process();
     }
 
+    //  Check return type
 
-    // // Check return type
-
-    // if (this.children[this.children.length-1].getClass().equals(ASTIdentifier.class)) { // return Cal node
-
-    // }
-
-    // System.out.println(this.id + ": ");
-    // System.out.println(SemanticProcessor.methods_symbols_table);
-    // System.out.println(SemanticProcessor.methods_arrays_table);
-    // System.out.println("~~~~~~~");
-
-    // SemanticProcessor.methods_symbols_table.clear();
-    // SemanticProcessor.methods_arrays_table.clear();
-    // SemanticProcessor.insideMethod = false;
+    if (!((SimpleNode)this.children[this.children.length-1]).getType().equals(ast_type)){
+      throw new RuntimeException("ASTMethod return type does not match (" + 
+      ((SimpleNode)this.children[this.children.length-1]).getType() + ", " + ast_type + ")");
+    }
 
     return 1;
+  }
+
+  public void preProcess(){
+    List<Symbol> args = new ArrayList<>();
+
+    for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+        ASTArg arg = (ASTArg)((SimpleNode)(this.children[0])).children[j];
+        String type = arg.ast_type;
+        String identifier = arg.ast_id;
+        SymbolVar symbol = new SymbolVar(identifier, type);
+        symbol.initialize();
+        args.add(symbol);
+    }
+
+    putSymbolInTable(new SymbolMethod(ast_id, ast_type, args));
   }
 
   public String getNodeType() {

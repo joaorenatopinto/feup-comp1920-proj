@@ -19,24 +19,19 @@ class ASTMain extends SimpleNode {
   @Override
   public int process() {
     System.out.println(this.getClass());
-    // SemanticProcessor.insideMethod = true;
     
     SimpleNode curr_node;
     for (int i = 0; i < this.children.length; i++) {
       curr_node = (SimpleNode)this.children[i];
       curr_node.process();
     }
-
-    // System.out.println(this.id + ": ");
-    // System.out.println(SemanticProcessor.methods_symbols_table);
-    // System.out.println(SemanticProcessor.methods_arrays_table);
-    // System.out.println("~~~~~~~");
-
-    // SemanticProcessor.methods_symbols_table.clear();
-    // SemanticProcessor.methods_arrays_table.clear();
-    // SemanticProcessor.insideMethod = false;
-
     return 1;
+  }
+
+  public void preProcess(){
+    List<Symbol> args = new ArrayList<>();
+    args.add(new SymbolVar("args", "String[]"));
+    putSymbolInTable(new SymbolMethod("Main", "void", args));
   }
 
   public String getNodeType() {

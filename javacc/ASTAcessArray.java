@@ -23,7 +23,7 @@ class ASTAcessArray extends SimpleNode {
     Symbol symbol = getSymbolFromTable(ast_identifier);
 
     if (symbol == null)
-      throw new RuntimeException("ASTAcessArray: " + ast_identifier +" is not previous declared");
+      throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not previous declared");
 
       // TODO check if symbol is array?
 

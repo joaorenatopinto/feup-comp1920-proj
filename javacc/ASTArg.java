@@ -13,8 +13,12 @@ class ASTArg extends SimpleNode {
     super(p, id);
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public int process() {
+    SymbolVar symbol = new SymbolVar(ast_id, ast_type);
+    symbol.initialize();
+    putSymbolInTable(symbol);
+
+    return 1;
   }
 
 }
