@@ -8,7 +8,7 @@ class ASTMethod extends SimpleNode {
   public String ast_id;
   public String ast_type;
 
-  public HashMap<String, Symbol> symbols_table = new HashMap<String, Symbol>();  //TODO adicionar este method ao pai
+  public HashMap<String, Symbol> symbols_table = new HashMap<String, Symbol>();
 
   public ASTMethod(int id) {
     super(id);
@@ -19,7 +19,7 @@ class ASTMethod extends SimpleNode {
   }
 
   @Override
-  public int process() { //TODO adicionar este method ao pai
+  public int process() {
     System.out.println(this.getClass());
     SimpleNode curr_node;
     for (int i = 0; i < this.children.length; i++) {
@@ -37,19 +37,21 @@ class ASTMethod extends SimpleNode {
     return 1;
   }
 
-  public void preProcess(){
+  public void preProcess(String className){
     List<Symbol> args = new ArrayList<>();
-
-    for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+    if(((SimpleNode)this.children[0]).children != null) {
+      for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
         ASTArg arg = (ASTArg)((SimpleNode)(this.children[0])).children[j];
         String type = arg.ast_type;
         String identifier = arg.ast_id;
         SymbolVar symbol = new SymbolVar(identifier, type);
         symbol.initialize();
         args.add(symbol);
+      }
     }
-
-    putSymbolInTable(new SymbolMethod(ast_id, ast_type, args));
+    putSymbolInTable(new SymbolMethod(ast_id, ast_type, className, args));
+    System.out.println(symbols_table);
+    System.out.println("!");
   }
 
   public String getNodeType() {

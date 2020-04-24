@@ -10,8 +10,6 @@ class ASTImportDeclaration extends SimpleNode {
     super(p, id);
   }
 
- 
-  
   @Override
   public int process() {
     System.out.println(this.getClass());

@@ -28,10 +28,10 @@ class ASTMain extends SimpleNode {
     return 1;
   }
 
-  public void preProcess(){
+  public void preProcess(String className){
     List<Symbol> args = new ArrayList<>();
     args.add(new SymbolVar("args", "String[]"));
-    putSymbolInTable(new SymbolMethod("Main", "void", args));
+    putSymbolInTable(new SymbolMethod("Main", "void", className, args));
   }
 
   public String getNodeType() {

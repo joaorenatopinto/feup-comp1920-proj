@@ -77,9 +77,11 @@ class SimpleNode implements Node {
     return id;
   }
 
-  public void preProcess(){
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).preProcess();
+  public void preProcess(String className){
+    if(this.children != null) {
+      for(int i = 0; i < this.children.length; i++) {
+        ((SimpleNode)this.children[i]).preProcess(className);
+      }
     }
   }
 
@@ -121,7 +123,7 @@ class SimpleNode implements Node {
   }
 
   public Boolean putSymbolInTable(Symbol symbol){
-    SimpleNode node = this;
+    SimpleNode node = (SimpleNode) this.parent;
 
     while (node != null){
 
@@ -132,7 +134,7 @@ class SimpleNode implements Node {
           return false;
 
         ((ASTMethod)node).symbols_table.put(symbol.identifier, symbol);
-        
+      
         return true;
 
       } else if (node instanceof ASTMain){

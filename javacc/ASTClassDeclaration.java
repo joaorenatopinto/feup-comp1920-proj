@@ -19,6 +19,18 @@ class ASTClassDeclaration extends SimpleNode {
   }
 
   @Override
+  public void preProcess(String className){
+    if(this.children != null) {
+      for(int i = 0; i < this.children.length; i++) {
+        ((SimpleNode)this.children[i]).preProcess(ast_id);
+      }
+    }
+    System.out.println("~");
+    System.out.println(symbols_table);
+    System.out.println("~");
+  }
+  
+  @Override
   public int process() {
     System.out.println(this.getClass());
     if (this.children == null) return 1;
@@ -27,10 +39,6 @@ class ASTClassDeclaration extends SimpleNode {
     }
     return 1;
   }
-
-  // public String getNodeType() {
-  //   return this.getClass().toString();
-  // }
 
 }
 /* JavaCC - OriginalChecksum=4add34b7f2166641d417a72fcd82c2ee (do not edit this line) */
