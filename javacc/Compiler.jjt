@@ -291,14 +291,14 @@ void Expression_aux(String identifier) #void : {}
     "[" Cal1() "]" { jjtThis.ast_identifier = identifier; } #AcessArray(1) [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)] 
     | "." (
         "length" #Length [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
-        | AcessMethod() [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
+        | AcessMethod(identifier) [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
     )
 }
 
 
-void AcessMethod() : {}
+void AcessMethod(String identifier) : { Token t; jjtThis.ast_identifier = identifier; }
 {
-    <IDENTIFIER> "(" [ Arguments() ] ")"
+    t=<IDENTIFIER> "(" [ Arguments() ] ")" { jjtThis.ast_method = t.image; }
 }
 
 

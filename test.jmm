@@ -6,7 +6,7 @@ class HelloWorld {
 		int j;
 		int tu;
 		int z;
-		Burro will;
+		HelloWorld will;
 		int[] arrayzinhoGiro;
 		boolean renato;
 		boolean otario;
@@ -17,32 +17,17 @@ class HelloWorld {
 		i = i + 5;
 		j = i - 2;
 		tu = j / 2;
-		HelloWorld.oi(1, true);
+		will.oi();
 		z = j * 4;
 		renato = false;
 		otario = true;
 		renato_e_otario = renato && otario;
 	}
 
-	public int renato_tiago_iguaL_amor(int x, int y, int z) {
-		int tiago;
-		boolean caralho;
-		boolean dawoijundaw;
-		boolean yeah;
-		boolean lolxd;
-		HelloWorld hellowo;
-		int afonso;
-		caralho = true;
-		yeah= false;
-		afonso = 3;
-		tiago = 10 + afonso;
-		lolxd = caralho && yeah;
-		hellowo = new HelloWorld();
-		hellowo.ola();
-		new HelloWorld().ola();	
-		return x;
+	public int oi(){
+		return 1;
 	}
-	
+
 	public int ola(){
 		return 1;
 	}

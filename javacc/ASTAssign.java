@@ -34,6 +34,9 @@ class ASTAssign extends SimpleNode {
     if (!child.getType().equals(symbolLeft.type)){
       throw new RuntimeException("ASTAssign is not equal (" + symbolLeft.type + ", " + child.getType() + ")");
     }
+
+    SymbolVar var = (SymbolVar) symbolLeft;
+    var.initialize();
     
     return 1;
 
