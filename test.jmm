@@ -3,15 +3,23 @@ import TestClass;
 
 class Test extends TestClass {
 	public static void main(String[] args) {
-		int[] array;
-		int j;
+		Test teste;
 		int i;
-		TestClass test;
-
+		teste = new Test();
+		teste.oi(4);
 	}
 
-	public int oi() {
+	public int oi(int renato) {
+		int i;
+		int j;
+		i = 2;
+		j = i - 5;
+		i = renato + 5;
 		return 12;
+	}
+
+	public Test ola() {
+		return new Test();
 	}
 }
 

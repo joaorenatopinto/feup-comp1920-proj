@@ -13,20 +13,23 @@ class ASTAcessArray extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
 
     SimpleNode child = (SimpleNode)this.children[0];
-    child.process();
+    child.process(className);
 
     Symbol symbol = getSymbolFromTable(ast_identifier);
-
+    
     if (symbol == null)
       throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not previous declared");
 
-      // TODO check if symbol is array?
+    if( !symbol.type.equals(Symbol.INT_ARRAY) ) { 
+      
+      throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not an array");
+    }
 
-    if (child.getType() != Symbol.INT){
-      throw new RuntimeException("ASTAcessArray is not a Integer");
+    if (child.getType().equals(Symbol.INT)){
+      throw new RuntimeException("ASTAcessArray: index is not a Integer");
     }
     
     return 1;

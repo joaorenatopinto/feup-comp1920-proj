@@ -12,78 +12,21 @@ class ASTLess extends SimpleNode {
 
   
   @Override
-  public int process() {
+  public int process(String className) {
 
 
     SimpleNode left = (SimpleNode)this.children[0];
     SimpleNode right = (SimpleNode)this.children[1];
     // int left_val;
     // int right_val;
-    left.process();
-    right.process();
+    left.process(className);
+    right.process(className);
 
-    if (left.getType() != Symbol.BOOLEAN || right.getType() != Symbol.BOOLEAN){
-      throw new RuntimeException("ASTLess is not a Boolean");
+    if (!left.getType().equals(Symbol.INT) || !right.getType().equals(Symbol.INT)){
+      throw new RuntimeException("ASTLess is not a Integer");
     }
     
     return 1;
-
-
-
-    // //SimpleNode left = (SimpleNode)this.children[0];
-    // //SimpleNode right = (SimpleNode)this.children[1];
-    // int left_val;
-    // int right_val;
-
-    // if(this.children[0].getClass().equals(ASTIdentifier.class)) {
-    //   Symbol left_sym;
-    //   ASTIdentifier left = (ASTIdentifier)this.children[0];
-    //   if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(left.ast_value) != null) {
-    //     left_sym = SemanticProcessor.methods_symbols_table.get(left.ast_value);
-    //   }
-    //   else if(SemanticProcessor.symbols_table.get(left.ast_value) != null) {
-    //     left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
-    //   }
-    //   else throw new RuntimeException("Variable in ASTAdd not previous declared (" + left.ast_value + ")");
-
-    //   if (left_sym.type.equals("int")) {
-    //     if (left_sym.init) {
-    //       left_val = left_sym.value;
-    //     } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
-    //   } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
-    // } //else if(arrayacess){}
-    // else {
-    //   SimpleNode left = (SimpleNode)this.children[0];
-    //   left_val = left.process();
-    // }
-
-    // if(this.children[1].getClass().equals(ASTIdentifier.class)) {
-    //   Symbol right_sym;
-    //   ASTIdentifier right = (ASTIdentifier)this.children[1];
-    //   if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(right.ast_value) != null) {
-    //     right_sym = SemanticProcessor.methods_symbols_table.get(right.ast_value);
-    //   }
-    //   else if(SemanticProcessor.symbols_table.get(right.ast_value) != null) {
-    //     right_sym = SemanticProcessor.symbols_table.get(right.ast_value);
-    //   }
-    //   else throw new RuntimeException("Variable in ASTIdentifier not previous declared");
-
-    //   if (right_sym.type.equals("int")) {
-    //     if (right_sym.init) {
-    //       right_val = right_sym.value;
-    //     }else throw new RuntimeException("Variable " + right.ast_value + " was not initialized");
-    //   }
-    //   else
-    //     throw new RuntimeException("Right child (" + right.ast_value + ") in ASTLess is not an Integer");
-    // } //else if(arrayacess){}
-    // else{
-    //   SimpleNode right = (SimpleNode)this.children[1];
-    //   right_val = right.process();
-    // } 
-    
-
-    // if(left_val < right_val) return 1;  
-    // else return 0;
   }
 
   public String getType(){

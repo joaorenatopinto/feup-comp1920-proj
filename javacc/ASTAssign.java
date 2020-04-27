@@ -12,19 +12,19 @@ class ASTAssign extends SimpleNode {
     super(p, id);
   }
 
-  public int process() {
+  public int process(String className) {
     System.out.println(this.getClass());
 
     int index = 0;
 
     if (this.children.length == 2){
-      ((SimpleNode)this.children[0]).process();
+      ((SimpleNode)this.children[0]).process(className);
       index++;
     }
 
     SimpleNode child = (SimpleNode)this.children[index];
 
-    child.process();
+    child.process(className);
 
     Symbol symbolLeft = getSymbolFromTable(identifier);
 
@@ -64,8 +64,8 @@ class ASTAssign extends SimpleNode {
     // SimpleNode right = (SimpleNode)this.children[1];
     // int left_val;
     // int right_val;
-    // left.process();
-    // right.process();
+    // left.process(className);
+    // right.process(className);
 
 
 
@@ -95,18 +95,18 @@ class ASTAssign extends SimpleNode {
     // else 
     //   throw new RuntimeException("Variable in ASTAssign (" + identifier + ") not previous declared");
       
-    // int right_return = right.process();
+    // int right_return = right.process(className);
 
     // if(symbol_obj!=null && symbol_obj.type.equals("boolean") && right_return != 0 && right_return != 1) {
     //   throw new RuntimeException("Afonso não gosta de falsos, se dizes que és bool, tens de ser");
     // }
     // else if(array_obj!=null && array_obj.type.equals("int[]")) {
     //   if(right.getClass() == ASTArray.class){
-    //     array_obj.initialize(right.process());
+    //     array_obj.initialize(right.process(className));
     //   }
     //   else {
-    //     array_obj.assignValueToIndex(left.process(), right.process());
-    //     System.out.println("Dei assign a " + left.process()  +" o valor " + right.process());
+    //     array_obj.assignValueToIndex(left.process(className), right.process(className));
+    //     System.out.println("Dei assign a " + left.process(className)  +" o valor " + right.process(className));
     //   }
     // }
     // else {

@@ -141,7 +141,7 @@ void Imports() : {}
 void ImportDeclaration() : {Token t;}
 {
     //"import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
-    "import" ["static" { jjtThis.isStatic=true; } ] t=<IDENTIFIER>{jjtThis.className=t.image;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;}] ([<LPARENTHESIS> [ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;}} ]) ";"
+    "import" ["static" { jjtThis.isStatic=true; } ] t=<IDENTIFIER>{jjtThis.ast_className=t.image;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;}] ([<LPARENTHESIS> [ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;}} ]) ";"
 }
 
 void ImportArgs(): {}
@@ -206,18 +206,18 @@ void Statement() : {Token t1;}
 {
     "{" ( Statement() )* "}"
     | "if" "(" Cal1() ")" Statement() #If(2) "else" Statement() #Else(1)
-    | WhileStatement() #While(1)
+    | While()
     | LOOKAHEAD(2) Assign()
     | LOOKAHEAD(2) Cal1() ";"  
 }
 
 void Assign() : {Token t1; Token t2;}
 {
-    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" "=" Cal1() ";" {jjtThis.identifier = t1.image;}
+    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" { jjtThis.ast_identifier = t1.image; } #AcessArray(1) "=" Cal1() ";" {jjtThis.identifier = t1.image;}
     | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";" {jjtThis.identifier = t1.image;}
 }
 
-void WhileStatement() : {} {
+void While() : {} {
     <WHILE> <LPARENTHESIS> 
     try {
         Cal1() <RPARENTHESIS>

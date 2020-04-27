@@ -15,12 +15,12 @@ class ASTVarDeclaration extends SimpleNode {
 
   
   @Override
-  public int process() {
+  public int process(String className) {
     System.out.println(ast_type);
 
     if(!ast_type.equals(Symbol.INT) && !ast_type.equals(Symbol.INT_ARRAY) && !ast_type.equals(Symbol.BOOLEAN) && !(getSymbolFromTable(ast_type) instanceof SymbolClass)) {
       throw new RuntimeException("No valid type for variable " + ast_id);
-    }
+    } 
     
     if (!putSymbolInTable(new SymbolVar(ast_id, ast_type)))
       throw new RuntimeException("Couldn't put symbol (" + ast_id + ", " + ast_type + ") in symbols table");

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ASTImportDeclaration extends SimpleNode {
   boolean isStatic;
-  String className;
+  String ast_className;
   String methodName;
   String returnType;
 
@@ -17,7 +17,7 @@ public class ASTImportDeclaration extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
     System.out.println(this.getClass());
     List<Symbol> args = new ArrayList<>();
 
@@ -30,14 +30,14 @@ public class ASTImportDeclaration extends SimpleNode {
       }
     }
 
-    if(methodName!=null) putSymbolInTable(new SymbolMethod(methodName, returnType, className, args));
+    if(methodName!=null) putSymbolInTable(new SymbolMethod(methodName, returnType, ast_className, args));
     else {
-      putSymbolInTable(new SymbolClass(className, "Class", null));
+      putSymbolInTable(new SymbolClass(ast_className, "Class", null));
     }
 
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
+      ((SimpleNode)this.children[i]).process(className);
     }
     return 1;
   }

@@ -13,7 +13,7 @@ class ASTArg extends SimpleNode {
     super(p, id);
   }
 
-  public int process() {
+  public int process(String className) {
     SymbolVar symbol = new SymbolVar(ast_id, ast_type);
     symbol.initialize();
     putSymbolInTable(symbol);

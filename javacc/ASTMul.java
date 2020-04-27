@@ -13,14 +13,14 @@ class ASTMul extends SimpleNode {
   
   
   @Override
-  public int process() {
+  public int process(String className) {
 
     SimpleNode left = (SimpleNode)this.children[0];
     SimpleNode right = (SimpleNode)this.children[1];
     // int left_val;
     // int right_val;
-    left.process();
-    right.process();
+    left.process(className);
+    right.process(className);
 
     if (!left.getType().equals(Symbol.INT) || !right.getType().equals(Symbol.INT)){
       throw new RuntimeException("ASTMul is not a Integer (" + left.getType() + ", " + right.getType() + ")");
@@ -54,7 +54,7 @@ class ASTMul extends SimpleNode {
     // } //else if(arrayacess){}
     // else {
     //   SimpleNode left = (SimpleNode)this.children[0];
-    //   left_val = left.process();
+    //   left_val = left.process(className);
     // }
 
     // if(this.children[1].getClass().equals(ASTIdentifier.class)) {
@@ -78,7 +78,7 @@ class ASTMul extends SimpleNode {
     // } //else if(arrayacess){}
     // else{
     //   SimpleNode right = (SimpleNode)this.children[1];
-    //   right_val = right.process();
+    //   right_val = right.process(className);
     // } 
     
 

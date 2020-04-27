@@ -13,7 +13,7 @@ class ASTInt extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
     return ast_value;
   }
 

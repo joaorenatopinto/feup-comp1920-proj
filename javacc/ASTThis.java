@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTThis extends SimpleNode {
+  String curClass = null;
+
   public ASTThis(int id) {
     super(id);
   }
@@ -11,17 +13,26 @@ class ASTThis extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
+    curClass = className;
+
+    if (curClass == null)
+      throw new RuntimeException("This cant be used in this context");
+
     System.out.println(this.getClass());
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
+      ((SimpleNode)this.children[i]).process(className);
     }
     return 1;
   }
 
   public String getType(){ // TODO
-    return "THIS NOT IMPLMEENTEd";
+
+    if (curClass != null)
+      return curClass;
+
+    return "ERROR: THIS NOT IN GOOD CONTEXT";
   }
 
 }

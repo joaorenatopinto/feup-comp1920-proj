@@ -13,17 +13,21 @@ class ASTIdentifier extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
     System.out.println(this.getClass());
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
+      ((SimpleNode)this.children[i]).process(className);
     }
     return 1;
   }
 
   public String getType(){ 
     Symbol symbol = getSymbolFromTable(ast_value);
+
+    if(symbol==null) {
+      return ast_value + "is not a variable";
+    }
 
     SymbolVar var = (SymbolVar) symbol;
     if (!var.isInitialized)

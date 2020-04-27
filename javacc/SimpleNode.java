@@ -85,11 +85,11 @@ class SimpleNode implements Node {
     }
   }
 
-  public int process() {
+  public int process(String className) {
     System.out.println(this.getClass() + " : SIMPLENODE");
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process();
+      ((SimpleNode)this.children[i]).process(className);
     }
     return 1;
   }

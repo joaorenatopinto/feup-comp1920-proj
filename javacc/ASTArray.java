@@ -11,9 +11,9 @@ class ASTArray extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
     SimpleNode child = ((SimpleNode)this.children[0]);
-    return child.process();
+    return child.process(className);
   }
 
   public String getType(){

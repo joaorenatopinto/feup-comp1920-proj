@@ -19,12 +19,12 @@ class ASTMethod extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
     System.out.println(this.getClass());
     SimpleNode curr_node;
     for (int i = 0; i < this.children.length; i++) {
       curr_node = (SimpleNode)this.children[i];
-      curr_node.process();
+      curr_node.process(className);
     }
 
     //  Check return type

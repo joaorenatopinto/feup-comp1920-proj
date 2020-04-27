@@ -13,7 +13,7 @@ class ASTBool extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
     if(ast_value) return 1;
     return 0;
   }
