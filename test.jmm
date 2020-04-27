@@ -6,7 +6,7 @@ class Test extends TestClass {
 		Test teste;
 		int i;
 		teste = new Test();
-		teste.oi(4);
+		i = teste.ola().ola().oi(5);
 	}
 
 	public int oi(int renato) {
@@ -16,6 +16,12 @@ class Test extends TestClass {
 		j = i - 5;
 		i = renato + 5;
 		return 12;
+	}
+
+	public int[] ups() {
+		int arr;
+		arr = new int[5];
+		return arr;
 	}
 
 	public Test ola() {
@@ -39,7 +45,7 @@ class HelloWorld {
 		arrayzinhoGiro = new int[5];
 		arrayzinhoGiro.length;
 		will = new HelloWorld();
-		arrayzinhoGiro[2] = 4+5;
+		arrayzinhoGiro[2] = 4 + 5;
     	i = 3 + 4;
 		i = i + 5;
 		j = i + 1;

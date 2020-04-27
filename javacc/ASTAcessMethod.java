@@ -7,6 +7,8 @@ class ASTAcessMethod extends SimpleNode {
   String ast_identifier;
   String ast_method;
 
+  String returnType = null;
+
   public ASTAcessMethod(int id) {
     super(id);
   }
@@ -17,6 +19,65 @@ class ASTAcessMethod extends SimpleNode {
 
   @Override
   public int process(String className) {
+    // ver o irmao da esquerda se é ASTObject ou ASTIdentifier
+    SimpleNode bro = (SimpleNode)(((SimpleNode)this.jjtGetParent()).children[0]);
+
+    if(bro instanceof ASTObject) {
+      System.out.println("AWIOUDBAUWIBDAWBDIUB " + ast_identifier);
+    }
+    else if(bro instanceof ASTIdentifier) {
+      Symbol symbol = getSymbolFromTable(ast_identifier);
+
+      if (symbol == null) {
+        throw new RuntimeException("Variable not declared.");
+      }
+
+      Symbol method = getSymbolFromTable(ast_method);
+      
+      if (method == null){
+        throw new RuntimeException(ast_method + " not declared.");
+      }
+
+      if (!(method instanceof SymbolMethod))
+        throw new RuntimeException(ast_method + " is not a method.");
+
+      SymbolMethod symbolMethod = (SymbolMethod) method;
+
+      if (!symbol.type.equals(symbolMethod.className)) {
+        throw new RuntimeException("Object " + ast_method + " doesn't have " + ast_method + " method.");
+      }
+
+      returnType = symbolMethod.type;
+
+      SymbolVar var = (SymbolVar) symbol;
+
+      if (!var.isInitialized) {
+        throw new RuntimeException("Variable not initialized.");
+      }
+
+      List<String> argsType = new ArrayList<>();
+     
+      if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+        for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+          argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
+        }
+      }
+
+      if (symbolMethod.arguments.size() != argsType.size()){
+        throw new RuntimeException("Method args do not match in size(" + symbolMethod.arguments.size() + ", " + argsType.size() +")");
+      }
+
+      
+      for (int i = 0; i < symbolMethod.arguments.size(); i++){
+        if (!symbolMethod.arguments.get(i).type.equals(argsType.get(i)))
+          throw new RuntimeException("Method args do not match (" + symbolMethod.arguments.get(i).type + ", " + argsType.get(i) +")");
+      }
+
+    } else if(bro instanceof ASTAcessMethod) {
+      System.out.println("ASTACessMethod");
+    }
+
+    /*
     System.out.println(this.getClass());
     if (this.children != null)
       for(int i = 0; i < this.children.length; i++) {
@@ -66,12 +127,14 @@ class ASTAcessMethod extends SimpleNode {
     } else {
       throw new RuntimeException("ASTAcessMethod is not a method");
     }
-
+    */
     return 1;
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String getType(){
+    if (returnType == null)
+      return "return type not initialized";
+    return returnType;
   }
 }
 /* JavaCC - OriginalChecksum=5a72632e1aaebf06ca4ffdc6eef531b9 (do not edit this line) */

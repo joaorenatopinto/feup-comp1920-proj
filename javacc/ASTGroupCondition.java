@@ -11,14 +11,14 @@ class ASTGroupCondition extends SimpleNode {
   }
 
   @Override
-  public int process(String className) {
+  public int process() {
     System.out.println(this.getClass());
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
       //Se for um array dou return do valor que lá está
       if(((SimpleNode)this.children[i]).getClass() == ASTAcessArray.class)
-        return ((SimpleNode)this.children[1]).process(className);
-      ((SimpleNode)this.children[i]).process(className);
+        return ((SimpleNode)this.children[1]).process();
+      ((SimpleNode)this.children[i]).process();
     }
     return 1;
   }
