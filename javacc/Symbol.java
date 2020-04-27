@@ -8,12 +8,10 @@ abstract class Symbol {
     
     String identifier;
     String type; 
-    boolean isVar;  // can be var or method
 
-    public Symbol(String identifier, String type, boolean isVar) {
+    public Symbol(String identifier, String type) {
         this.identifier = identifier;
         this.type = type;
-        this.isVar = isVar;
     }
 
 }

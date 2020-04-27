@@ -21,7 +21,7 @@ public class ASTImportDeclaration extends SimpleNode {
     System.out.println(this.getClass());
     List<Symbol> args = new ArrayList<>();
 
-    if(((SimpleNode)this.children[0]).children != null) {
+    if(this.children!=null && ((SimpleNode)this.children[0]).children != null) {
       for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
         ASTImportArg arg = (ASTImportArg)((SimpleNode)(this.children[0])).children[j];
         String type = arg.ast_type;
@@ -30,7 +30,11 @@ public class ASTImportDeclaration extends SimpleNode {
       }
     }
 
-    putSymbolInTable(new SymbolMethod(methodName, returnType, className, args));
+    if(methodName!=null) putSymbolInTable(new SymbolMethod(methodName, returnType, className, args));
+    else {
+      putSymbolInTable(new SymbolClass(className, "Class", null));
+    }
+
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
       ((SimpleNode)this.children[i]).process();

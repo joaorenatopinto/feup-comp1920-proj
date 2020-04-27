@@ -25,20 +25,21 @@ class ASTClassDeclaration extends SimpleNode {
         ((SimpleNode)this.children[i]).preProcess(ast_id);
       }
     }
-    /*
-    System.out.println("~");
-    for ( String key : symbols_table.keySet() ) {
-      if (symbols_table.get(key) instanceof SymbolMethod){
-        System.out.println(((SymbolMethod)symbols_table.get(key)).className);
-      }
-    }
-    System.out.println(symbols_table);
-    System.out.println("~");
-    */
   }
   
   @Override
   public int process() {
+
+    if (ast_ext != null){
+      Symbol ext = getSymbolFromTable(ast_ext);
+      if(ext==null || !(ext instanceof SymbolClass)) {
+        throw new RuntimeException("extends ABRACO");
+      }
+      putSymbolInTable(new SymbolClass(ast_id, "Class", (SymbolClass)getSymbolFromTable(ast_ext)));
+    } else {
+      putSymbolInTable(new SymbolClass(ast_id, "Class", null));
+    }    
+
     System.out.println(this.getClass());
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
