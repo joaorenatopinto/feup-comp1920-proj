@@ -11,10 +11,13 @@ class HelloWorld {
 		boolean renato;
 		boolean otario;
 		boolean renato_e_otario;
-		//arrayzinhoGiro = new int[5];
+		arrayzinhoGiro = new int[5];
 		arrayzinhoGiro.length;
+		will = new HelloWorld();
+		arrayzinhoGiro[2] = will.oi();
     	i = 3 + 4;
 		i = i + 5;
+		j = i + 1;
 		tu = j / 2;
 		will.oi();
 		z = j * 4;

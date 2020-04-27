@@ -28,15 +28,35 @@ class ASTAssign extends SimpleNode {
 
     Symbol symbolLeft = getSymbolFromTable(identifier);
 
-    if (symbolLeft == null)
-      throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared");
+    if( !(symbolLeft.type.equals(Symbol.INT_ARRAY) ) ) {
+      if (symbolLeft == null)
+        throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared");
 
-    if (!child.getType().equals(symbolLeft.type)){
-      throw new RuntimeException("ASTAssign is not equal (" + symbolLeft.type + ", " + child.getType() + ")");
+      if (!child.getType().equals(symbolLeft.type)){
+        throw new RuntimeException("ASTAssign is not equal (" + symbolLeft.type + ", " + child.getType() + ")");
+      }
+
+      SymbolVar var = (SymbolVar) symbolLeft;
+      var.initialize();
     }
-
-    SymbolVar var = (SymbolVar) symbolLeft;
-    var.initialize();
+    else {
+      SymbolVar var = (SymbolVar) symbolLeft;
+      
+      if( child.getType().equals(Symbol.INT_ARRAY) ) { // se estiver a ser inicializado
+        if( var.isInitialized )
+          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") already had been initialized.");
+        else
+          var.initialize();
+      }
+      else if ( var.isInitialized ) { // se estiver inicializado
+        if( !child.getType().equals(Symbol.INT) ) { // se nao for int
+          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") can only store int types.");
+        }
+      }
+      else { // se n estiver inicializado
+        throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") has not been initialized.");
+      }
+    }
     
     return 1;
 
