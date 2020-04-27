@@ -25,7 +25,8 @@ class ASTIdentifier extends SimpleNode {
   public String getType(){ 
     Symbol symbol = getSymbolFromTable(ast_value);
 
-    if (symbol == null)
+    SymbolVar var = (SymbolVar) symbol;
+    if (!var.isInitialized)
       return ast_value + " not initialized";
 
     return symbol.type;
