@@ -9,8 +9,10 @@ class Test extends TestClass {
 		int[] arr;
 		teste = new Test();
 		i = 5;
-		i = teste.ola().ola2().ola2().oi(250);
-		j = teste.ola().ola2().ola2().ola().ola().ola2().oi(1);
+		new TestClass().otario(1, 2);
+		this.oi(2);
+		//this.otario(2, 2);
+		i = teste.ola().ola2(1).ola().oi();
 	}
 
 	public int oi(int renato) {

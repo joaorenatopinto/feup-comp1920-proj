@@ -16,6 +16,34 @@ class ASTGroupCondition extends SimpleNode {
   public int process(String className) {
     SimpleNode leftChild = (SimpleNode)this.children[0];
     SimpleNode rightChild = (SimpleNode)this.children[1];
+    // SimpleNode parentNode = (SimpleNode)this.jjtGetParent();
+
+    // TIAGO
+
+    // if(!(rightChild instanceof ASTGroupCondition)) { // Final group condition
+
+    //   if (leftChild instanceof ASTAcessMethod){
+    //     ((ASTAcessMethod) leftChild).ast_identifier = this.type;
+    //   }
+
+    //   leftChild.process(className);
+
+    //   if (rightChild instanceof ASTAcessMethod){
+    //     ((ASTAcessMethod) rightChild).ast_identifier = leftChild.getType();
+    //   }
+
+    // } else { // theres more
+
+    //   leftChild.process(className);
+    //   ((ASTGroupCondition) rightChild).type = leftChild.getType(); // temporary type
+
+    // }
+
+    // rightChild.process(className);
+
+    // type = rightChild.getType();
+
+    // TIAGO
 
     if(!(rightChild instanceof ASTGroupCondition)) {
       if(leftChild instanceof ASTAcessMethod) {
@@ -28,14 +56,14 @@ class ASTGroupCondition extends SimpleNode {
       SimpleNode rightGrandChild = (SimpleNode)rightChild.children[0];
       ASTGroupCondition parent = new ASTGroupCondition(1231);
       // have to do this in order for the tables to work
-      parent.jjtSetParent((Node)this);
+      parent.jjtSetParent((Node)this);  // parent<-this
 
-      Node oldLeftParent = leftChild.jjtGetParent();
+      Node oldLeftParent = leftChild.jjtGetParent(); // oldLeftParent == this ?
       leftChild.jjtSetParent((Node)parent);
-      parent.jjtAddChild((Node)leftChild, 0);
-
-      Node oldRightGrandParent = rightGrandChild.jjtGetParent();
-      rightGrandChild.jjtSetParent((Node)parent);
+      parent.jjtAddChild((Node)leftChild, 0); // leftchild<-parent<-this
+ 
+      Node oldRightGrandParent = rightGrandChild.jjtGetParent(); // rightChild == oldRightGrandParent ?
+      rightGrandChild.jjtSetParent((Node)parent);  // leftchild|rightGrandChild<-parent<-this
       
       if(rightGrandChild instanceof ASTAcessMethod) {
         if(leftChild instanceof ASTAcessMethod) {
@@ -49,7 +77,9 @@ class ASTGroupCondition extends SimpleNode {
       leftChild.jjtSetParent(oldLeftParent);
       rightGrandChild.jjtSetParent(oldRightGrandParent);
 
-      rightChild.process(className);
+      rightChild.process(className); 
+
+      // Nao percebo porque fazemos alteracoes dos nos para por igual no fim
       type = ((ASTGroupCondition)rightChild).getType();
     }
 
