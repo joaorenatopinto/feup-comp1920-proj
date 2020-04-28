@@ -143,12 +143,35 @@ class ASTAcessMethod extends SimpleNode {
       SymbolMethod leftSymbolMethod = (SymbolMethod)leftMethod;
       SymbolMethod thisSymbolMethod = (SymbolMethod)thisMethod;
 
+      
+
       if(!leftSymbolMethod.type.equals(thisSymbolMethod.className)) {
         throw new RuntimeException(ast_identifier + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + leftSymbolMethod.type);
       }
 
       returnType = thisSymbolMethod.type;
-    } else if (bro instanceof ASTThis) {
+
+      List<String> argsType = new ArrayList<>();
+     
+      if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+        for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+          argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
+        }
+      }
+
+      if (thisSymbolMethod.arguments.size() != argsType.size()){
+        throw new RuntimeException("Method args do not match in size(" + thisSymbolMethod.arguments.size() + ", " + argsType.size() +")");
+      }
+
+      
+      for (int i = 0; i < thisSymbolMethod.arguments.size(); i++){
+        if (!thisSymbolMethod.arguments.get(i).type.equals(argsType.get(i)))
+          throw new RuntimeException("Method args do not match (" + thisSymbolMethod.arguments.get(i).type + ", " + argsType.get(i) +")");
+      }
+
+    } 
+    
+    else if (bro instanceof ASTThis) {
 
       bro.process(className);
 
@@ -178,6 +201,8 @@ class ASTAcessMethod extends SimpleNode {
           argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
         }
       }
+
+      System.out.println("\nARGUMENTOS:" + argsType + "\n");
 
       if (symbolMethod.arguments.size() != argsType.size()){
         throw new RuntimeException("Method args do not match in size(" + symbolMethod.arguments.size() + ", " + argsType.size() +")");
