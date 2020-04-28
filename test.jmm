@@ -5,12 +5,12 @@ class Test extends TestClass {
 	public static void main(String[] args) {
 		Test teste;
 		int i;
+		int j;
 		int[] arr;
 		teste = new Test();
 		i = 5;
 		i = teste.ola().ola2().ola2().oi(250);
-		arr = teste.ola().ola2().ola().ola2().ola().ola().ola2().rarr();
-
+		j = teste.ola().ola2().ola2().ola().ola().ola2().oi(1);
 	}
 
 	public int oi(int renato) {
@@ -23,7 +23,7 @@ class Test extends TestClass {
 	}
 
 	public int[] rarr() {
-		int arr;
+		int[] arr;
 		arr = new int[5];
 		return arr;
 	}

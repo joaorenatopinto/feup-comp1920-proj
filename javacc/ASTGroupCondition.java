@@ -16,11 +16,11 @@ class ASTGroupCondition extends SimpleNode {
   public int process(String className) {
     SimpleNode leftChild = (SimpleNode)this.children[0];
     SimpleNode rightChild = (SimpleNode)this.children[1];
+
     if(!(rightChild instanceof ASTGroupCondition)) {
       if(leftChild instanceof ASTAcessMethod) {
         ((ASTAcessMethod)rightChild).ast_identifier = ((ASTAcessMethod)leftChild).ast_method;
       }
-      //leftChild.process(className);
       rightChild.process(className);
       type = ((ASTAcessMethod)rightChild).getType();
     }
@@ -44,7 +44,6 @@ class ASTGroupCondition extends SimpleNode {
       }
       parent.jjtAddChild((Node)rightGrandChild, 1);
 
-      //leftChild.process(className);
       rightGrandChild.process(className);
 
       leftChild.jjtSetParent(oldLeftParent);
@@ -54,15 +53,6 @@ class ASTGroupCondition extends SimpleNode {
       type = ((ASTGroupCondition)rightChild).getType();
     }
 
-    /*
-    System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      //Se for um array dou return do valor que lá está
-      if(((SimpleNode)this.children[i]).getClass() == ASTAcessArray.class)
-        return ((SimpleNode)this.children[1]).process(className);
-      ((SimpleNode)this.children[i]).process(className);
-    }*/
     return 1;
   }
 
