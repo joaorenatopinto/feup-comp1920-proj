@@ -23,13 +23,14 @@ class ASTAcessMethod extends SimpleNode {
     SimpleNode bro = (SimpleNode)(((SimpleNode)this.jjtGetParent()).children[0]);
 
     if(bro instanceof ASTObject) {
-      System.out.println("AWIOUDBAUWIBDAWBDIUB " + ast_identifier);
+      System.out.println("ASTOBJECT " + ast_identifier + " : " + ast_method);
     }
     else if(bro instanceof ASTIdentifier) {
+      System.out.println("ASTIDENTIFIER " + ast_identifier + " : " + ast_method);
       Symbol symbol = getSymbolFromTable(ast_identifier);
 
       if (symbol == null) {
-        throw new RuntimeException("Variable not declared.");
+        throw new RuntimeException("Variable not declared: " + ((ASTIdentifier)bro).ast_value);
       }
 
       Symbol method = getSymbolFromTable(ast_method);
@@ -73,8 +74,30 @@ class ASTAcessMethod extends SimpleNode {
           throw new RuntimeException("Method args do not match (" + symbolMethod.arguments.get(i).type + ", " + argsType.get(i) +")");
       }
 
-    } else if(bro instanceof ASTAcessMethod) {
-      System.out.println("ASTACessMethod");
+    } 
+    else if(bro instanceof ASTAcessMethod) {
+      System.out.println("ASTACESSMETHOD " + ast_identifier + " : " + ast_method);
+      returnType = "int";
+      
+      Symbol leftMethod = getSymbolFromTable(ast_identifier);
+      Symbol thisMethod = getSymbolFromTable(ast_method);
+
+      if(leftMethod==null || thisMethod==null) {
+        throw new RuntimeException("Method doesn't exist");
+      }
+
+      if(!(thisMethod instanceof SymbolMethod)) {
+        throw new RuntimeException(ast_method + " is not a method.");
+      }
+
+      SymbolMethod leftSymbolMethod = (SymbolMethod)leftMethod;
+      SymbolMethod thisSymbolMethod = (SymbolMethod)thisMethod;
+
+      if(!leftSymbolMethod.type.equals(thisSymbolMethod.className)) {
+        throw new RuntimeException(ast_identifier + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + leftSymbolMethod.type);
+      }
+
+      returnType = thisSymbolMethod.type;
     }
 
     /*

@@ -2,6 +2,8 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTGroupCondition extends SimpleNode {
+  String type;
+  
   public ASTGroupCondition(int id) {
     super(id);
   }
@@ -11,20 +13,61 @@ class ASTGroupCondition extends SimpleNode {
   }
 
   @Override
-  public int process() {
+  public int process(String className) {
+    SimpleNode leftChild = (SimpleNode)this.children[0];
+    SimpleNode rightChild = (SimpleNode)this.children[1];
+    if(!(rightChild instanceof ASTGroupCondition)) {
+      if(leftChild instanceof ASTAcessMethod) {
+        ((ASTAcessMethod)rightChild).ast_identifier = ((ASTAcessMethod)leftChild).ast_method;
+      }
+      //leftChild.process(className);
+      rightChild.process(className);
+      type = ((ASTAcessMethod)rightChild).getType();
+    }
+    else {
+      SimpleNode rightGrandChild = (SimpleNode)rightChild.children[0];
+      ASTGroupCondition parent = new ASTGroupCondition(1231);
+      // have to do this in order for the tables to work
+      parent.jjtSetParent((Node)this);
+
+      Node oldLeftParent = leftChild.jjtGetParent();
+      leftChild.jjtSetParent((Node)parent);
+      parent.jjtAddChild((Node)leftChild, 0);
+
+      Node oldRightGrandParent = rightGrandChild.jjtGetParent();
+      rightGrandChild.jjtSetParent((Node)parent);
+      
+      if(rightGrandChild instanceof ASTAcessMethod) {
+        if(leftChild instanceof ASTAcessMethod) {
+          ((ASTAcessMethod)rightGrandChild).ast_identifier = ((ASTAcessMethod)leftChild).ast_method;
+        }
+      }
+      parent.jjtAddChild((Node)rightGrandChild, 1);
+
+      //leftChild.process(className);
+      rightGrandChild.process(className);
+
+      leftChild.jjtSetParent(oldLeftParent);
+      rightGrandChild.jjtSetParent(oldRightGrandParent);
+
+      rightChild.process(className);
+      type = ((ASTGroupCondition)rightChild).getType();
+    }
+
+    /*
     System.out.println(this.getClass());
     if (this.children == null) return 1;
     for(int i = 0; i < this.children.length; i++) {
       //Se for um array dou return do valor que lá está
       if(((SimpleNode)this.children[i]).getClass() == ASTAcessArray.class)
-        return ((SimpleNode)this.children[1]).process();
-      ((SimpleNode)this.children[i]).process();
-    }
+        return ((SimpleNode)this.children[1]).process(className);
+      ((SimpleNode)this.children[i]).process(className);
+    }*/
     return 1;
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String getType() {
+    return type;
   }
 
 }

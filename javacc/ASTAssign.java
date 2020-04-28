@@ -27,7 +27,7 @@ class ASTAssign extends SimpleNode {
     child.process(className);
 
     Symbol symbolLeft = getSymbolFromTable(identifier);
-
+    System.out.println("ASTASSIGN LEFT TYPE: " + symbolLeft.type);
     if( !(symbolLeft.type.equals(Symbol.INT_ARRAY) ) ) {
       if (symbolLeft == null)
         throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared");
@@ -37,6 +37,7 @@ class ASTAssign extends SimpleNode {
       }
 
       SymbolVar var = (SymbolVar) symbolLeft;
+      
       var.initialize();
     }
     else {
@@ -64,8 +65,8 @@ class ASTAssign extends SimpleNode {
     // SimpleNode right = (SimpleNode)this.children[1];
     // int left_val;
     // int right_val;
-    // left.process(className);
-    // right.process(className);
+    // left.proces(className);
+    // right.proces(className);
 
 
 
@@ -95,18 +96,18 @@ class ASTAssign extends SimpleNode {
     // else 
     //   throw new RuntimeException("Variable in ASTAssign (" + identifier + ") not previous declared");
       
-    // int right_return = right.process(className);
+    // int right_return = right.proces(className);
 
     // if(symbol_obj!=null && symbol_obj.type.equals("boolean") && right_return != 0 && right_return != 1) {
     //   throw new RuntimeException("Afonso não gosta de falsos, se dizes que és bool, tens de ser");
     // }
     // else if(array_obj!=null && array_obj.type.equals("int[]")) {
     //   if(right.getClass() == ASTArray.class){
-    //     array_obj.initialize(right.process(className));
+    //     array_obj.initialize(right.proces(className));
     //   }
     //   else {
-    //     array_obj.assignValueToIndex(left.process(className), right.process(className));
-    //     System.out.println("Dei assign a " + left.process(className)  +" o valor " + right.process(className));
+    //     array_obj.assignValueToIndex(left.proces(className), right.proces(className));
+    //     System.out.println("Dei assign a " + left.proces(className)  +" o valor " + right.proces(className));
     //   }
     // }
     // else {
