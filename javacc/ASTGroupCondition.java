@@ -16,38 +16,10 @@ class ASTGroupCondition extends SimpleNode {
   public int process(String className) {
     SimpleNode leftChild = (SimpleNode)this.children[0];
     SimpleNode rightChild = (SimpleNode)this.children[1];
-    // SimpleNode parentNode = (SimpleNode)this.jjtGetParent();
-
-    // TIAGO
-
-    // if(!(rightChild instanceof ASTGroupCondition)) { // Final group condition
-
-    //   if (leftChild instanceof ASTAcessMethod){
-    //     ((ASTAcessMethod) leftChild).ast_identifier = this.type;
-    //   }
-
-    //   leftChild.process(className);
-
-    //   if (rightChild instanceof ASTAcessMethod){
-    //     ((ASTAcessMethod) rightChild).ast_identifier = leftChild.getType();
-    //   }
-
-    // } else { // theres more
-
-    //   leftChild.process(className);
-    //   ((ASTGroupCondition) rightChild).type = leftChild.getType(); // temporary type
-
-    // }
-
-    // rightChild.process(className);
-
-    // type = rightChild.getType();
-
-    // TIAGO
 
     if(!(rightChild instanceof ASTGroupCondition)) {
       if(leftChild instanceof ASTAcessMethod) {
-        ((ASTAcessMethod)rightChild).ast_identifier = ((ASTAcessMethod)leftChild).ast_method;
+        ((ASTAcessMethod)rightChild).ast_identifier = ((ASTAcessMethod)leftChild).getType();
       }
       rightChild.process(className);
       type = ((ASTAcessMethod)rightChild).getType();
@@ -67,7 +39,7 @@ class ASTGroupCondition extends SimpleNode {
       
       if(rightGrandChild instanceof ASTAcessMethod) {
         if(leftChild instanceof ASTAcessMethod) {
-          ((ASTAcessMethod)rightGrandChild).ast_identifier = ((ASTAcessMethod)leftChild).ast_method;
+          ((ASTAcessMethod)rightGrandChild).ast_identifier = ((ASTAcessMethod)leftChild).getType();
         }
       }
       parent.jjtAddChild((Node)rightGrandChild, 1);

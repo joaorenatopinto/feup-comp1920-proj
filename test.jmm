@@ -8,10 +8,11 @@ class Test extends TestClass {
 		int j;
 		int[] arr;
 		teste = new Test();
-		i = teste.ola().ola2().ola().oi(12, 5, true);
+		//teste.ola().ola2().ola().otario(12,12);
+		this.ola().ola2().otario(12,12);
 	}
 
-	public int oi(int renato, int afonso, boolean tiago) {
+	public int oi(int renato) {
 		int i;
 		int j;
 		i = 2;
