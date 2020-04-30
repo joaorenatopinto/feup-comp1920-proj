@@ -6,7 +6,8 @@ class Test{
 	public static void main(String[] args) {
 		int i;
 		int j;
+		joao = 2;
 		i = 5;
-		j = 2 / 2;
+		j = joao;
 	}
 }

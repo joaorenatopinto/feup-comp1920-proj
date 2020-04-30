@@ -36,5 +36,19 @@ class ASTIdentifier extends SimpleNode {
     return symbol.type;
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+
+    Symbol symbol = getSymbolFromTable(ast_value);
+    
+    if(symbol.id_jasmin != -1){ // If not in global scope
+      code += "iload " + symbol.id_jasmin + "\n";
+    } else {
+      code +=  "getfield " + className + "/" + ast_value + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
+    }
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=7e952cd1fd5beaef4dc07a9cecd7720b (do not edit this line) */

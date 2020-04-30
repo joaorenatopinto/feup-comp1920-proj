@@ -76,7 +76,11 @@ class ASTAssign extends SimpleNode {
 
     Symbol symbolLeft = getSymbolFromTable(identifier);
 
-    code += "istore " + symbolLeft.id_jasmin + "\n";
+    if(symbolLeft.id_jasmin != -1){ // If not in global scope
+      code += "istore " + symbolLeft.id_jasmin + "\n";
+    } else {
+      code +=  "putfield " + className + "/" + identifier + " " + SimpleNode.getTypeJasmin(symbolLeft.type) + "\n";
+    }
 
     return code;
   }
