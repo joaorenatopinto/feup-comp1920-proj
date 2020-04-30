@@ -9,9 +9,7 @@ ldc 2
 newarray int
 astore 3
 aload 3
-aload 3
 ldc 1
-iaload
 ldc 100
 iastore
 aload 3
@@ -38,5 +36,10 @@ return
 .end method
 
 ;getstatic java/lang/System.out Ljava/io/PrintStream;
-;iload 3
+;iload 2
 ;invokevirtual java/io/PrintStream.println(I)V
+
+
+
+
+
