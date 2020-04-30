@@ -6,8 +6,10 @@ class Test{
 	public static void main(String[] args) {
 		int i;
 		int j;
-		joao = 2;
-		i = 5;
-		j = joao;
+		int[] arroz;
+		arroz = new int[2];
+		arroz[1] = 100;
+		i = arroz[1];
+		j = i + 2;
 	}
 }

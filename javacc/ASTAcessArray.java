@@ -28,7 +28,7 @@ class ASTAcessArray extends SimpleNode {
       throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not an array");
     }
 
-    if (child.getType().equals(Symbol.INT)){
+    if (!child.getType().equals(Symbol.INT)){
       throw new RuntimeException("ASTAcessArray: index is not a Integer");
     }
     
@@ -45,6 +45,21 @@ class ASTAcessArray extends SimpleNode {
       return Symbol.INT;
 
     return "ERROR: weird type of array";
+  }
+
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+
+    Symbol symbol = getSymbolFromTable(ast_identifier);
+
+    code += "aload " + symbol.id_jasmin + "\n";
+
+    code += ((SimpleNode)this.children[0]).generateCode(className);
+
+    code += "iaload\n";
+
+    return code;
   }
 
 }

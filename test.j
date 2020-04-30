@@ -1,15 +1,26 @@
 .class public Test
 .super java/lang/Object
 
-.field static joao I
+.field public joao I
 .method static public main([Ljava/lang/String;)V
 .limit stack 99
 .limit locals 99
-bipush 2
-putstatic Test/joao I
-ldc 5
+ldc 2
+newarray int
+astore 3
+aload 3
+aload 3
+ldc 1
+iaload
+ldc 100
+iastore
+aload 3
+ldc 1
+iaload
 istore 1
-getstatic Test/joao I
+iload 1
+ldc 2
+iadd
 istore 2
 
 getstatic java/lang/System.out Ljava/io/PrintStream;

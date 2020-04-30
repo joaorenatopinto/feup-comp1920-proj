@@ -20,5 +20,16 @@ class ASTArray extends SimpleNode {
     return Symbol.INT_ARRAY; // TODO boolean array?
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+
+    code += ((SimpleNode)this.children[0]).generateCode(className);
+
+    code += "newarray int\n";
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=dfd7c194a9e81f0ae42693455694e768 (do not edit this line) */

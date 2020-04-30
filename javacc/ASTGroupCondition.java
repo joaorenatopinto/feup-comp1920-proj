@@ -22,7 +22,7 @@ class ASTGroupCondition extends SimpleNode {
         ((ASTAcessMethod)rightChild).ast_identifier = ((ASTAcessMethod)leftChild).getType();
       }
       rightChild.process(className);
-      type = ((ASTAcessMethod)rightChild).getType();
+      type = rightChild.getType();
     }
     else {
       SimpleNode rightGrandChild = (SimpleNode)rightChild.children[0];
@@ -60,6 +60,17 @@ class ASTGroupCondition extends SimpleNode {
 
   public String getType() {
     return type;
+  }
+
+  public String generateCode(String className){ // TODO
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 1; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    return code;
   }
 
 }
