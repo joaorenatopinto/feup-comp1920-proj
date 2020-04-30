@@ -48,5 +48,37 @@ class ASTClassDeclaration extends SimpleNode {
     return 1;
   }
 
+  public String generateCode(String className) {
+
+    String code = "";
+
+    code += ".class public " + ast_id + "\n";
+
+    String extend = (ast_ext != null ? ast_ext : "java/lang/Object");
+
+    code += ".super " + extend + "\n\n";
+
+
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(ast_id);
+      }
+
+
+    code += "; standard initializer\n";
+    code += ".method public <init>()V\n";
+    code += "aload_0\n";
+
+    if (ast_ext == null)
+      code += "invokenonvirtual java/lang/Object/<init>()V\n";
+    else
+      code += "invokespecial " + extend + "/<init>()V\n";
+
+    code += "return\n";
+    code += ".end method\n\n";
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=4add34b7f2166641d417a72fcd82c2ee (do not edit this line) */

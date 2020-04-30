@@ -89,5 +89,18 @@ class ASTMul extends SimpleNode {
     return Symbol.INT;
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "imul\n";
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=527e8cfe6da7f441329c9e9dfcd06281 (do not edit this line) */

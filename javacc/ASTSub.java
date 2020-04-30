@@ -31,5 +31,18 @@ class ASTSub extends SimpleNode {
     return Symbol.INT;
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "isub\n";
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=eddc764b75eee724cb26e25a44bb7deb (do not edit this line) */

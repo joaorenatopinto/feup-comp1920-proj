@@ -28,5 +28,40 @@ class ASTVarDeclaration extends SimpleNode {
     return 1;
   }
 
+  public String generateCode(String className){
+    
+    String code = "";
+
+    if (this.parent instanceof ASTClassDeclaration) {
+      code += ".field public " + ast_id + " " + SimpleNode.getTypeJasmin(ast_type) + "\n";
+    }
+
+    /*
+    i = 10; {
+      bipush 10
+      istore_0
+    }
+
+    i = i * 5 {
+      iload_0
+      iconst_5
+      mul
+      istore 1
+    }
+    */
+
+
+    // if (node.children != null) {
+    //     for (int i = 0; i < node.children.length; ++i) {
+    //         SimpleNode n = (SimpleNode) node.children[i];
+    //         if (n != null) {
+    //             out += n.accept(this);
+    //         }
+    //     }
+    // }
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=5159ccc9095207e91ac101c5c6843086 (do not edit this line) */

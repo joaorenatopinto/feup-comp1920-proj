@@ -9,6 +9,8 @@ abstract class Symbol {
     String identifier;
     String type; 
 
+    int id_jasmin = -1;
+
     public Symbol(String identifier, String type) {
         this.identifier = identifier;
         this.type = type;

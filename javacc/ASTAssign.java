@@ -60,65 +60,25 @@ class ASTAssign extends SimpleNode {
     }
     
     return 1;
-
-    // SimpleNode left = (SimpleNode)this.children[0];
-    // SimpleNode right = (SimpleNode)this.children[1];
-    // int left_val;
-    // int right_val;
-    // left.proces(className);
-    // right.proces(className);
-
-
-
-    // SimpleNode left = null;
-    // SimpleNode right = null;
-    
-    // if(this.children.length == 2) {
-    //   left = ((SimpleNode)this.children[0]);
-    //   right = ((SimpleNode)this.children[1]);
-    // }
-    // else {
-    //   right = ((SimpleNode)this.children[0]);
-    // }
-
-    // Symbol symbol_obj = null;
-    // SymbolArray array_obj = null;
- 
-    // System.out.println(identifier);
-    // if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(identifier) != null)
-    //   symbol_obj = SemanticProcessor.methods_symbols_table.get(identifier);
-    // else if (SemanticProcessor.insideMethod && SemanticProcessor.methods_arrays_table.get(identifier) != null)
-    //   array_obj = SemanticProcessor.methods_arrays_table.get(identifier);
-    // else if (SemanticProcessor.symbols_table.get(identifier) != null)
-    //   symbol_obj = SemanticProcessor.symbols_table.get(identifier);
-    // else if (SemanticProcessor.arrays_table.get(identifier) != null)
-    //   array_obj = SemanticProcessor.arrays_table.get(identifier);
-    // else 
-    //   throw new RuntimeException("Variable in ASTAssign (" + identifier + ") not previous declared");
-      
-    // int right_return = right.proces(className);
-
-    // if(symbol_obj!=null && symbol_obj.type.equals("boolean") && right_return != 0 && right_return != 1) {
-    //   throw new RuntimeException("Afonso não gosta de falsos, se dizes que és bool, tens de ser");
-    // }
-    // else if(array_obj!=null && array_obj.type.equals("int[]")) {
-    //   if(right.getClass() == ASTArray.class){
-    //     array_obj.initialize(right.proces(className));
-    //   }
-    //   else {
-    //     array_obj.assignValueToIndex(left.proces(className), right.proces(className));
-    //     System.out.println("Dei assign a " + left.proces(className)  +" o valor " + right.proces(className));
-    //   }
-    // }
-    // else {
-    //   symbol_obj.initialize(right_return);
-    // }
-
-    // return 1;
   }
 
   public String getNodeType() {
     return this.getClass().toString();
+  }
+
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      } 
+
+    Symbol symbolLeft = getSymbolFromTable(identifier);
+
+    code += "istore " + symbolLeft.id_jasmin + "\n";
+
+    return code;
   }
 
 }

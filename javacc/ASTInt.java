@@ -21,5 +21,14 @@ class ASTInt extends SimpleNode {
     return Symbol.INT;
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+
+    code += "ldc " + ast_value + "\n";
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=bb1b1031a7ba96402230e94bfa7be433 (do not edit this line) */

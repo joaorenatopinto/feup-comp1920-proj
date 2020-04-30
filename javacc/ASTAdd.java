@@ -15,8 +15,7 @@ class ASTAdd extends SimpleNode {
 
     SimpleNode left = (SimpleNode)this.children[0];
     SimpleNode right = (SimpleNode)this.children[1];
-    // int left_val;
-    // int right_val;
+
     left.process(className);
     right.process(className);
 
@@ -25,74 +24,23 @@ class ASTAdd extends SimpleNode {
     }
     
     return 1;
-
-
-    // //SimpleNode left = (SimpleNode)this.children[0];
-    // //SimpleNode right = (SimpleNode)this.children[1];
-    // int left_val;
-    // int right_val;
-
-    // if(this.children[0].getClass().equals(ASTIdentifier.class)) {
-    //   Symbol left_sym;
-    //   ASTIdentifier left = (ASTIdentifier)this.children[0];
-    //   if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(left.ast_value) != null) {
-    //     left_sym = SemanticProcessor.methods_symbols_table.get(left.ast_value);
-    //   }
-    //   else if(SemanticProcessor.symbols_table.get(left.ast_value) != null) {
-    //     left_sym = SemanticProcessor.symbols_table.get(left.ast_value);
-    //   }
-    //   else throw new RuntimeException("Variable in ASTAdd not previous declared (" + left.ast_value + ")");
-      
-
-    //   if (left_sym.type.equals("int")) {
-    //     if (left_sym.init) {
-    //       left_val = left_sym.value;
-    //     } else throw new RuntimeException("Variable " + left.ast_value + " was not initialized");
-    //   } else throw new RuntimeException("Left child (" + left.ast_value + ") in ASTLess is not an Integer");
-    // } else if(this.children[0].getClass().equals(ASTAcessArray.class)){
-    //   System.out.println("Vou buscar ao array");
-    //   ASTAcessArray left = (ASTAcessArray)this.children[0];
-    //   left_val = left.process(className);
-    // }
-    // else {
-    //   SimpleNode left = (SimpleNode)this.children[0];
-    //   left_val = left.process(className);
-    // }
-    // System.out.println("AQUIIIIIIIIII: " + this.children[1].getClass());
-    // if(this.children[1].getClass().equals(ASTIdentifier.class)) {
-    //   Symbol right_sym;
-    //   ASTIdentifier right = (ASTIdentifier)this.children[1];
-    //   if (SemanticProcessor.insideMethod && SemanticProcessor.methods_symbols_table.get(right.ast_value) != null) {
-    //     right_sym = SemanticProcessor.methods_symbols_table.get(right.ast_value);
-    //   }
-    //   else if(SemanticProcessor.symbols_table.get(right.ast_value) != null) {
-    //     right_sym = SemanticProcessor.symbols_table.get(right.ast_value);
-    //   }
-    //   else throw new RuntimeException("Variable in ASTIdentifier not previous declared");
-
-    //   if (right_sym.type.equals("int")) {
-    //     if (right_sym.init) {
-    //       right_val = right_sym.value;
-    //     }else throw new RuntimeException("Variable " + right.ast_value + " was not initialized");
-    //   }
-    //   else
-    //     throw new RuntimeException("Right child (" + right.ast_value + ") in ASTLess is not an Integer");
-    // } else if(this.children[1].getClass().equals(ASTAcessArray.class)){
-    //   System.out.println("Vou buscar ao array");
-    //   ASTAcessArray right = (ASTAcessArray)this.children[1];
-    //   right_val = right.process(className);
-    // }
-    // else{
-    //   SimpleNode right = (SimpleNode)this.children[1];
-    //   right_val = right.process(className);
-    // } 
-    
-
-    // return left_val + right_val;
   }
 
   public String getType(){
     return Symbol.INT;
+  }
+
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "iadd\n";
+
+    return code;
   }
 
 }

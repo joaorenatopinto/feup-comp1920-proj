@@ -8,14 +8,18 @@ class ASTMethod extends SimpleNode {
   public String ast_id;
   public String ast_type;
 
+  public int id_variables_jasmin;
+
   public HashMap<String, Symbol> symbols_table = new HashMap<String, Symbol>();
 
   public ASTMethod(int id) {
     super(id);
+    id_variables_jasmin = 1;
   }
 
   public ASTMethod(Compiler p, int id) {
     super(p, id);
+    id_variables_jasmin = 1;
   }
 
   @Override
@@ -54,8 +58,37 @@ class ASTMethod extends SimpleNode {
     System.out.println("!");
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+
+  public String generateCode(String className){
+
+    String code = ".method public " + ast_id + "(";
+
+    List<String> args = new ArrayList<>();
+    if(((SimpleNode)this.children[0]).children != null) {
+      for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+        ASTArg arg = (ASTArg)((SimpleNode)(this.children[0])).children[j];
+        String type = arg.ast_type;
+        args.add(type);
+      }
+    }
+
+    for (int i = 0; i < args.size(); i++){
+      code += args.get(i);
+    }
+
+    code += ")" + SimpleNode.getTypeJasmin(ast_type) + "\n";
+
+    code += ".limit stack 99\n";
+    code += ".limit locals 99\n";
+
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "return\n.end method\n\n";
+
+    return code;
   }
   
 }

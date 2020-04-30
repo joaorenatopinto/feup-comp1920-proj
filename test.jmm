@@ -1,76 +1,12 @@
-import TestClass.otario(int, int) void;
-import TestClass;
+//import TestClass.otario(int, int) void;
+//import TestClass;
 
-class Test extends TestClass {
-	public static void main(String[] args) {
-		Test teste;
-		int i;
-		int j;
-		int[] arr;
-		teste = new Test();
-		//teste.ola().ola2().ola().otario(12,12);
-		this.ola().ola2().otario(12,12);
-	}
-
-	public int oi(int renato) {
-		int i;
-		int j;
-		i = 2;
-		j = i - 5;
-		i = renato + 5;
-		return 12;
-	}
-
-	public int[] rarr() {
-		int[] arr;
-		arr = new int[5];
-		return arr;
-	}
-
-	public Test ola() {
-		return new Test();
-	}
-
-
-	public Test ola2() {
-		return new Test();
-	}
-}
-
-/* import Burro.oi(int, boolean) Burro;
-
-class HelloWorld {
+class Test{
+	int joao;
 	public static void main(String[] args) {
 		int i;
 		int j;
-		int tu;
-		int z;
-		HelloWorld will;
-		int[] arrayzinhoGiro;
-		boolean renato;
-		boolean otario;
-		boolean renato_e_otario;
-		arrayzinhoGiro = new int[5];
-		arrayzinhoGiro.length;
-		will = new HelloWorld();
-		arrayzinhoGiro[2] = 4 + 5;
-    	i = 3 + 4;
-		i = i + 5;
-		j = i + 1;
-		tu = j / 2;
-		will.oi();
-		z = j * 4;
-		renato = false;
-		otario = true;
-		renato_e_otario = renato && otario;
-	}
-
-	public int oi(){
-		return 1;
-	}
-
-	public int ola(){
-		return 1;
+		i = 5;
+		j = 2 / 2;
 	}
 }
-*/

@@ -163,6 +163,7 @@ class SimpleNode implements Node {
           throw new RuntimeException(symbol.identifier + " already has been initialized");
         
           
+        symbol.id_jasmin = ((ASTMethod)node).id_variables_jasmin++;
 
         ((ASTMethod)node).symbols_table.put(id, symbol);
       
@@ -173,6 +174,8 @@ class SimpleNode implements Node {
         Symbol prev = ((ASTMain)node).symbols_table.get(symbol.identifier);
         if (prev != null)
           throw new RuntimeException(symbol.identifier + " already has been initialized");
+
+        symbol.id_jasmin = ((ASTMain)node).id_variables_jasmin++;
 
         ((ASTMain)node).symbols_table.put(id, symbol);
         
@@ -205,6 +208,37 @@ class SimpleNode implements Node {
       node = (SimpleNode) node.parent;
     }
     return false;
+  }
+
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    return code;
+  }
+
+  public static String getTypeJasmin(String type){
+
+      switch (type) {
+        case "void":
+          return "V";
+        case "bool":
+          return "Z";
+        case "int":
+          return "I";
+        case "int[]":
+          return "[I";
+        /*case "String":
+          return "Ljava/lang/String;";
+        case "String[]":
+          return "[Ljava/lang/String;";*/
+      }
+  
+      return "ERROR";
   }
 }
 

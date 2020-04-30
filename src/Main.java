@@ -14,6 +14,7 @@ public class Main {
         	
 		root.dump(""); // prints the tree on the screen
         SemanticProcessor processor = new SemanticProcessor(root);
+        CodeGenerator codeGenerator = new CodeGenerator(root);
 		// System.out.println("Expression value: "+Main.eval(root));
 		
 		}catch(Exception e) {

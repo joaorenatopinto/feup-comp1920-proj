@@ -8,12 +8,16 @@ class ASTMain extends SimpleNode {
 
   public HashMap<String, Symbol> symbols_table = new HashMap<String, Symbol>();
 
+  public int id_variables_jasmin;
+
   public ASTMain(int id) {
     super(id);
+    id_variables_jasmin = 1;
   }
 
   public ASTMain(Compiler p, int id) {
     super(p, id);
+    id_variables_jasmin = 1;
   }
 
   @Override
@@ -34,8 +38,21 @@ class ASTMain extends SimpleNode {
     putSymbolInTable(new SymbolMethod("Main", "void", className, args));
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String generateCode(String className){
+
+    String code = ".method static public main([Ljava/lang/String;)V\n";
+
+    code += ".limit stack 99\n";
+    code += ".limit locals 99\n";
+
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "return\n.end method\n\n";
+
+    return code;
   }
 
 }
