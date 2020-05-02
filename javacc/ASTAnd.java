@@ -19,7 +19,7 @@ public class ASTAnd extends SimpleNode {
     right.process(className);
 
     if (!left.getType().equals(Symbol.BOOLEAN) || !right.getType().equals(Symbol.BOOLEAN)){
-      throw new RuntimeException("ASTAnd is not a Boolean");
+      throw new RuntimeException("ASTAnd is not a Boolean"+ "\nLine: " + this.line + "; Col: " + this.column);
     }
     
     return 1;

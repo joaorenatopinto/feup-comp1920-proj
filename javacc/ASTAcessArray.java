@@ -21,15 +21,15 @@ class ASTAcessArray extends SimpleNode {
     Symbol symbol = getSymbolFromTable(ast_identifier);
     
     if (symbol == null)
-      throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not previous declared");
+      throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not previous declared" + "\nLine: " + this.line + "; Col: " + this.column);
 
     if( !symbol.type.equals(Symbol.INT_ARRAY) ) { 
       
-      throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not an array");
+      throw new RuntimeException("ASTAcessArray: " + ast_identifier + " is not an array" + "\nLine: " + this.line + "; Col: " + this.column);
     }
 
     if (!child.getType().equals(Symbol.INT)){
-      throw new RuntimeException("ASTAcessArray: index is not a Integer");
+      throw new RuntimeException("ASTAcessArray: index is not a Integer" + "\nLine: " + this.line + "; Col: " + this.column);
     }
     
     return 1;

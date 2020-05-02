@@ -22,7 +22,7 @@ class ASTObject extends SimpleNode {
     Symbol symbol = getSymbolFromTable(ast_identifier);
 
     if (symbol == null || !(symbol instanceof SymbolClass) ){
-      throw new RuntimeException("STObject no class with name " + ast_identifier + " declared");
+      throw new RuntimeException("STObject no class with name " + ast_identifier + " declared" + "\nLine: " + this.line + "; Col: " + this.column);
     }
 
     System.out.println(this.getClass());

@@ -119,6 +119,12 @@ TOKEN:
     | < RPARENTHESIS: ")" >
     | < LBRACKET: "{" >
     | < RBRACKET: "}" >
+    | < PLUS: "+" >
+    | < MINUS: "-" >
+    | < MULT: "*" >
+    | < DIV: "/" >
+    | < AND: "&&" >
+    | < LESS: "<" >
     | < IDENTIFIER: ( (["$"]|["_"]|["A"-"Z"]|["a"-"z"])(["$"]|["0"-"9"]|["A"-"Z"]|["a"-"z"]|["_"])*) >
     
 }
@@ -141,7 +147,7 @@ void Imports() : {}
 void ImportDeclaration() : {Token t;}
 {
     //"import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
-    "import" ["static" { jjtThis.isStatic=true; } ] t=<IDENTIFIER>{jjtThis.ast_className=t.image;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;}] ([<LPARENTHESIS> [ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;}} ]) ";"
+    "import" ["static" { jjtThis.isStatic=true;} ] t=<IDENTIFIER>{jjtThis.ast_className=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}] ([<LPARENTHESIS> [ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}} ]) ";"
 }
 
 void ImportArgs(): {}
@@ -156,12 +162,12 @@ void ImportArg(): {Token t;}
 
 void ClassDeclaration() : {Token t1; Token t2;}
 {
-    "class" t1=<IDENTIFIER> [ "extends" t2=<IDENTIFIER> {jjtThis.ast_ext = t2.image;} ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}" {jjtThis.ast_id = t1.image;}
+    "class" t1=<IDENTIFIER> [ "extends" t2=<IDENTIFIER> {jjtThis.ast_ext = t2.image; jjtThis.line = t2.beginLine; jjtThis.column = t2.beginColumn;} ] "{" ( VarDeclaration() )* ( MethodDeclaration() )* "}" {jjtThis.ast_id = t1.image; jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
 }
 
 void VarDeclaration() : {Token t1; Token t2;}
 {
-    t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image;}
+    t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image; jjtThis.line = t2.beginLine; jjtThis.column = t2.beginColumn;}
 }
 
 void Main() : {Token t1; Token t2;}
@@ -174,6 +180,7 @@ void Method () : {Token t1; Token t2;}
     "public" t2=Type() t1=<IDENTIFIER> "(" [ MethodArgs() ] ")" "{" ( LOOKAHEAD(2) VarDeclaration() )* ( Statement() )* "return" Cal1() ";" "}" {
         jjtThis.ast_id = t1.image;
         jjtThis.ast_type = t2.image;
+        jjtThis.line = t2.beginLine; jjtThis.column = t2.beginColumn;
     }   
 }
 
@@ -191,7 +198,7 @@ void MethodArgs() : {}
 
 void Arg() : {Token t1; Token t2;}
 {
-    t1=Type() t2=<IDENTIFIER> {jjtThis.ast_type = t1.image; jjtThis.ast_id = t2.image;}
+    t1=Type() t2=<IDENTIFIER> {jjtThis.ast_type = t1.image; jjtThis.ast_id = t2.image;jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
 }
 
 Token Type() #void: {Token t1;}
@@ -213,8 +220,8 @@ void Statement() : {Token t1;}
 
 void Assign() : {Token t1; Token t2;}
 {
-    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" /*{ jjtThis.ast_identifier = t1.image; } #AcessArray(1)*/ "=" Cal1() ";" {jjtThis.identifier = t1.image;}
-    | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";" {jjtThis.identifier = t1.image;}
+    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" /*{ jjtThis.ast_identifier = t1.image; } #AcessArray(1)*/ "=" Cal1() ";" {jjtThis.identifier = t1.image;jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
+    | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";" {jjtThis.identifier = t1.image;jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
 }
 
 void While() : {} {
@@ -227,37 +234,37 @@ void While() : {} {
      Statement()
 }
 
-void Cal1() #void: {} { 
+void Cal1() #void: {Token t;} { 
     Cal2()
     (
-        LOOKAHEAD(2) "&&" Cal2() #And(2)
+        LOOKAHEAD(2) t=<AND> Cal2() { jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}#And(2)
     )*
 }
  
-void Cal2() #void: {} { 
+void Cal2() #void: {Token t;} { 
     Cal3()
     (
-        LOOKAHEAD(2) "<" Cal3() #Less(2)
+        LOOKAHEAD(2) t=<LESS> Cal3() { jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}#Less(2)
     )*
 }
 
 
-void Cal3() #void: {} {
+void Cal3() #void: {Token t;} {
     Cal4() 
     (
         LOOKAHEAD(2) ( 
-            "+" Cal4() #Add(2)
-            | "-" Cal4() #Sub(2)
+            t=<PLUS> Cal4() { jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}#Add(2)
+            | t=<MINUS> Cal4() { jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}#Sub(2)
         )
     )*
 }
 
-void Cal4() #void: {} {
+void Cal4() #void: {Token t;} {
     Cal5()
     (
         LOOKAHEAD(2) ( 
-            "*" Cal5() #Mul(2)
-            | "/" Cal5() #Div(2) 
+            t=<MULT> Cal5() { jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;} #Mul(2)
+            | t=<DIV> Cal5() { jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;} #Div(2) 
         )
     )*
 }
@@ -272,33 +279,46 @@ void Cal5() #void: {} {
 void Expression() #void : {Token t1=null; String identifier;}
 {
     (
-    t1=<INTEGER>  { jjtThis.ast_value = Integer.parseInt(t1.image); } #Int
-    | <TRUE> { jjtThis.ast_value = true; } #Bool
-    | <FALSE> { jjtThis.ast_value = false; } #Bool
-    | t1=<IDENTIFIER> { jjtThis.ast_value = t1.image; } #Identifier 
-    | "this" #This
+    t1=<INTEGER>  { jjtThis.ast_value = Integer.parseInt(t1.image);} #Int
+    | <TRUE> { jjtThis.ast_value = true;} #Bool
+    | <FALSE> { jjtThis.ast_value = false;} #Bool
+    | t1=<IDENTIFIER> { jjtThis.ast_value = t1.image; jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Identifier 
+    | t1=<THIS> { jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}#This
     | "new" (   
-        "int" "[" Cal1() "]" #Array(1)
-        | t1=<IDENTIFIER> "(" ")" { jjtThis.ast_identifier = t1.image; } #Object
+        t1=<INT> "[" Cal1() "]" {jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Array(1)
+        | t1=<IDENTIFIER> "(" ")" { jjtThis.ast_identifier = t1.image; jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Object
     ) 
     | "!" Cal1() #Neg(1)
-    ) { if(t1==null) identifier="none"; else identifier = t1.image; }
-    [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
+    ) { if(t1==null) 
+            identifier="none"; 
+        else {
+            identifier = t1.image; 
+        }
+      }
+    [LOOKAHEAD(2) Expression_aux(t1) #GroupCondition(2)]
 }
 
-void Expression_aux(String identifier) #void : {}
+void Expression_aux(Token t) #void : {String identifier=null;}
 { 
-    "[" Cal1() "]" { jjtThis.ast_identifier = identifier; } #AcessArray(1) [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)] 
+    {
+    if (t == null) identifier = "none";
+    else identifier = t.image;}
+    
+    "[" Cal1() "]" { if (t != null) { jjtThis.ast_identifier = t.image; jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}
+        else jjtThis.ast_identifier = "none";
+    }
+     #AcessArray(1) [LOOKAHEAD(2) Expression_aux(t) #GroupCondition(2)] 
     | "." (
-        "length" #Length [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
-        | AcessMethod(identifier) [LOOKAHEAD(2) Expression_aux(identifier) #GroupCondition(2)]
+        "length" {if (t != null) {jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}
+    } #Length [LOOKAHEAD(2) Expression_aux(t) #GroupCondition(2)]
+        | AcessMethod(identifier) [LOOKAHEAD(2) Expression_aux(t) #GroupCondition(2)]
     )
 }
 
 
-void AcessMethod(String identifier) : { Token t; jjtThis.ast_identifier = identifier; }
+void AcessMethod(String identifier) : { Token t; jjtThis.ast_identifier = identifier;}
 {
-    t=<IDENTIFIER> "(" [ Arguments() ] ")" { jjtThis.ast_method = t.image; }
+    t=<IDENTIFIER> "(" [ Arguments() ] ")" { jjtThis.ast_method = t.image; jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}
 }
 
 

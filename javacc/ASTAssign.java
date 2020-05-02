@@ -30,10 +30,10 @@ class ASTAssign extends SimpleNode {
     System.out.println("ASTASSIGN LEFT TYPE: " + symbolLeft.type);
     if( !(symbolLeft.type.equals(Symbol.INT_ARRAY) ) ) {
       if (symbolLeft == null)
-        throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared");
+        throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared"+ "\nLine: " + this.line + "; Col: " + this.column);
 
       if (!child.getType().equals(symbolLeft.type)){
-        throw new RuntimeException("ASTAssign is not equal (" + symbolLeft.type + ", " + child.getType() + ")");
+        throw new RuntimeException("ASTAssign is not equal (" + symbolLeft.type + ", " + child.getType() + ")"+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
       SymbolVar var = (SymbolVar) symbolLeft;
@@ -45,17 +45,17 @@ class ASTAssign extends SimpleNode {
       
       if( child.getType().equals(Symbol.INT_ARRAY) ) { // se estiver a ser inicializado
         if( var.isInitialized )
-          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") already had been initialized.");
+          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") already had been initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
         else
           var.initialize();
       }
       else if ( var.isInitialized ) { // se estiver inicializado
         if( !child.getType().equals(Symbol.INT) ) { // se nao for int
-          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") can only store int types.");
+          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") can only store int types."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
       }
       else { // se n estiver inicializado
-        throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") has not been initialized.");
+        throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") has not been initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
       }
     }
     

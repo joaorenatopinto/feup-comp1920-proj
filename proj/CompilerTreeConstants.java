@@ -25,7 +25,7 @@ public interface CompilerTreeConstants
   public int JJTDIV = 21;
   public int JJTINT = 22;
   public int JJTBOOL = 23;
-  public int JJTTHIS = 24;
+  public int jjtThis = 24;
   public int JJTARRAY = 25;
   public int JJTOBJECT = 26;
   public int JJTNEG = 27;

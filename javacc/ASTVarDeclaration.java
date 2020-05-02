@@ -19,11 +19,11 @@ class ASTVarDeclaration extends SimpleNode {
     System.out.println(ast_type);
 
     if(!ast_type.equals(Symbol.INT) && !ast_type.equals(Symbol.INT_ARRAY) && !ast_type.equals(Symbol.BOOLEAN) && !(getSymbolFromTable(ast_type) instanceof SymbolClass)) {
-      throw new RuntimeException("No valid type for variable " + ast_id);
+      throw new RuntimeException("No valid type for variable " + ast_id + "\nLine: " + this.line + "; Col: " + this.column);
     } 
     
     if (!putSymbolInTable(new SymbolVar(ast_id, ast_type)))
-      throw new RuntimeException("Couldn't put symbol (" + ast_id + ", " + ast_type + ") in symbols table");
+      throw new RuntimeException("Couldn't put symbol (" + ast_id + ", " + ast_type + ") in symbols table" + "\nLine: " + this.line + "; Col: " + this.column);
     
     return 1;
   }
@@ -35,31 +35,6 @@ class ASTVarDeclaration extends SimpleNode {
     if (this.parent instanceof ASTClassDeclaration) {
       code += ".field public " + ast_id + " " + SimpleNode.getTypeJasmin(ast_type) + "\n";
     }
-
-    /*
-    i = 10; {
-      bipush 10
-      istore_0
-    }
-
-    i = i * 5 {
-      iload_0
-      iconst_5
-      mul
-      istore 1
-    }
-    */
-
-
-    // if (node.children != null) {
-    //     for (int i = 0; i < node.children.length; ++i) {
-    //         SimpleNode n = (SimpleNode) node.children[i];
-    //         if (n != null) {
-    //             out += n.accept(this);
-    //         }
-    //     }
-    // }
-
     return code;
   }
 

@@ -16,8 +16,16 @@ class ASTThis extends SimpleNode {
   public int process(String className) {
     curClass = className;
 
+    SimpleNode node = (SimpleNode) this.parent;
+    while (node != null){
+      if (node instanceof ASTMain){
+        throw new RuntimeException("This cant be used in a static context" + "\nLine: " + this.line + "; Col: " + this.column);
+      }  
+      node = (SimpleNode) node.parent;
+    }
+
     if (curClass == null)
-      throw new RuntimeException("This cant be used in this context");
+      throw new RuntimeException("This cant be used in this context" + "\nLine: " + this.line + "; Col: " + this.column);
 
     System.out.println(this.getClass());
     if (this.children == null) return 1;

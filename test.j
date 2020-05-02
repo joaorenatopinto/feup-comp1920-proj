@@ -13,9 +13,11 @@ ldc 1
 ldc 100
 iastore
 istore 1
-iload 1
+aload 3
+ldc 1
+iaload
 ldc 2
-iadd
+imul
 istore 2
 return
 .end method

@@ -23,7 +23,7 @@ class ASTIf extends SimpleNode {
     }
 
     if (!child.getType().equals(Symbol.BOOLEAN)){
-      throw new RuntimeException("ASTIf is not a Boolean");
+      throw new RuntimeException("ASTIf is not a Boolean" + "\nLine: " + this.line + "; Col: " + this.column);
     }
     
     return 1;

@@ -7,12 +7,8 @@ class Test{
 		int i;
 		int j;
 		int[] arroz;
-		arroz = new int[2];
-		arroz[1] = 100;
-		i = new Test().ola().length;
-		j = i + 2;
+		this.ola();
 	}
-
 	public int[] ola(){
 		int[] oi;
 		oi = new int[4];

@@ -35,7 +35,7 @@ class ASTMethod extends SimpleNode {
 
     if (!((SimpleNode)this.children[this.children.length-1]).getType().equals(ast_type)){
       throw new RuntimeException("ASTMethod return type does not match (" + 
-      ((SimpleNode)this.children[this.children.length-1]).getType() + ", " + ast_type + ")");
+      ((SimpleNode)this.children[this.children.length-1]).getType() + ", " + ast_type + ")" + "\nLine: " + this.line + "; Col: " + this.column);
     }
 
     return 1;

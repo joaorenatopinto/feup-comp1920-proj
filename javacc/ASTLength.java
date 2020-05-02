@@ -22,14 +22,15 @@ class ASTLength extends SimpleNode {
     if(bro instanceof ASTIdentifier) {
       Symbol symb = getSymbolFromTable(((ASTIdentifier)bro).ast_value);
       if(!symb.type.equals(Symbol.INT_ARRAY)){
-        throw new RuntimeException(((ASTIdentifier)bro).ast_value + " is not a array (length check)");
-      }
+        throw new RuntimeException(((ASTIdentifier)bro).ast_value + " is not a array (length check)" + "\nLine: " + this.line + "; Col: " + this.column);
+      } else if (!(((SymbolVar)symb).isInitialized))
+          throw new RuntimeException(((ASTIdentifier)bro).ast_value + " is not initialized" + "\nLine: " + this.line + "; Col: " + this.column);
     } else if (bro instanceof ASTAcessMethod){
       ASTAcessMethod broo = ((ASTAcessMethod) bro);
       if(!broo.returnType.equals(Symbol.INT_ARRAY)){
-        throw new RuntimeException(broo.ast_method + " doesn't return a array (length check) returns " + broo.returnType);
+        throw new RuntimeException(broo.ast_method + " doesn't return a array (length check) returns " + broo.returnType + "\nLine: " + this.line + "; Col: " + this.column);
       }
-    }
+    } else throw new RuntimeException("Doesn't have property length" + "\nLine: " + this.line + "; Col: " + this.column);
 
 
     return 1;

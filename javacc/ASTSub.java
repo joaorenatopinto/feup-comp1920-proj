@@ -21,7 +21,7 @@ class ASTSub extends SimpleNode {
     right.process(className);
 
     if (!left.getType().equals(Symbol.INT) || !right.getType().equals(Symbol.INT)){
-      throw new RuntimeException("ASTSub is not a Integer (" + left.getType() + ", " + right.getType() + ")");
+      throw new RuntimeException("ASTSub is not a Integer (" + left.getType() + ", " + right.getType() + ")" + "\nLine: " + this.line + "; Col: " + this.column);
     }
     
     return 1;

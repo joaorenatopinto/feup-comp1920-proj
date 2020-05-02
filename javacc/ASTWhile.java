@@ -24,7 +24,7 @@ class ASTWhile extends SimpleNode {
     }
 
     if (!child.getType().equals(Symbol.BOOLEAN)){
-      throw new RuntimeException("ASTWhile is not a Boolean");
+      throw new RuntimeException("ASTWhile is not a Boolean" + "\nLine: " + this.line + "; Col: " + this.column);
     }
     
     return 1;

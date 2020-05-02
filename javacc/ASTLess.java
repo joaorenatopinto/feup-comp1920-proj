@@ -23,7 +23,7 @@ class ASTLess extends SimpleNode {
     right.process(className);
 
     if (!left.getType().equals(Symbol.INT) || !right.getType().equals(Symbol.INT)){
-      throw new RuntimeException("ASTLess is not a Integer");
+      throw new RuntimeException("ASTLess is not a Integer" + "\nLine: " + this.line + "; Col: " + this.column);
     }
     
     return 1;

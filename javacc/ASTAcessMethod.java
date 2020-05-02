@@ -47,14 +47,14 @@ class ASTAcessMethod extends SimpleNode {
         Symbol parentClass = getSymbolFromTable(className);
 
         if (parentClass == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
 
         if (!(parentClass instanceof SymbolClass)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         if (((SymbolClass)parentClass).ext == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
           
           
         id_method_table = SimpleNode.createId(((SymbolClass)parentClass).ext.identifier, ast_method, argsType);
@@ -67,7 +67,7 @@ class ASTAcessMethod extends SimpleNode {
         SymbolMethod symbolMethod = (SymbolMethod)method;
 
         if (!((SymbolClass)parentClass).ext.identifier.equals(symbolMethod.className)) {
-          throw new RuntimeException("Object " + ast_identifier + "(" + ast_identifier + ")" + " doesn't have " + ast_method + " method.");
+          throw new RuntimeException("Object " + ast_identifier + "(" + ast_identifier + ")" + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         returnType = symbolMethod.type;
@@ -75,13 +75,13 @@ class ASTAcessMethod extends SimpleNode {
       } else {
 
         if (!(method instanceof SymbolMethod)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         SymbolMethod thisSymbolMethod = (SymbolMethod)method;
 
         if(!ast_identifier.equals(thisSymbolMethod.className)) {
-          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier);
+          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         returnType = thisSymbolMethod.type;
@@ -91,7 +91,7 @@ class ASTAcessMethod extends SimpleNode {
       SymbolMethod symbolMethod = (SymbolMethod) method;
 
       if (!ast_identifier.equals(symbolMethod.className)) {
-        throw new RuntimeException("Object " + ast_identifier + " doesn't have " + ast_method + " method.");
+        throw new RuntimeException("Object " + ast_identifier + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
       // returnType = ast_identifier;
@@ -110,7 +110,7 @@ class ASTAcessMethod extends SimpleNode {
       Symbol symbol = getSymbolFromTable(ast_identifier);
 
       if (symbol == null) {
-        throw new RuntimeException("Variable not declared: " + ((ASTIdentifier)bro).ast_value);
+        throw new RuntimeException("Variable not declared: " + ((ASTIdentifier)bro).ast_value+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
       Symbol method = getSymbolFromTable(id_method_table);
@@ -120,14 +120,14 @@ class ASTAcessMethod extends SimpleNode {
         Symbol parentClass = getSymbolFromTable(className);
 
         if (parentClass == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
 
         if (!(parentClass instanceof SymbolClass)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         if (((SymbolClass)parentClass).ext == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
           
           
         id_method_table = SimpleNode.createId(((SymbolClass)parentClass).ext.identifier, ast_method, argsType);
@@ -135,12 +135,12 @@ class ASTAcessMethod extends SimpleNode {
         method = getSymbolFromTable(id_method_table);
 
         if (method == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
 
         SymbolMethod symbolMethod = (SymbolMethod)method;
 
         if (!((SymbolClass)parentClass).ext.identifier.equals(symbolMethod.className)) {
-          throw new RuntimeException("Object " + ast_identifier + "(" + symbol.type + ")" + " doesn't have " + ast_method + " method.");
+          throw new RuntimeException("Object " + ast_identifier + "(" + symbol.type + ")" + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         returnType = symbolMethod.type;
@@ -148,13 +148,13 @@ class ASTAcessMethod extends SimpleNode {
       } else {
 
         if (!(method instanceof SymbolMethod)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         SymbolMethod thisSymbolMethod = (SymbolMethod)method;
 
         if(!symbol.type.equals(thisSymbolMethod.className)) {
-          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier);
+          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         returnType = thisSymbolMethod.type;
@@ -171,7 +171,7 @@ class ASTAcessMethod extends SimpleNode {
       SymbolVar var = (SymbolVar) symbol;
 
       if (!var.isInitialized) {
-        throw new RuntimeException("Variable not initialized.");
+        throw new RuntimeException("Variable not initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
     } 
@@ -188,14 +188,14 @@ class ASTAcessMethod extends SimpleNode {
         Symbol parentClass = getSymbolFromTable(className);
 
         if (parentClass == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
 
         if (!(parentClass instanceof SymbolClass)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         if (((SymbolClass)parentClass).ext == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
           
           
         id_method_table = SimpleNode.createId(((SymbolClass)parentClass).ext.identifier, ast_method, argsType);
@@ -203,25 +203,25 @@ class ASTAcessMethod extends SimpleNode {
         method = getSymbolFromTable(id_method_table);
 
         if (method == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
 
         SymbolMethod thisSymbolMethod = (SymbolMethod)method;
 
         if(!((SymbolClass)parentClass).ext.identifier.equals(thisSymbolMethod.className))
-          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ((SymbolClass)parentClass).ext.identifier);
+          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ((SymbolClass)parentClass).ext.identifier+ "\nLine: " + this.line + "; Col: " + this.column);
 
         returnType = thisSymbolMethod.type;
 
       } else {
 
         if (!(method instanceof SymbolMethod)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         SymbolMethod thisSymbolMethod = (SymbolMethod)method;
 
         if(!ast_identifier.equals(thisSymbolMethod.className)) {
-          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier);
+          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         returnType = thisSymbolMethod.type;
@@ -261,14 +261,14 @@ class ASTAcessMethod extends SimpleNode {
         Symbol parentClass = getSymbolFromTable(className);
 
         if (parentClass == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
 
         if (!(parentClass instanceof SymbolClass)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         if (((SymbolClass)parentClass).ext == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
           
           
         id_method_table = SimpleNode.createId(((SymbolClass)parentClass).ext.identifier, ast_method, argsType);
@@ -276,12 +276,12 @@ class ASTAcessMethod extends SimpleNode {
         method = getSymbolFromTable(id_method_table);
 
         if (method == null)
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
 
         SymbolMethod symbolMethod = (SymbolMethod)method;
 
         if (!((SymbolClass)parentClass).ext.identifier.equals(symbolMethod.className)) {
-          throw new RuntimeException("Object " + className + "(" + className + ")" + " doesn't have " + ast_method + " method.");
+          throw new RuntimeException("Object " + className + "(" + className + ")" + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         returnType = symbolMethod.type;
@@ -289,13 +289,13 @@ class ASTAcessMethod extends SimpleNode {
       } else {
 
         if (!(method instanceof SymbolMethod)){
-          throw new RuntimeException(ast_method + " not declared.");
+          throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         SymbolMethod thisSymbolMethod = (SymbolMethod)method;
 
         if(!className.equals(thisSymbolMethod.className)) {
-          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + className);
+          throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + className+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
         returnType = thisSymbolMethod.type;
@@ -304,7 +304,7 @@ class ASTAcessMethod extends SimpleNode {
       SymbolMethod symbolMethod = (SymbolMethod) method;
 
       if (!className.equals(symbolMethod.className)) {
-        throw new RuntimeException("Object " + className + " doesn't have " + ast_method + " method.");
+        throw new RuntimeException("Object " + className + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
       // returnType = className;
@@ -313,16 +313,16 @@ class ASTAcessMethod extends SimpleNode {
       System.out.println("\nARGUMENTOS:" + argsType + "\n");
 
       if (symbolMethod.arguments.size() != argsType.size()){
-        throw new RuntimeException("Method args do not match in size(" + symbolMethod.arguments.size() + ", " + argsType.size() +")");
+        throw new RuntimeException("Method args do not match in size(" + symbolMethod.arguments.size() + ", " + argsType.size() +")"+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
       
       for (int i = 0; i < symbolMethod.arguments.size(); i++){
         if (!symbolMethod.arguments.get(i).type.equals(argsType.get(i)))
-          throw new RuntimeException("Method args do not match (" + symbolMethod.arguments.get(i).type + ", " + argsType.get(i) +")");
+          throw new RuntimeException("Method args do not match (" + symbolMethod.arguments.get(i).type + ", " + argsType.get(i) +")"+ "\nLine: " + this.line + "; Col: " + this.column);
       }
       
-    } else throw new RuntimeException("opa nao sei que dizer, és um burro");
+    } else throw new RuntimeException("opa nao sei que dizer, és um burro"+ "\nLine: " + this.line + "; Col: " + this.column);
 
     return 1;
   }

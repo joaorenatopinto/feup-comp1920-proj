@@ -33,7 +33,7 @@ class ASTClassDeclaration extends SimpleNode {
     if (ast_ext != null){
       Symbol ext = getSymbolFromTable(ast_ext);
       if(ext==null || !(ext instanceof SymbolClass)) {
-        throw new RuntimeException("extends ABRACO");
+        throw new RuntimeException("extends ABRACO"+ "\nLine: " + this.line + "; Col: " + this.column);
       }
       putSymbolInTable(new SymbolClass(ast_id, "Class", (SymbolClass)getSymbolFromTable(ast_ext)));
     } else {
