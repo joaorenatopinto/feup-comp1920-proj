@@ -20,12 +20,6 @@ iload 1
 ldc 2
 iadd
 istore 2
-
-
-getstatic java/lang/System.out Ljava/io/PrintStream;
-iload 2
-invokevirtual java/io/PrintStream.println(I)V
-
 return
 .end method
 
@@ -39,8 +33,3 @@ return
 ;getstatic java/lang/System.out Ljava/io/PrintStream;
 ;iload 2
 ;invokevirtual java/io/PrintStream.println(I)V
-
-
-
-
-

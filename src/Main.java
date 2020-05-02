@@ -5,6 +5,10 @@ public class Main {
 	
 	public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Write an arithmetic expression:");
+        if (!getFileExtension(args[0]).equals(".jmm")){
+            System.out.println("Specified file not a jmm file");
+            return;
+        }
         System.setIn(new FileInputStream(new File(args[0])));
 		Compiler myComp = new Compiler(System.in);
 		
@@ -14,7 +18,7 @@ public class Main {
         	
 		root.dump(""); // prints the tree on the screen
         SemanticProcessor processor = new SemanticProcessor(root);
-        CodeGenerator codeGenerator = new CodeGenerator(root);
+        CodeGenerator codeGenerator = new CodeGenerator(root, getFileName(args[0]));
 		// System.out.println("Expression value: "+Main.eval(root));
 		
 		}catch(Exception e) {
@@ -48,6 +52,24 @@ public class Main {
 
         return 0;
 
+    }
+
+    private static String getFileExtension(String file) {
+
+        int lastIndexOf = file.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return file.substring(lastIndexOf);
+    }
+
+    private static String getFileName(String file) {
+
+        int lastIndexOf = file.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return file; // empty extension
+        }
+        return file.substring(0, lastIndexOf);
     }
 	
 }
