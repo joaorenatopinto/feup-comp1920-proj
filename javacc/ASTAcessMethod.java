@@ -94,10 +94,11 @@ class ASTAcessMethod extends SimpleNode {
         throw new RuntimeException("Object " + ast_identifier + " doesn't have " + ast_method + " method.");
       }
 
-      returnType = ast_identifier;
+      // returnType = ast_identifier;
 
      
     
+
 
 
     }
@@ -159,13 +160,13 @@ class ASTAcessMethod extends SimpleNode {
         returnType = thisSymbolMethod.type;
       }
 
-      SymbolMethod symbolMethod = (SymbolMethod) method;
+      // SymbolMethod symbolMethod = (SymbolMethod) method;
 
       // if (!symbol.type.equals(symbolMethod.className)) {
       //   throw new RuntimeException("Object " + ast_identifier + " doesn't have " + ast_method + " method.");
       // }
 
-      returnType = symbolMethod.type;
+      // returnType = symbolMethod.type;
 
       SymbolVar var = (SymbolVar) symbol;
 
@@ -306,7 +307,7 @@ class ASTAcessMethod extends SimpleNode {
         throw new RuntimeException("Object " + className + " doesn't have " + ast_method + " method.");
       }
 
-      returnType = className;
+      // returnType = className;
 
 
       System.out.println("\nARGUMENTOS:" + argsType + "\n");

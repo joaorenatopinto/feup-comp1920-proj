@@ -12,14 +12,21 @@ aload 3
 ldc 1
 ldc 100
 iastore
-aload 3
-ldc 1
-iaload
 istore 1
 iload 1
 ldc 2
 iadd
 istore 2
+return
+.end method
+
+.method public ola()[I
+.limit stack 99
+.limit locals 99
+ldc 4
+newarray int
+astore 1
+iload 1
 return
 .end method
 
@@ -30,6 +37,3 @@ invokenonvirtual java/lang/Object/<init>()V
 return
 .end method
 
-;getstatic java/lang/System.out Ljava/io/PrintStream;
-;iload 2
-;invokevirtual java/io/PrintStream.println(I)V

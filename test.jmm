@@ -9,7 +9,13 @@ class Test{
 		int[] arroz;
 		arroz = new int[2];
 		arroz[1] = 100;
-		i = arroz[1];
+		i = new Test().ola().length;
 		j = i + 2;
+	}
+
+	public int[] ola(){
+		int[] oi;
+		oi = new int[4];
+		return oi;
 	}
 }

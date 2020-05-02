@@ -14,10 +14,24 @@ class ASTLength extends SimpleNode {
   @Override
   public int process(String className) {
     System.out.println(this.getClass());
-    if (this.children == null) return 1;
-    for(int i = 0; i < this.children.length; i++) {
-      ((SimpleNode)this.children[i]).process(className);
+    
+    SimpleNode bro = (SimpleNode)(((SimpleNode)this.jjtGetParent()).children[0]);
+
+
+
+    if(bro instanceof ASTIdentifier) {
+      Symbol symb = getSymbolFromTable(((ASTIdentifier)bro).ast_value);
+      if(!symb.type.equals(Symbol.INT_ARRAY)){
+        throw new RuntimeException(((ASTIdentifier)bro).ast_value + " is not a array (length check)");
+      }
+    } else if (bro instanceof ASTAcessMethod){
+      ASTAcessMethod broo = ((ASTAcessMethod) bro);
+      if(!broo.returnType.equals(Symbol.INT_ARRAY)){
+        throw new RuntimeException(broo.ast_method + " doesn't return a array (length check) returns " + broo.returnType);
+      }
     }
+
+
     return 1;
   }
 

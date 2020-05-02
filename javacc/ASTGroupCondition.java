@@ -18,7 +18,7 @@ class ASTGroupCondition extends SimpleNode {
     SimpleNode rightChild = (SimpleNode)this.children[1];
 
     if(!(rightChild instanceof ASTGroupCondition)) {
-      if(leftChild instanceof ASTAcessMethod) {
+      if(leftChild instanceof ASTAcessMethod && rightChild instanceof ASTAcessMethod) {
         ((ASTAcessMethod)rightChild).ast_identifier = ((ASTAcessMethod)leftChild).getType();
       }
       rightChild.process(className);
