@@ -19,6 +19,11 @@ class ASTAssign extends SimpleNode {
 
     if (this.children.length == 2){
       ((SimpleNode)this.children[0]).process(className);
+
+      if (!((SimpleNode)this.children[0]).getType().equals(Symbol.INT)){
+        throw new RuntimeException("ASTAssign: Variable index (" + identifier + ") not a int"+ "\nLine: " + this.line + "; Col: " + this.column);
+      }
+
       index++;
     }
 
@@ -28,7 +33,7 @@ class ASTAssign extends SimpleNode {
 
     Symbol symbolLeft = getSymbolFromTable(identifier);
     System.out.println("ASTASSIGN LEFT TYPE: " + symbolLeft.type);
-    if( !(symbolLeft.type.equals(Symbol.INT_ARRAY) ) ) {
+    if( !(symbolLeft.type.equals(Symbol.INT_ARRAY) ) ) { // not array
       if (symbolLeft == null)
         throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared"+ "\nLine: " + this.line + "; Col: " + this.column);
 
@@ -41,22 +46,44 @@ class ASTAssign extends SimpleNode {
       var.initialize();
     }
     else {
-      SymbolVar var = (SymbolVar) symbolLeft;
       
-      if( child.getType().equals(Symbol.INT_ARRAY) ) { // se estiver a ser inicializado
-        if( var.isInitialized )
-          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") already had been initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
-        else
-          var.initialize();
-      }
-      else if ( var.isInitialized ) { // se estiver inicializado
-        if( !child.getType().equals(Symbol.INT) ) { // se nao for int
-          throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") can only store int types."+ "\nLine: " + this.line + "; Col: " + this.column);
+      SymbolVar var = (SymbolVar) symbolLeft;
+
+      if (this.children.length == 2) { // Assign value to index array
+        if (!child.getType().equals(Symbol.INT)){
+          throw new RuntimeException("ASTAssign: Assigned type (" + child.getType() + ") not a int"+ "\nLine: " + this.line + "; Col: " + this.column);
         }
+      } else {
+        if (!child.getType().equals(Symbol.INT_ARRAY)){
+          throw new RuntimeException("ASTAssign: Assigned type (" + child.getType() + ") not a int[]"+ "\nLine: " + this.line + "; Col: " + this.column);
+        }
+        var.initialize();
       }
-      else { // se n estiver inicializado
-        throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") has not been initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
-      }
+
+      // if (child.getType().equals(symbolLeft.type)){
+      //   // VERIFICAR SE É NEW INT OU ASSING DE ARRAY JA EXISTENTE PARA VER AS CHILDS
+      //     var.initialize();
+      //   return 1;
+      // }
+      // else if( child.getType().equals(Symbol.INT_ARRAY) ) { // se estiver a ser inicializado
+      //   var grandChild = (SimpleNode)child.children[0];
+      //   grandChild.process(className);
+      //   if( grandChild.getType().equals(Symbol.INT) ) {
+      //     var.initialize();
+      //   }
+      //   else {
+      //     throw new RuntimeException("ASTAssign: int array size must be integer."+ "\nLine: " + this.line + "; Col: " + this.column);
+      //   }
+        
+      // }
+      // else if ( var.isInitialized ) { // se estiver inicializado
+      //   if( !child.getType().equals(Symbol.INT) ) { // se nao for int
+      //     throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") can only store int types."+ "\nLine: " + this.line + "; Col: " + this.column);
+      //   }
+      // }
+      // else { // se n estiver inicializado
+      //   throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") has not been initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
+      // }
     }
     
     return 1;

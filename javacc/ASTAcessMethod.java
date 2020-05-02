@@ -22,15 +22,19 @@ class ASTAcessMethod extends SimpleNode {
     // ver o irmao da esquerda se é ASTObject ou ASTIdentifier
     SimpleNode bro = (SimpleNode)(((SimpleNode)this.jjtGetParent()).children[0]);
 
+    if (this.children != null)
+    ((SimpleNode)this.children[0]).process(className);
+
     List<String> argsType = new ArrayList<>();
      
     if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
       for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+        ((SimpleNode)((SimpleNode)(this.children[0])).children[j]).process(className);
         argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
       }
     }
 
-    String id_method_table = SimpleNode.createId(className, ast_method, argsType);
+    String id_method_table;
 
     if(bro instanceof ASTObject) {
 
@@ -39,6 +43,8 @@ class ASTAcessMethod extends SimpleNode {
       System.out.println("ASTOBJECT " + ast_identifier + " : " + ast_method);
 
       // Symbol symbol = getSymbolFromTable(ast_identifier);
+
+      id_method_table = SimpleNode.createId(ast_identifier, ast_method, argsType);
 
       Symbol method = getSymbolFromTable(id_method_table);
 
@@ -113,6 +119,27 @@ class ASTAcessMethod extends SimpleNode {
         throw new RuntimeException("Variable not declared: " + ((ASTIdentifier)bro).ast_value+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
+      if (symbol instanceof SymbolVar){
+
+        SymbolVar var = (SymbolVar) symbol;
+
+        if (!var.isInitialized) {
+          throw new RuntimeException("Variable not initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
+        }
+
+        id_method_table = SimpleNode.createId(var.type, ast_method, argsType);
+
+      } else if (symbol instanceof SymbolClass){
+
+        SymbolClass var = (SymbolClass) symbol;
+
+        id_method_table = SimpleNode.createId(var.identifier, ast_method, argsType);
+
+      } else {
+        throw new RuntimeException("Method doesnt belong to type"+ "\nLine: " + this.line + "; Col: " + this.column);
+      }
+      
+
       Symbol method = getSymbolFromTable(id_method_table);
 
       if (method == null){
@@ -126,8 +153,11 @@ class ASTAcessMethod extends SimpleNode {
           throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
-        if (((SymbolClass)parentClass).ext == null)
+        if (((SymbolClass)parentClass).ext == null){
+          System.out.println(id_method_table);
           throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
+        }
+          
           
           
         id_method_table = SimpleNode.createId(((SymbolClass)parentClass).ext.identifier, ast_method, argsType);
@@ -153,7 +183,7 @@ class ASTAcessMethod extends SimpleNode {
 
         SymbolMethod thisSymbolMethod = (SymbolMethod)method;
 
-        if(!symbol.type.equals(thisSymbolMethod.className)) {
+        if(!symbol.type.equals(thisSymbolMethod.className) && !symbol.identifier.equals(thisSymbolMethod.className)) {
           throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
@@ -168,17 +198,14 @@ class ASTAcessMethod extends SimpleNode {
 
       // returnType = symbolMethod.type;
 
-      SymbolVar var = (SymbolVar) symbol;
-
-      if (!var.isInitialized) {
-        throw new RuntimeException("Variable not initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
-      }
+  
 
     } 
     else if(bro instanceof ASTAcessMethod) {
 
       System.out.println("ASTACESSMETHOD " + ast_identifier + " : " + ast_method);
-      returnType = "int";
+
+      id_method_table = SimpleNode.createId(bro.getType(), ast_method, argsType);
       
       // Symbol leftMethod = getSymbolFromTable(ast_identifier);
       Symbol method = getSymbolFromTable(id_method_table);
@@ -254,6 +281,8 @@ class ASTAcessMethod extends SimpleNode {
 
       System.out.println("ASTOBJECT " + ast_identifier + " : " + ast_method);
 
+      id_method_table = SimpleNode.createId(className, ast_method, argsType);
+
       Symbol method = getSymbolFromTable(id_method_table);
 
       if (method == null){
@@ -267,8 +296,11 @@ class ASTAcessMethod extends SimpleNode {
           throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
 
-        if (((SymbolClass)parentClass).ext == null)
+        if (((SymbolClass)parentClass).ext == null){
+          System.out.println(id_method_table);
           throw new RuntimeException(ast_method + " not declared."+ "\nLine: " + this.line + "; Col: " + this.column);
+        }
+          
           
           
         id_method_table = SimpleNode.createId(((SymbolClass)parentClass).ext.identifier, ast_method, argsType);
@@ -301,26 +333,27 @@ class ASTAcessMethod extends SimpleNode {
         returnType = thisSymbolMethod.type;
       }
 
-      SymbolMethod symbolMethod = (SymbolMethod) method;
+      // SymbolMethod symbolMethod = (SymbolMethod) method;
 
-      if (!className.equals(symbolMethod.className)) {
-        throw new RuntimeException("Object " + className + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
-      }
+      // if (!className.equals(symbolMethod.className)) {
+      //   System.out.println(symbolMethod.className);
+      //   throw new RuntimeException("Object " + className + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
+      // }
 
       // returnType = className;
 
 
-      System.out.println("\nARGUMENTOS:" + argsType + "\n");
+      // System.out.println("\nARGUMENTOS:" + argsType + "\n");
 
-      if (symbolMethod.arguments.size() != argsType.size()){
-        throw new RuntimeException("Method args do not match in size(" + symbolMethod.arguments.size() + ", " + argsType.size() +")"+ "\nLine: " + this.line + "; Col: " + this.column);
-      }
+      // if (symbolMethod.arguments.size() != argsType.size()){
+      //   throw new RuntimeException("Method args do not match in size(" + symbolMethod.arguments.size() + ", " + argsType.size() +")"+ "\nLine: " + this.line + "; Col: " + this.column);
+      // }
 
       
-      for (int i = 0; i < symbolMethod.arguments.size(); i++){
-        if (!symbolMethod.arguments.get(i).type.equals(argsType.get(i)))
-          throw new RuntimeException("Method args do not match (" + symbolMethod.arguments.get(i).type + ", " + argsType.get(i) +")"+ "\nLine: " + this.line + "; Col: " + this.column);
-      }
+      // for (int i = 0; i < symbolMethod.arguments.size(); i++){
+      //   if (!symbolMethod.arguments.get(i).type.equals(argsType.get(i)))
+      //     throw new RuntimeException("Method args do not match (" + symbolMethod.arguments.get(i).type + ", " + argsType.get(i) +")"+ "\nLine: " + this.line + "; Col: " + this.column);
+      // }
       
     } else throw new RuntimeException("opa nao sei que dizer, és um burro"+ "\nLine: " + this.line + "; Col: " + this.column);
 

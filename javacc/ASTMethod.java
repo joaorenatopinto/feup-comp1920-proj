@@ -43,16 +43,22 @@ class ASTMethod extends SimpleNode {
 
   public void preProcess(String className){
     List<Symbol> args = new ArrayList<>();
-    if(((SimpleNode)this.children[0]).children != null) {
-      for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
-        ASTArg arg = (ASTArg)((SimpleNode)(this.children[0])).children[j];
-        String type = arg.ast_type;
-        String identifier = arg.ast_id;
-        SymbolVar symbol = new SymbolVar(identifier, type);
-        symbol.initialize();
-        args.add(symbol);
+
+    // if(!((SimpleNode)this.children[0] instanceof ASTMethodArgs))
+    //   return;
+
+    if(((SimpleNode)this.children[0] instanceof ASTMethodArgs))
+      if(((SimpleNode)this.children[0]).children != null) {
+        for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+          ASTArg arg = (ASTArg)((SimpleNode)(this.children[0])).children[j];
+          String type = arg.ast_type;
+          String identifier = arg.ast_id;
+          SymbolVar symbol = new SymbolVar(identifier, type);
+          symbol.initialize();
+          args.add(symbol);
+        }
       }
-    }
+
     putSymbolInTable(new SymbolMethod(ast_id, ast_type, className, args));
     System.out.println(symbols_table);
     System.out.println("!");
@@ -64,16 +70,17 @@ class ASTMethod extends SimpleNode {
     String code = ".method public " + ast_id + "(";
 
     List<String> args = new ArrayList<>();
-    if(((SimpleNode)this.children[0]).children != null) {
-      for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
-        ASTArg arg = (ASTArg)((SimpleNode)(this.children[0])).children[j];
-        String type = arg.ast_type;
-        args.add(type);
+    if(((SimpleNode)this.children[0] instanceof ASTMethodArgs))
+      if(((SimpleNode)this.children[0]).children != null) {
+        for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+          ASTArg arg = (ASTArg)((SimpleNode)(this.children[0])).children[j];
+          String type = arg.ast_type;
+          args.add(type);
+        }
       }
-    }
 
     for (int i = 0; i < args.size(); i++){
-      code += args.get(i);
+      code += SimpleNode.getTypeJasmin(args.get(i));
     }
 
     code += ")" + SimpleNode.getTypeJasmin(ast_type) + "\n";

@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main {
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, ParseException {
         System.out.println("Write an arithmetic expression:");
         if (!getFileExtension(args[0]).equals(".jmm")){
             System.out.println("Specified file not a jmm file");
@@ -11,20 +11,20 @@ public class Main {
         }
         System.setIn(new FileInputStream(new File(args[0])));
 		Compiler myComp = new Compiler(System.in);
-		
-		try {
-        SimpleNode root = myComp.Program(); // returns reference to root node
-        
-        	
-		root.dump(""); // prints the tree on the screen
-        SemanticProcessor processor = new SemanticProcessor(root);
-        CodeGenerator codeGenerator = new CodeGenerator(root, getFileName(args[0]));
+        // try {
+            SimpleNode root = myComp.Program(); // returns reference to root node
+            if (myComp.nErrors > 0)
+                throw new ParseException("Syntactical Error");
+            root.dump(""); // prints the tree on the screen
+            SemanticProcessor processor = new SemanticProcessor(root);
+            CodeGenerator codeGenerator = new CodeGenerator(root, getFileName(args[0]));
+        // }catch(Exception e) {
+        //     System.out.println("Catch merdoso");
+        //     e.printStackTrace();
+        // }
 		// System.out.println("Expression value: "+Main.eval(root));
 		
-		}catch(Exception e) {
-            System.out.println("Catch merdoso");
-            e.printStackTrace();
-		}
+		
 	}
 
     public static int eval(SimpleNode node) {

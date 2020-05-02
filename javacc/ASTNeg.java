@@ -20,7 +20,7 @@ class ASTNeg extends SimpleNode {
     // int right_val;
     child.process(className);
 
-    if (child.getType().equals(Symbol.BOOLEAN)){
+    if (!child.getType().equals(Symbol.BOOLEAN)){
       throw new RuntimeException("ASTNeg is not a Boolean" + "\nLine: " + this.line + "; Col: " + this.column);
     }
     

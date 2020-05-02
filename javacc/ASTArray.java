@@ -13,7 +13,13 @@ class ASTArray extends SimpleNode {
   @Override
   public int process(String className) {
     SimpleNode child = ((SimpleNode)this.children[0]);
-    return child.process(className);
+    child.process(className);
+    
+    if (!child.getType().equals(Symbol.INT)){
+      throw new RuntimeException("ASTArray size not a INT" + "\nLine: " + this.line + "; Col: " + this.column);
+    }
+
+    return 1;
   }
 
   public String getType(){

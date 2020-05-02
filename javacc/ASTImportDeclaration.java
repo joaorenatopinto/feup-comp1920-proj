@@ -3,7 +3,7 @@
 import java.util.*;
 
 public class ASTImportDeclaration extends SimpleNode {
-  boolean isStatic;
+  boolean isStatic = false;
   String ast_className;
   String methodName;
   String returnType;
@@ -30,7 +30,16 @@ public class ASTImportDeclaration extends SimpleNode {
       }
     }
 
-    if(methodName!=null) putSymbolInTable(new SymbolMethod(methodName, returnType, ast_className, args));
+    if(methodName!=null){
+      putSymbolInTable(new SymbolMethod(methodName, returnType, ast_className, args));
+      if (isStatic){
+        try {
+          putSymbolInTable(new SymbolClass(ast_className, "Class", null));
+        } catch (RuntimeException e){
+          
+        }
+      }
+    } 
     else {
       putSymbolInTable(new SymbolClass(ast_className, "Class", null));
     }

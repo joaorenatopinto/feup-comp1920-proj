@@ -1,17 +1,8 @@
 //import TestClass.otario(int, int) void;
 //import TestClass;
-
-class Test{
-	int joao;
-	public static void main(String[] args) {
-		int i;
-		int j;
-		int[] arroz;
-		this.ola();
-	}
-	public int[] ola(){
-		int[] oi;
-		oi = new int[4];
-		return oi;
-	}
+class T {
+    public static void main(String[] a) { 
+        int[] a;
+        a = new int[true];
+    }
 }

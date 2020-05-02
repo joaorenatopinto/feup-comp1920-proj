@@ -27,7 +27,7 @@ public class Compiler
         root.dump(""); // prints the tree on the screen
     }
 
-    void handleError(ParseException e, boolean recover) {
+    void handleError(ParseException e, boolean recover) throws ParseException {
 
         System.out.println("Syntatic error on while statement.\n\n" +  e.toString());
         
@@ -35,7 +35,8 @@ public class Compiler
       
         if (++nErrors > MAX_ERRORS) {
           System.out.println("Reached maximum number of errors (" + MAX_ERRORS + "). Terminating.");
-          System.exit(1);
+        //   System.exit(1);
+            throw new ParseException("MAX ERRORS PER FILE");
         }
 
     }
@@ -147,7 +148,7 @@ void Imports() : {}
 void ImportDeclaration() : {Token t;}
 {
     //"import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
-    "import" ["static" { jjtThis.isStatic=true;} ] t=<IDENTIFIER>{jjtThis.ast_className=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}] ([<LPARENTHESIS> [ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}} ]) ";"
+    "import" ["static" { jjtThis.isStatic=true;} ] t=<IDENTIFIER>{jjtThis.ast_className=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}] ([<LPARENTHESIS> ["void" | ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}} ]) ";"
 }
 
 void ImportArgs(): {}
@@ -300,10 +301,6 @@ void Expression() #void : {Token t1=null; String identifier;}
 
 void Expression_aux(Token t) #void : {String identifier=null;}
 { 
-    {
-    if (t == null) identifier = "none";
-    else identifier = t.image;}
-    
     "[" Cal1() "]" { if (t != null) { jjtThis.ast_identifier = t.image; jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}
         else jjtThis.ast_identifier = "none";
     }
@@ -311,7 +308,7 @@ void Expression_aux(Token t) #void : {String identifier=null;}
     | "." (
         "length" {if (t != null) {jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}
     } #Length [LOOKAHEAD(2) Expression_aux(t) #GroupCondition(2)]
-        | AcessMethod(identifier) [LOOKAHEAD(2) Expression_aux(t) #GroupCondition(2)]
+        | AcessMethod(t.image) [LOOKAHEAD(2) Expression_aux(t) #GroupCondition(2)]
     )
 }
 
