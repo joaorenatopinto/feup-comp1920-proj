@@ -2,6 +2,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CodeGenerator {
+
+    static int loopNumber = 0;
+
     public CodeGenerator(SimpleNode root, String filename) {
         String code = root.generateCode(null);
         try {

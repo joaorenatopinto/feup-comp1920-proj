@@ -3,7 +3,7 @@
 /build/
 /generated/
 *.jar
-
+*.class
 # Ignore Gradle GUI config
 gradle-app.setting
 

@@ -33,5 +33,17 @@ class ASTLess extends SimpleNode {
     return Symbol.BOOLEAN;
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "if_icmplt ";
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=55151cda9b74838fc120e731d3367712 (do not edit this line) */

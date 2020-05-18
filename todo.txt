@@ -26,3 +26,10 @@ NOVO:
 - Acess Method  
 
 ABRAÇO
+
+
+
+
+getstatic java/lang/System.out Ljava/io/PrintStream;
+iload 1 
+invokevirtual java/io/PrintStream.println(I)V

@@ -25,5 +25,17 @@ class ASTStatement extends SimpleNode {
     return this.getClass().toString();
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        if (!(this.children[i] instanceof ASTElse))
+          code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=6bd0657f0f8b1cd87c74ca9d0f191615 (do not edit this line) */

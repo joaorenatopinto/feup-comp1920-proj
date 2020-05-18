@@ -62,7 +62,7 @@ class ASTGroupCondition extends SimpleNode {
     return type;
   }
 
-  public String generateCode(String className){ // TODO
+  public String generateCode(String className) { 
     // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
     String code = "";
     if (this.children != null)

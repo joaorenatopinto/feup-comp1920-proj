@@ -2,7 +2,12 @@
 //import TestClass;
 class T {
     public static void main(String[] a) { 
-        int[] a;
-        a = new int[true];
+        int a;
+        if (6 < 5){
+            a = 3;
+        } else {
+            a = 0;
+        }
+
     }
 }

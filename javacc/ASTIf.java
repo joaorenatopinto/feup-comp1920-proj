@@ -29,8 +29,41 @@ class ASTIf extends SimpleNode {
     return 1;
   }
 
-  public String getNodeType() {
-    return this.getClass().toString();
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+
+    String code = "";
+    String loop1 = "loop" + CodeGenerator.loopNumber++;
+    String loop2 = "loop" + CodeGenerator.loopNumber++;
+    ASTElse else_node = null;
+    SimpleNode father = (SimpleNode)this.jjtGetParent();
+
+    for(int i = 0; i < father.children.length; i++){
+      if (father.children[i].equals(this)){
+        else_node = (ASTElse) father.children[i + 1];
+        break;
+      }
+    }
+    
+    //COMPARAÇÃO
+    code += ((SimpleNode)this.children[0]).generateCode(className);
+    code += loop1 + "\n";
+    // ELSE CODE
+    code += else_node.generateCode(className);
+
+    // Skip if (loop2)
+    code += "goto " + loop2 + "\n";
+
+    code += loop1 + ":\n";
+    //IF CODE
+    
+    code += ((SimpleNode)this.children[1]).generateCode(className);
+    
+
+    //IFNOT
+    code += loop2 +":\n"; // end of if-else
+
+    return code;
   }
 
 }
