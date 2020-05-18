@@ -40,8 +40,16 @@ class ASTLess extends SimpleNode {
         code += ((SimpleNode)this.children[i]).generateCode(className);
       }
 
-    code += "if_icmplt ";
+    String loopTrue = "loopTRUE" + CodeGenerator.loopNumber;
+    String loopFalse = "loopFALSE" + CodeGenerator.loopNumber++;
 
+    code += "if_icmplt " + loopTrue + "\n";
+    code += "iconst_0\n";
+
+    code += "goto " + loopFalse + "\n";
+    code += loopTrue + ":\n";
+    code += "iconst_1\n";    
+    code += loopFalse + ":\n";
     return code;
   }
 

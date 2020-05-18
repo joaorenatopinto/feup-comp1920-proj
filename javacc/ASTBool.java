@@ -22,5 +22,12 @@ class ASTBool extends SimpleNode {
     return Symbol.BOOLEAN;
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    code += "iconst_" + (ast_value ? 1 : 0) + "\n";
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=e2d69096d5c57c4b88fb9ebba8f767ec (do not edit this line) */

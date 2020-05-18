@@ -1,9 +1,9 @@
 //import TestClass.otario(int, int) void;
 //import TestClass;
 class T {
-    public static void main(String[] a) { 
+    public static void main(String[] args) { 
         int a;
-        if (6 < 5){
+        if (true){
             a = 3;
         } else {
             a = 0;

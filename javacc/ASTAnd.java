@@ -30,5 +30,17 @@ public class ASTAnd extends SimpleNode {
     return Symbol.BOOLEAN;
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "iand\n";
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=ed084117f04b5765ad1446a1a0ce70a2 (do not edit this line) */

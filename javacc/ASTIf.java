@@ -47,7 +47,7 @@ class ASTIf extends SimpleNode {
     
     //COMPARAÇÃO
     code += ((SimpleNode)this.children[0]).generateCode(className);
-    code += loop1 + "\n";
+    code += "ifne " + loop1 + "\n";
     // ELSE CODE
     code += else_node.generateCode(className);
 
