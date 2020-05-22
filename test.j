@@ -4,7 +4,9 @@
 .method static public main([Ljava/lang/String;)V
 .limit stack 99
 .limit locals 99
+iconst_0
 iconst_1
+ixor
 ifne loop0
 ldc 0
 istore 1

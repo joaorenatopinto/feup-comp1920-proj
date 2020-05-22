@@ -38,5 +38,19 @@ class ASTNeg extends SimpleNode {
   public String getType(){
     return Symbol.BOOLEAN;
   }
+
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+      // XOR of the value of the children's generated code 
+    code += "iconst_1\n";  
+    code += "ixor\n";
+    return code;
+  }
 }
 /* JavaCC - OriginalChecksum=e2edacf504bf837f510ac7c133d6a866 (do not edit this line) */
