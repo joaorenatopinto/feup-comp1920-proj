@@ -38,5 +38,20 @@ class ASTObject extends SimpleNode {
       return "OBJECT NOT IMPLEMENTED";
     return ast_identifier;
   }
+
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+    code += "new " + ast_identifier + "\n";
+    code += "dup\n";
+    code += "invokespecial " + ast_identifier + "/<init>()V\n";
+
+    return code;
+  }
 }
 /* JavaCC - OriginalChecksum=fdc7b288391d11055e1bc77fbb789925 (do not edit this line) */

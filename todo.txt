@@ -1,34 +1,65 @@
-- Verificar se método existe quando um é chamado
-
-- Meter main a ser processado depois dos outros métodos para este os poder usar FEITO
-    - Process inicial a ir buscar todos os métodos que existem para puderem ser chamados fora de ordem FEITO
-
-- Classes
-    - nao guardamos as classes (tipo SymbolClass) nem verirficamos depois se foram inicializadas (new ...)
-
-
-- Acess array FEITO
-    - declared FEITO
-    - init  FEITO
-    - dentro do size FEITO
-
-- Ver se argumentos enviados para os métodos chamados batem certo com os tipos e afins
-- Return type dos métodos bate certo com o return declarado no header do método
-- Ver merda dos imports que o stor mandou ou o caralho
-- Retornar valor do (ponto)length (ou pelo menos ver se está a ser pedido o length de um identifier associado a um array)
-
 NOVO:
 
-[- Resolver parentesis foderem a length e acess method]
-- Guardar classes(/construtores) e métodos que sejam importados
-- Ao declarar uma classe verificar se é a classe do ficheiro a ser processado ou uma classe importada nos imports
-- Ao usar um método ver se foi declarado nos imports (e ver se os argumentso e returns batem certo)
-- Acess Method  
+ - STACK:
+    ////////////////////////////////////////////////////////////////////////
+        Lógica principal do controlo da stack por método:
+        maxStack = 0;
+        totalStacK = 0;
+        void incStack(){
+            totalStack++;
+            if(totalStack > maxStack){
+                maxStack = totalStack;
+            }
+        }
+        void decStack(int value){
+            totalStack-= value;
+        }
+        ////////////////////////////////////////////////////////////////////////
+        1. for each Statement in the code invoke the inc or dec methods according to the instructions you will use.
+        for instance: for iload_0 you will do a incStack(), if it is a istore_0 you will do a decStack(1)
+        2. guarantee that at the end of the statement the stack is empty! E.g. if you invoke a method that returns something as a single statement (e.g. this.incMyVar(); and assuming the method returns an integer) then you have to do a pop of that value (literally the "pop" instruction"). Something like this:
+        while(totalStack !== 0){
+        pop();
+        totalStacK--;
+        }
+        3. no final do método podemos calcular o que queremos:
+        ".limit stack " + maxStack
+        ".limit locals " + (isStatic?0:1 + params.length + localVars.length)
+        "<the rest of the code>"
+        ////////////////////////////////////////////////////////////////////////
+        exemplo por statement para o código seguinte:
+        class Simple{
+            public void test(int a, int b){
+        1.        a = b + 10 * (3 + this.add(3,4));
+        2.        this.add(3,4);
+            }
+        }
+        ----------------1.--------------------------
+        iload_2    ==> incStack                  | 1
+        bipush 10  ==> incStack                  | 2
+        iconst_3   ==> incStack                  | 3
+        aload 0    ==> incStack                  | 4
+        iconst_3   ==> incStack                  | 5
+        iconst 4   ==> incStack                  | 6
+        invokedynamic ....(II)I  => decStack(3-1)| 4 // why 3-1? objectref+numargs-return (if not returning void)
+        iadd       ==> decStack(1)               | 3       
+        imul       ==> decStack(1)               | 2
+        iadd       ==> decStack(1)               | 1
+        istore 1   ==> decStack(1)               | 0
+        -----------------2.--------------------------
+        aload 0    ==> incStack                  | 1
+        iconst_3   ==> incStack                  | 2
+        iconst 4   ==> incStack                  | 3
+        invokedynamic ....(II)I  => decStack(3-1)| 1
+        pop                      => decStack(1)  | 0
+            
+ - IMPORTS
+ - FUNCOES (FALTA CLASSE A QUE PERTENCE)
 
 ABRAÇO
 
 
-
+PRINTS:
 
 getstatic java/lang/System.out Ljava/io/PrintStream;
 iload 1 

@@ -93,7 +93,24 @@ class ASTMethod extends SimpleNode {
         code += ((SimpleNode)this.children[i]).generateCode(className);
       }
 
-    code += "return\n.end method\n\n";
+    if (ast_type != null) {
+      switch (ast_type) {
+        case "bool":
+          code += "ireturn\n";
+          break;
+        case "int":
+          code += "ireturn\n";
+          break;
+        case "void":
+          code += "return\n";
+          break;
+        default:
+          code += "areturn\n";
+          break;
+      }
+
+    }
+    code += ".end method\n\n";
 
     return code;
   }

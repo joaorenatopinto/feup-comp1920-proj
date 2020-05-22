@@ -28,10 +28,23 @@ iadd
 istore 2
 goto loop1
 loop0:
+new T
+dup
+invokespecial T/<init>()V
+ldc 3
+invokevirtual T/test(I)I
+istore 1
 getstatic java/lang/System.out Ljava/io/PrintStream;
-iload 2
+iload 1 
 invokevirtual java/io/PrintStream.println(I)V
 return
+.end method
+
+.method public test(I)I
+.limit stack 99
+.limit locals 99
+iload 1
+ireturn
 .end method
 
 ; standard initializer

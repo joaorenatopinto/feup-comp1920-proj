@@ -8,6 +8,7 @@ class ASTAcessMethod extends SimpleNode {
   String ast_method;
 
   String returnType = null;
+  String leftClass = null;
 
   public ASTAcessMethod(int id) {
     super(id);
@@ -77,6 +78,7 @@ class ASTAcessMethod extends SimpleNode {
         }
 
         returnType = symbolMethod.type;
+        leftClass = ((SymbolClass)parentClass).ext.identifier;
 
       } else {
 
@@ -91,6 +93,7 @@ class ASTAcessMethod extends SimpleNode {
         }
 
         returnType = thisSymbolMethod.type;
+        leftClass = ast_identifier;
       }
 
 
@@ -99,13 +102,6 @@ class ASTAcessMethod extends SimpleNode {
       if (!ast_identifier.equals(symbolMethod.className)) {
         throw new RuntimeException("Object " + ast_identifier + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
       }
-
-      // returnType = ast_identifier;
-
-     
-    
-
-
 
     }
     else if(bro instanceof ASTIdentifier) {
@@ -159,7 +155,6 @@ class ASTAcessMethod extends SimpleNode {
         }
           
           
-          
         id_method_table = SimpleNode.createId(((SymbolClass)parentClass).ext.identifier, ast_method, argsType);
 
         method = getSymbolFromTable(id_method_table);
@@ -172,7 +167,7 @@ class ASTAcessMethod extends SimpleNode {
         if (!((SymbolClass)parentClass).ext.identifier.equals(symbolMethod.className)) {
           throw new RuntimeException("Object " + ast_identifier + "(" + symbol.type + ")" + " doesn't have " + ast_method + " method."+ "\nLine: " + this.line + "; Col: " + this.column);
         }
-
+        leftClass = ((SymbolClass)parentClass).ext.identifier;
         returnType = symbolMethod.type;
 
       } else {
@@ -186,7 +181,7 @@ class ASTAcessMethod extends SimpleNode {
         if(!symbol.type.equals(thisSymbolMethod.className) && !symbol.identifier.equals(thisSymbolMethod.className)) {
           throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ast_identifier+ "\nLine: " + this.line + "; Col: " + this.column);
         }
-
+        leftClass = thisSymbolMethod.className;
         returnType = thisSymbolMethod.type;
       }
 
@@ -238,6 +233,7 @@ class ASTAcessMethod extends SimpleNode {
           throw new RuntimeException(ast_method + " method doesn't return a " + thisSymbolMethod.className + " object. Returns " + ((SymbolClass)parentClass).ext.identifier+ "\nLine: " + this.line + "; Col: " + this.column);
 
         returnType = thisSymbolMethod.type;
+        leftClass = ((SymbolClass)parentClass).ext.identifier;
 
       } else {
 
@@ -252,6 +248,7 @@ class ASTAcessMethod extends SimpleNode {
         }
 
         returnType = thisSymbolMethod.type;
+        leftClass = thisSymbolMethod.className;
       }
       
       
@@ -317,6 +314,7 @@ class ASTAcessMethod extends SimpleNode {
         }
 
         returnType = symbolMethod.type;
+        leftClass = ((SymbolClass)parentClass).ext.identifier;
 
       } else {
 
@@ -331,6 +329,7 @@ class ASTAcessMethod extends SimpleNode {
         }
 
         returnType = thisSymbolMethod.type;
+        leftClass = thisSymbolMethod.className;
       }
 
       // SymbolMethod symbolMethod = (SymbolMethod) method;
@@ -364,6 +363,35 @@ class ASTAcessMethod extends SimpleNode {
     if (returnType == null)
       return "return type not initialized";
     return returnType;
+  }
+
+  public String generateCode(String className){
+    
+    String code = "";
+    if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
+      }
+
+
+    //por argumentos na stack
+
+    List<String> argsType = new ArrayList<>();
+    
+    if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+      for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+        ((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className);
+        argsType.add(SimpleNode.getTypeJasmin(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType()));
+      }
+    }
+
+    //invocar
+    code += "invokevirtual " + leftClass + "/" + ast_method + "(";
+    for (String string : argsType) 
+      code += string; 
+    code += ")" + SimpleNode.getTypeJasmin(returnType) + "\n";
+
+    return code;
   }
 }
 /* JavaCC - OriginalChecksum=5a72632e1aaebf06ca4ffdc6eef531b9 (do not edit this line) */
