@@ -15,8 +15,7 @@ class ASTWhile extends SimpleNode {
   public int process(String className) {
 
     SimpleNode child = (SimpleNode)this.children[0];
-    // int left_val;
-    // int right_val;
+
     child.process(className);
 
     for (int i = 1; i < this.children.length; i++) {
@@ -34,6 +33,26 @@ class ASTWhile extends SimpleNode {
     return this.getClass().toString();
   }
 
+  public String generateCode(String className){
+
+    String code = "";
+    String loop1 = "loop" + CodeGenerator.loopNumber++;
+    String loop2 = "loop" + CodeGenerator.loopNumber++;
+    
+    code += loop2 + ":\n";
+    //COMPARAÇÃO
+    code += ((SimpleNode)this.children[0]).generateCode(className);
+    // IF CONDITION IS FALSE EXIT LOOP
+    code += "ifeq " + loop1 + "\n";
+    // LOOP CODE
+    code += ((SimpleNode)this.children[1]).generateCode(className);
+    // COMPARE AGAIN (loop2)
+    code += "goto " + loop2 + "\n";
+    // OUT OF LOOP
+    code += loop1 + ":\n";
+
+    return code;
+  }
 
 
 }

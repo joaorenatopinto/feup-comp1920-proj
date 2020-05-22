@@ -3,11 +3,12 @@
 class T {
     public static void main(String[] args) { 
         int a;
-        if (!true){
-            a = 3;
-        } else {
-            a = 0;
+        int b;
+        a = 0;
+        b = 0;
+        while (a < 2){
+            a = a + 1;
+            b = b + 1;
         }
-
     }
 }
