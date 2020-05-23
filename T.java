@@ -1,4 +1,4 @@
-import TestClass.otario(int, int) void;
+import TestClass.otario(int, int) int;
 //import TestClass;
 class T {
     public static void main(String[] args) { 

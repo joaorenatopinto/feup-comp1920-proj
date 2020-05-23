@@ -34,8 +34,15 @@ invokespecial T/<init>()V
 ldc 3
 invokevirtual T/test(I)I
 istore 1
+new TestClass
+dup
+invokespecial TestClass/<init>()V
+iload 1
+iload 2
+invokevirtual TestClass/otario(II)I
+istore 3
 getstatic java/lang/System.out Ljava/io/PrintStream;
-iload 1 
+iload 3 
 invokevirtual java/io/PrintStream.println(I)V
 return
 .end method
