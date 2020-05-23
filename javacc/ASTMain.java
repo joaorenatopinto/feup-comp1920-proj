@@ -35,7 +35,7 @@ class ASTMain extends SimpleNode {
   public void preProcess(String className){
     List<Symbol> args = new ArrayList<>();
     args.add(new SymbolVar("args", "String[]"));
-    putSymbolInTable(new SymbolMethod("Main", "void", className, args));
+    putSymbolInTable(new SymbolMethod("Main", "void", className, args, true));
   }
 
   public String generateCode(String className){

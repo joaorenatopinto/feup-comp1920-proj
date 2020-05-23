@@ -9,6 +9,7 @@ class ASTAcessMethod extends SimpleNode {
 
   String returnType = null;
   String leftClass = null;
+  String leftType = null;
 
   public ASTAcessMethod(int id) {
     super(id);
@@ -38,6 +39,8 @@ class ASTAcessMethod extends SimpleNode {
     String id_method_table;
 
     if(bro instanceof ASTObject) {
+
+      leftType = "ASTObject";
 
       bro.process(className);
 
@@ -105,6 +108,8 @@ class ASTAcessMethod extends SimpleNode {
 
     }
     else if(bro instanceof ASTIdentifier) {
+
+      leftType = "ASTIdentifier"; 
 
       bro.process(className);
       
@@ -198,6 +203,8 @@ class ASTAcessMethod extends SimpleNode {
     } 
     else if(bro instanceof ASTAcessMethod) {
 
+      leftType = "ASTAcessMethod";
+
       System.out.println("ASTACESSMETHOD " + ast_identifier + " : " + ast_method);
 
       id_method_table = SimpleNode.createId(bro.getType(), ast_method, argsType);
@@ -273,6 +280,8 @@ class ASTAcessMethod extends SimpleNode {
     } 
     
     else if (bro instanceof ASTThis) {
+
+      leftType = "ASTThis";
 
       bro.process(className);
 
@@ -374,21 +383,75 @@ class ASTAcessMethod extends SimpleNode {
       }
 
 
-    //por argumentos na stack
+    
 
     List<String> argsType = new ArrayList<>();
     
     if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
       for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
-        ((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className);
-        argsType.add(SimpleNode.getTypeJasmin(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType()));
+        //((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className);
+        argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
       }
     }
 
-    //invocar
-    code += "invokevirtual " + leftClass + "/" + ast_method + "(";
-    for (String string : argsType) 
-      code += string; 
+    String id_method_table = SimpleNode.createId(leftClass, ast_method, argsType);
+    Symbol method = getSymbolFromTable(id_method_table);
+
+    // invocar
+    if (((SymbolMethod)method).isStatic) {
+      code += "invokestatic " + leftClass + "/" + ast_method + "(";
+    } else {
+      switch(leftType){
+        case "ASTThis":
+          code += "aload_0\n";
+          CodeGenerator.incStack();
+        break;
+        case "ASTObject":
+          code += "new " + ast_identifier + "\n";
+          CodeGenerator.incStack();
+          code += "dup\n";
+          CodeGenerator.incStack();
+          code += "invokespecial " + ast_identifier + "/<init>()V\n";
+          CodeGenerator.decStack(1);
+        break;
+        case "ASTIdentifier":
+          Symbol symbol = getSymbolFromTable(ast_identifier);
+          if(symbol.id_jasmin != -1) { // If not in global scope
+            code += "aload " + symbol.id_jasmin + "\n";
+            CodeGenerator.incStack();
+          } else {
+            code +=  "getfield " + className + "/" + ast_identifier + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
+            CodeGenerator.incStack();
+          }
+        break;
+        case "ASTAcessMethod":
+          ASTAcessMethod a_node = null;
+          SimpleNode father = (SimpleNode)this.jjtGetParent();
+      
+          for(int i = 1; i < father.children.length; i++){
+            if (father.children[i].equals(this)){
+              a_node = (ASTAcessMethod) father.children[i - 1];
+              break;
+            }
+          }
+          code += a_node.generateCode(className);
+        break;
+        default:
+        break;
+      }
+      //por argumentos na stack
+      if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+        for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
+          ((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className);
+          //argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
+        }
+      }
+
+      code += "invokevirtual " + leftClass + "/" + ast_method + "(";
+      CodeGenerator.decStack(argsType.size());
+    }
+    for (String arg : argsType) 
+      code += SimpleNode.getTypeJasmin(arg); 
     code += ")" + SimpleNode.getTypeJasmin(returnType) + "\n";
 
     return code;

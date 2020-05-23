@@ -31,7 +31,7 @@ public class ASTImportDeclaration extends SimpleNode {
     }
 
     if(methodName!=null){
-      putSymbolInTable(new SymbolMethod(methodName, returnType, ast_className, args));
+      putSymbolInTable(new SymbolMethod(methodName, returnType, ast_className, args, isStatic));
       if (isStatic){
         try {
           putSymbolInTable(new SymbolClass(ast_className, "Class", null));

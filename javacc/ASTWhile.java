@@ -44,6 +44,7 @@ class ASTWhile extends SimpleNode {
     code += ((SimpleNode)this.children[0]).generateCode(className);
     // IF CONDITION IS FALSE EXIT LOOP
     code += "ifeq " + loop1 + "\n";
+    CodeGenerator.decStack(1);
     // LOOP CODE
     code += ((SimpleNode)this.children[1]).generateCode(className);
     // COMPARE AGAIN (loop2)

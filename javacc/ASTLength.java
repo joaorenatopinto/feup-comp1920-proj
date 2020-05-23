@@ -40,5 +40,21 @@ class ASTLength extends SimpleNode {
     return Symbol.INT;
   }
 
+  public String generateCode(String className){
+    String code = "";
+
+    SimpleNode father = (SimpleNode)this.jjtGetParent();
+
+    for(int i = 1; i < father.children.length; i++){
+      if (father.children[i].equals(this)){
+        ((SimpleNode)father.children[i - 1]).generateCode(className);
+        break;
+      }
+    }
+    code += "arraylength\n";
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=355dc3240ae72e2bab32488505528258 (do not edit this line) */

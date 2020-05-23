@@ -99,6 +99,8 @@ class ASTMul extends SimpleNode {
 
     code += "imul\n";
 
+    CodeGenerator.decStack(1);
+
     return code;
   }
 

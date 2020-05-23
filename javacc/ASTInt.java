@@ -26,6 +26,8 @@ class ASTInt extends SimpleNode {
     String code = "";
 
     code += "ldc " + ast_value + "\n";
+    
+    CodeGenerator.incStack();
 
     return code;
   }

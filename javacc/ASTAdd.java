@@ -40,6 +40,8 @@ class ASTAdd extends SimpleNode {
 
     code += "iadd\n";
 
+    CodeGenerator.decStack(1);
+
     return code;
   }
 

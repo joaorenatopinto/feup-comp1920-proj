@@ -47,6 +47,9 @@ class ASTIdentifier extends SimpleNode {
     } else {
       code +=  "getfield " + className + "/" + ast_value + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
     }
+
+    CodeGenerator.incStack();
+
     return code;
   }
 

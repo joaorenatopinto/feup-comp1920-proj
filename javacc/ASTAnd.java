@@ -39,6 +39,9 @@ public class ASTAnd extends SimpleNode {
       }
 
     code += "iand\n";
+
+    CodeGenerator.decStack(1);
+
     return code;
   }
 

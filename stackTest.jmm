@@ -1,0 +1,12 @@
+class Simple{
+    public static void main(String[] args) { 
+        Simple test;
+        int i;
+        test  = new Simple();
+        i = test.add(5,10);
+    }
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+}

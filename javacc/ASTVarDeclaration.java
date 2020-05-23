@@ -35,6 +35,7 @@ class ASTVarDeclaration extends SimpleNode {
     if (this.parent instanceof ASTClassDeclaration) {
       code += ".field public " + ast_id + " " + SimpleNode.getTypeJasmin(ast_type) + "\n";
     }
+
     return code;
   }
 
