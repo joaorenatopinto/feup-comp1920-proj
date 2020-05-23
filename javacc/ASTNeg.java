@@ -49,7 +49,7 @@ class ASTNeg extends SimpleNode {
 
       // XOR of the value of the children's generated code 
     code += "iconst_1\n";  
-    CodeGenerator.incStack();
+    CodeGenerator.incStack(this);
     code += "ixor\n";
     CodeGenerator.decStack(1);
 

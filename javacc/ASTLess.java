@@ -51,7 +51,7 @@ class ASTLess extends SimpleNode {
     code += "iconst_1\n";    
     code += loopFalse + ":\n";
 
-    CodeGenerator.decStack(1);
+    CodeGenerator.decStack(1,this);
 
     return code;
   }

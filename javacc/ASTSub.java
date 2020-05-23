@@ -41,7 +41,7 @@ class ASTSub extends SimpleNode {
 
     code += "isub\n";
 
-    CodeGenerator.decStack(1);
+    CodeGenerator.decStack(1,this);
 
     return code;
   }

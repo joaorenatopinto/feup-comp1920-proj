@@ -44,7 +44,7 @@ class ASTDiv extends SimpleNode {
 
     code += "idiv\n";
 
-    CodeGenerator.decStack(1);
+    CodeGenerator.decStack(1,this);
 
     return code;
   }

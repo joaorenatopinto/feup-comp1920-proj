@@ -21,6 +21,30 @@ public class CodeGenerator {
       System.out.println("Stack: " + totalStack);
     }
 
+    static public void resetStack() {
+      maxStack = 0;
+      totalStack = 0;
+    }
+
+    static public void incStack(SimpleNode node) {
+      totalStack++;
+      if(totalStack > maxStack) {
+        maxStack = totalStack;
+      }
+      System.out.println("Stack: " + totalStack + " ; Row,Col: " + node.line +","+node.column + "(" + node.getClass() + ")");
+    }
+
+    static public void decStack(int value, SimpleNode node) {
+      totalStack -= value;
+      System.out.println("Stack: " + totalStack + " ; Row,Col: " + node.line +","+node.column + "(" + node.getClass() + ")");
+    }
+
+    static public void resetStack(SimpleNode node) {
+      maxStack = 0;
+      totalStack = 0;
+      System.out.println("Reset stack " + " ; Row,Col: " + node.line +","+node.column + "(" + node.getClass() + ")");
+    }
+
     public CodeGenerator(SimpleNode root, String filename) {
         String code = root.generateCode(null);
         try {
@@ -31,8 +55,5 @@ public class CodeGenerator {
           } catch (IOException e) {
             e.printStackTrace();
           }
-
-        System.out.println("Max Stack: " + maxStack);
-        System.out.println("Current Stack: " + totalStack);
     }
 }

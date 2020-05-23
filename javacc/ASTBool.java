@@ -27,7 +27,7 @@ class ASTBool extends SimpleNode {
     String code = "";
     code += "iconst_" + (ast_value ? 1 : 0) + "\n";
 
-    CodeGenerator.incStack();
+    CodeGenerator.incStack(this);
 
     return code;
   }

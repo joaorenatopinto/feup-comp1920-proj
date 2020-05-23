@@ -66,6 +66,8 @@ class ASTMethod extends SimpleNode {
 
 
   public String generateCode(String className){
+    System.out.println("ResetStack()");
+    CodeGenerator.resetStack();
 
     String code = ".method public " + ast_id + "(";
 
@@ -108,8 +110,15 @@ class ASTMethod extends SimpleNode {
           code += "areturn\n";
           break;
       }
-
     }
+
+    /*
+    while(CodeGenerator.totalStack != 0){
+      code+= "pop\n";
+      CodeGenerator.decStack(1,this);
+     }
+    */
+
     code += ".end method\n\n";
 
     return code;

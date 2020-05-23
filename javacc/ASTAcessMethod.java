@@ -375,21 +375,17 @@ class ASTAcessMethod extends SimpleNode {
   }
 
   public String generateCode(String className){
-    
     String code = "";
     if (this.children != null)
       for(int i = 0; i < this.children.length; i++) {
+        System.out.println("HMMM2222");
         code += ((SimpleNode)this.children[i]).generateCode(className);
       }
-
-
-    
 
     List<String> argsType = new ArrayList<>();
     
     if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
       for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
-        //((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className);
         argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
       }
     }
@@ -404,25 +400,29 @@ class ASTAcessMethod extends SimpleNode {
       switch(leftType){
         case "ASTThis":
           code += "aload_0\n";
-          CodeGenerator.incStack();
+          CodeGenerator.incStack(this);
+          System.out.println("HMMM ASTThis");
         break;
         case "ASTObject":
           code += "new " + ast_identifier + "\n";
-          CodeGenerator.incStack();
+          CodeGenerator.incStack(this);
           code += "dup\n";
-          CodeGenerator.incStack();
+          CodeGenerator.incStack(this);
           code += "invokespecial " + ast_identifier + "/<init>()V\n";
-          CodeGenerator.decStack(1);
+          CodeGenerator.decStack(1,this);
+          System.out.println("HMMM ASTObject");
         break;
         case "ASTIdentifier":
+        System.out.println("HMMM ASTIdentifier BEFIRE");
           Symbol symbol = getSymbolFromTable(ast_identifier);
           if(symbol.id_jasmin != -1) { // If not in global scope
             code += "aload " + symbol.id_jasmin + "\n";
-            CodeGenerator.incStack();
+            CodeGenerator.incStack(this);
           } else {
             code +=  "getfield " + className + "/" + ast_identifier + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
-            CodeGenerator.incStack();
+            CodeGenerator.incStack(this);
           }
+          System.out.println("HMMM ASTIdentifier");
         break;
         case "ASTAcessMethod":
           ASTAcessMethod a_node = null;
@@ -434,6 +434,7 @@ class ASTAcessMethod extends SimpleNode {
               break;
             }
           }
+          System.out.println("HMMM ACessMethod");
           code += a_node.generateCode(className);
         break;
         default:
@@ -442,13 +443,18 @@ class ASTAcessMethod extends SimpleNode {
       //por argumentos na stack
       if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
         for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
-          ((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className);
+          System.out.println("HMMM");
+          //((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className); ESTA MERDA FAZ ALGO??
           //argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
         }
       }
 
       code += "invokevirtual " + leftClass + "/" + ast_method + "(";
-      CodeGenerator.decStack(argsType.size());
+      if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+        System.out.println("DEC STACK: " + ((SimpleNode)this.children[0]).children.length);
+        CodeGenerator.decStack(((SimpleNode)this.children[0]).children.length,this);
+      }
+        
     }
     for (String arg : argsType) 
       code += SimpleNode.getTypeJasmin(arg); 

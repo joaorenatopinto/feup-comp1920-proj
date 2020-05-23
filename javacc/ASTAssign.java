@@ -103,6 +103,7 @@ class ASTAssign extends SimpleNode {
       if (symbolLeft.type.equals(Symbol.INT_ARRAY)){
         if (this.children.length == 2)
           code += "aload " + symbolLeft.id_jasmin + "\n";
+          CodeGenerator.incStack();
       }
     }
 
@@ -115,22 +116,22 @@ class ASTAssign extends SimpleNode {
       if (symbolLeft.type.equals(Symbol.INT_ARRAY)){
         if (this.children.length == 2) {  // acess array on left
           code += "iastore\n";
-          CodeGenerator.decStack(3);
+          CodeGenerator.decStack(3,this);
         }
         else if (this.children.length == 1) {
           code += "astore " + symbolLeft.id_jasmin + "\n";
-          CodeGenerator.decStack(1);
+          CodeGenerator.decStack(1,this);
         }
       }else if (symbolLeft.type.equals(Symbol.INT)) {
         code += "istore " + symbolLeft.id_jasmin + "\n";
-        CodeGenerator.decStack(1);
+        CodeGenerator.decStack(1,this);
       } else {
         code += "astore " + symbolLeft.id_jasmin + "\n";
-        CodeGenerator.decStack(1);
+        CodeGenerator.decStack(1,this);
       }
     } else {
       code +=  "putfield " + className + "/" + identifier + " " + SimpleNode.getTypeJasmin(symbolLeft.type) + "\n";
-      CodeGenerator.decStack(2);
+      CodeGenerator.decStack(2,this);
     }
 
 

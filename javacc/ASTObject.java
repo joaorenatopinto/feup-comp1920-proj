@@ -48,11 +48,11 @@ class ASTObject extends SimpleNode {
       }
 
     code += "new " + ast_identifier + "\n";
-    CodeGenerator.incStack();
+    CodeGenerator.incStack(this);
     code += "dup\n";
-    CodeGenerator.incStack();
+    CodeGenerator.incStack(this);
     code += "invokespecial " + ast_identifier + "/<init>()V\n";
-    CodeGenerator.decStack(1);
+    CodeGenerator.decStack(1,this);
 
     return code;
   }
