@@ -104,7 +104,7 @@ class ASTMethod extends SimpleNode {
 
     if (ast_type != null) {
       switch (ast_type) {
-        case "bool":
+        case "boolean":
           code += "ireturn\n";
           break;
         case "int":

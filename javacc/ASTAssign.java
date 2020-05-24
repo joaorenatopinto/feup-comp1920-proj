@@ -129,7 +129,7 @@ class ASTAssign extends SimpleNode {
           code += "astore " + symbolLeft.id_jasmin + "\n";
           CodeGenerator.decStack(1,this);
         }
-      }else if (symbolLeft.type.equals(Symbol.INT)) {
+      }else if (symbolLeft.type.equals(Symbol.INT) || symbolLeft.type.equals(Symbol.BOOLEAN)) {
         code += "istore " + symbolLeft.id_jasmin + "\n";
         CodeGenerator.decStack(1,this);
       } else {

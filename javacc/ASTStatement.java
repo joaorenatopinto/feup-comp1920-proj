@@ -32,6 +32,12 @@ class ASTStatement extends SimpleNode {
       for(int i = 0; i < this.children.length; i++) {
         if (!(this.children[i] instanceof ASTElse))
           code += ((SimpleNode)this.children[i]).generateCode(className);
+        System.out.println("TYYYYPE: " + ((SimpleNode)this.children[i]).getType());
+        if (!((SimpleNode)this.children[i]).getType().equals("ERROR SimpleNode") &&
+        !((SimpleNode)this.children[i]).getType().equals("void")){
+          code += "pop\n";
+          CodeGenerator.decStack(1, this);
+        }
       }
 
     return code;
