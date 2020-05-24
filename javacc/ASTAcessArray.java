@@ -54,10 +54,12 @@ class ASTAcessArray extends SimpleNode {
     Symbol symbol = getSymbolFromTable(ast_identifier);
 
     code += "aload " + symbol.id_jasmin + "\n";
+    CodeGenerator.incStack(this);
 
     code += ((SimpleNode)this.children[0]).generateCode(className);
 
     code += "iaload\n";
+    CodeGenerator.decStack(1, this);
 
     return code;
   }

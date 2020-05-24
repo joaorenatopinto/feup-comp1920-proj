@@ -229,7 +229,7 @@ class SimpleNode implements Node {
       switch (type) {
         case "void":
           return "V";
-        case "bool":
+        case "boolean":
           return "Z";
         case "int":
           return "I";

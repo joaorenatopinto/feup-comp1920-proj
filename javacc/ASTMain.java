@@ -39,11 +39,10 @@ class ASTMain extends SimpleNode {
   }
 
   public String generateCode(String className){
+    CodeGenerator.resetStack();
 
-    String code = ".method static public main([Ljava/lang/String;)V\n";
-
-    code += ".limit stack 99\n";
-    code += ".limit locals 99\n";
+    String prefix = ".method static public main([Ljava/lang/String;)V\n";
+    String code = "";
 
     if (this.children != null)
       for(int i = 0; i < this.children.length; i++) {
@@ -52,7 +51,11 @@ class ASTMain extends SimpleNode {
 
     code += "return\n.end method\n\n";
 
-    return code;
+
+    prefix += ".limit stack "+ CodeGenerator.maxStack + "\n";
+    prefix += ".limit locals 99\n";
+
+    return (prefix + code);
   }
 
 }

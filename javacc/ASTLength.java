@@ -47,7 +47,7 @@ class ASTLength extends SimpleNode {
 
     for(int i = 1; i < father.children.length; i++){
       if (father.children[i].equals(this)){
-        ((SimpleNode)father.children[i - 1]).generateCode(className);
+        code += ((SimpleNode)father.children[i - 1]).generateCode(className);
         break;
       }
     }

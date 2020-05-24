@@ -34,10 +34,7 @@ class ASTAssign extends SimpleNode {
     Symbol symbolLeft = getSymbolFromTable(identifier);
     System.out.println("ASTASSIGN LEFT TYPE: " + symbolLeft.type);
     if( !(symbolLeft.type.equals(Symbol.INT_ARRAY) ) ) { // not array
-      if (symbolLeft == null)
-        throw new RuntimeException("ASTAssign: Variable (" + identifier + ") not previous declared"+ "\nLine: " + this.line + "; Col: " + this.column);
-
-      if (!child.getType().equals(symbolLeft.type)){
+      if (!child.getType().equals(symbolLeft.type)) {
         throw new RuntimeException("ASTAssign is not equal (" + symbolLeft.type + ", " + child.getType() + ")"+ "\nLine: " + this.line + "; Col: " + this.column);
       }
 
@@ -100,10 +97,20 @@ class ASTAssign extends SimpleNode {
     Symbol symbolLeft = getSymbolFromTable(identifier);
 
     if(symbolLeft.id_jasmin != -1){ // If not in global scope
-      if (symbolLeft.type.equals(Symbol.INT_ARRAY)){
-        if (this.children.length == 2)
+      if (symbolLeft.type.equals(Symbol.INT_ARRAY)) {
+        if (this.children.length == 2) {
           code += "aload " + symbolLeft.id_jasmin + "\n";
-          CodeGenerator.incStack();
+          CodeGenerator.incStack(this);
+        }
+      }
+    } else {
+      if (symbolLeft.type.equals(Symbol.INT_ARRAY) && this.children.length == 2){
+          code += "aload_0\n";
+          CodeGenerator.incStack(this);
+          code += "getfield " + className + "/" + identifier + " " + SimpleNode.getTypeJasmin(symbolLeft.type) + "\n";
+      } else {
+        code += "aload_0\n";
+        CodeGenerator.incStack(this);
       }
     }
 
@@ -130,11 +137,14 @@ class ASTAssign extends SimpleNode {
         CodeGenerator.decStack(1,this);
       }
     } else {
-      code +=  "putfield " + className + "/" + identifier + " " + SimpleNode.getTypeJasmin(symbolLeft.type) + "\n";
-      CodeGenerator.decStack(2,this);
+      if (symbolLeft.type.equals(Symbol.INT_ARRAY) && this.children.length == 2){
+        code += "iastore\n";
+        CodeGenerator.decStack(3,this);
+      } else {
+        code +=  "putfield " + className + "/" + identifier + " " + SimpleNode.getTypeJasmin(symbolLeft.type) + "\n";
+        CodeGenerator.decStack(2,this);
+      }
     }
-
-
     return code;
   }
 

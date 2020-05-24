@@ -376,11 +376,6 @@ class ASTAcessMethod extends SimpleNode {
 
   public String generateCode(String className){
     String code = "";
-    if (this.children != null)
-      for(int i = 0; i < this.children.length; i++) {
-        System.out.println("HMMM2222");
-        code += ((SimpleNode)this.children[i]).generateCode(className);
-      }
 
     List<String> argsType = new ArrayList<>();
     
@@ -395,6 +390,19 @@ class ASTAcessMethod extends SimpleNode {
 
     // invocar
     if (((SymbolMethod)method).isStatic) {
+
+    //   //por argumentos na stack
+     if (this.children != null)
+     for(int i = 0; i < this.children.length; i++) {
+       System.out.println("HMMM2222");
+       code += ((SimpleNode)this.children[i]).generateCode(className);
+     }
+
+     if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+      System.out.println("DEC STACK: " + ((SimpleNode)this.children[0]).children.length);
+      CodeGenerator.decStack(((SimpleNode)this.children[0]).children.length,this);
+    }
+
       code += "invokestatic " + leftClass + "/" + ast_method + "(";
     } else {
       switch(leftType){
@@ -419,8 +427,9 @@ class ASTAcessMethod extends SimpleNode {
             code += "aload " + symbol.id_jasmin + "\n";
             CodeGenerator.incStack(this);
           } else {
-            code +=  "getfield " + className + "/" + ast_identifier + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
+            code += "aload_0\n";
             CodeGenerator.incStack(this);
+            code +=  "getfield " + className + "/" + ast_identifier + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
           }
           System.out.println("HMMM ASTIdentifier");
         break;
@@ -440,22 +449,24 @@ class ASTAcessMethod extends SimpleNode {
         default:
         break;
       }
+
       //por argumentos na stack
-      if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
-        for (int j = 0; j < ((SimpleNode)this.children[0]).children.length; j++) {
-          System.out.println("HMMM");
-          //((SimpleNode)((SimpleNode)(this.children[0])).children[j]).generateCode(className); ESTA MERDA FAZ ALGO??
-          //argsType.add(((SimpleNode)((SimpleNode)(this.children[0])).children[j]).getType());
-        }
+     if (this.children != null)
+      for(int i = 0; i < this.children.length; i++) {
+        code += ((SimpleNode)this.children[i]).generateCode(className);
       }
 
-      code += "invokevirtual " + leftClass + "/" + ast_method + "(";
-      if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
-        System.out.println("DEC STACK: " + ((SimpleNode)this.children[0]).children.length);
-        CodeGenerator.decStack(((SimpleNode)this.children[0]).children.length,this);
-      }
-        
+     if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+      System.out.println("DEC STACK: " + ((SimpleNode)this.children[0]).children.length);
+      CodeGenerator.decStack(((SimpleNode)this.children[0]).children.length,this);
     }
+
+      code += "invokevirtual " + leftClass + "/" + ast_method + "(";        
+    }
+
+    if(!returnType.equals("void")) 
+        CodeGenerator.incStack(this);
+        
     for (String arg : argsType) 
       code += SimpleNode.getTypeJasmin(arg); 
     code += ")" + SimpleNode.getTypeJasmin(returnType) + "\n";

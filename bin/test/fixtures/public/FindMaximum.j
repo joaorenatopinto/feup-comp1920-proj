@@ -1,8 +1,9 @@
 .class public FindMaximum
 .super java/lang/Object
 
+.field public test_arr [I
 .method public find_maximum([I)I
-.limit stack 99
+.limit stack 2
 .limit locals 99
 ldc 1
 istore 2
@@ -12,6 +13,7 @@ iaload
 istore 3
 loop1:
 iload 2
+aload 1
 arraylength
 if_icmplt loopTRUE2
 iconst_0
@@ -49,30 +51,36 @@ ireturn
 .end method
 
 .method public build_test_arr()I
-.limit stack 99
+.limit stack 4
 .limit locals 99
+aload_0
 ldc 5
 newarray int
-astore 1
-aload 1
+putfield FindMaximum/test_arr [I
+aload_0
+getfield FindMaximum/test_arr [I
 ldc 0
 ldc 14
 iastore
-aload 1
+aload_0
+getfield FindMaximum/test_arr [I
 ldc 1
 ldc 28
 iastore
-aload 1
+aload_0
+getfield FindMaximum/test_arr [I
 ldc 2
 ldc 0
 iastore
-aload 1
+aload_0
+getfield FindMaximum/test_arr [I
 ldc 3
 ldc 0
 ldc 5
 isub
 iastore
-aload 1
+aload_0
+getfield FindMaximum/test_arr [I
 ldc 4
 ldc 12
 iastore
@@ -81,48 +89,24 @@ ireturn
 .end method
 
 .method public get_array()[I
-.limit stack 99
+.limit stack 1
 .limit locals 99
-ldc 5
-newarray int
-astore 1
-aload 1
-ldc 0
-ldc 14
-iastore
-aload 1
-ldc 1
-ldc 28
-iastore
-aload 1
-ldc 2
-ldc 0
-iastore
-aload 1
-ldc 3
-ldc 0
-ldc 5
-isub
-iastore
-aload 1
-ldc 4
-ldc 12
-iastore
-aload 1
+aload_0
+getfield FindMaximum/test_arr [I
 areturn
 .end method
 
 .method static public main([Ljava/lang/String;)V
-.limit stack 99
+.limit stack 5
 .limit locals 99
 new FindMaximum
 dup
 invokespecial FindMaximum/<init>()V
 astore 1
 aload 1
-aload 1
-aload 1
 invokevirtual FindMaximum/build_test_arr()I
+aload 1
+aload 1
 invokevirtual FindMaximum/get_array()[I
 invokevirtual FindMaximum/find_maximum([I)I
 invokestatic ioPlus/printResult(I)V

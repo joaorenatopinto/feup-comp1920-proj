@@ -43,9 +43,14 @@ class ASTIdentifier extends SimpleNode {
     Symbol symbol = getSymbolFromTable(ast_value);
     
     if(symbol.id_jasmin != -1){ // If not in global scope
-      code += "iload " + symbol.id_jasmin + "\n";
+      if(this.getType().equals(Symbol.INT_ARRAY)){
+        code += "aload " + symbol.id_jasmin + "\n";
+      } else { 
+        code += "iload " + symbol.id_jasmin + "\n";
+      }
       CodeGenerator.incStack(this);
     } else {
+      code += "aload_0\n";
       code +=  "getfield " + className + "/" + ast_value + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
       CodeGenerator.incStack(this);
     }

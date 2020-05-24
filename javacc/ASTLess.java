@@ -44,14 +44,15 @@ class ASTLess extends SimpleNode {
     String loopFalse = "loopFALSE" + CodeGenerator.loopNumber++;
 
     code += "if_icmplt " + loopTrue + "\n";
+    CodeGenerator.decStack(2,this);
     code += "iconst_0\n";
+    CodeGenerator.incStack(this);
 
     code += "goto " + loopFalse + "\n";
     code += loopTrue + ":\n";
     code += "iconst_1\n";    
     code += loopFalse + ":\n";
 
-    CodeGenerator.decStack(1,this);
 
     return code;
   }

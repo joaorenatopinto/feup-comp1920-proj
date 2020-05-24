@@ -69,7 +69,8 @@ class ASTMethod extends SimpleNode {
     System.out.println("ResetStack()");
     CodeGenerator.resetStack();
 
-    String code = ".method public " + ast_id + "(";
+    String prefix = ".method public " + ast_id + "(";
+    String code = "";
 
     List<String> args = new ArrayList<>();
     if(((SimpleNode)this.children[0] instanceof ASTMethodArgs))
@@ -82,16 +83,22 @@ class ASTMethod extends SimpleNode {
       }
 
     for (int i = 0; i < args.size(); i++){
-      code += SimpleNode.getTypeJasmin(args.get(i));
+      prefix += SimpleNode.getTypeJasmin(args.get(i));
     }
 
-    code += ")" + SimpleNode.getTypeJasmin(ast_type) + "\n";
+    prefix += ")" + SimpleNode.getTypeJasmin(ast_type) + "\n";
 
-    code += ".limit stack 99\n";
-    code += ".limit locals 99\n";
+    //code += ".limit stack 99\n";
+    //code += ".limit locals 99\n";
 
     if (this.children != null)
       for(int i = 0; i < this.children.length; i++) {
+        if(i == this.children.length - 1) {
+          while(CodeGenerator.totalStack != 0){
+            code += "pop\n";
+            CodeGenerator.decStack(1,this);
+           }
+        }
         code += ((SimpleNode)this.children[i]).generateCode(className);
       }
 
@@ -111,17 +118,13 @@ class ASTMethod extends SimpleNode {
           break;
       }
     }
-
-    /*
-    while(CodeGenerator.totalStack != 0){
-      code+= "pop\n";
-      CodeGenerator.decStack(1,this);
-     }
-    */
-
+  
     code += ".end method\n\n";
 
-    return code;
+    prefix += ".limit stack "+ CodeGenerator.maxStack + "\n";
+    prefix += ".limit locals 99\n";
+
+    return (prefix + code);
   }
   
 }
