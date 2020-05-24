@@ -145,10 +145,10 @@ void Imports() : {}
     ( ImportDeclaration() )*
 }
 
-void ImportDeclaration() : {Token t;}
+void ImportDeclaration() : {Token t; Token t1 = null;}
 {
     //"import" ["static"] <IDENTIFIER> [ "." <IDENTIFIER> "(" [ ( Type() | "void" ) ( "," ( Type() | "void" )  )* ] ")" [ Type() | "void" ] ] ";" 
-    "import" ["static" { jjtThis.isStatic=true;} ] t=<IDENTIFIER>{jjtThis.ast_className=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}] ([<LPARENTHESIS> ["void" | ImportArgs()] <RPARENTHESIS> [t=Type() |t=<VOID> #Void] {{jjtThis.returnType = t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}} ]) ";"
+    "import" ["static" { jjtThis.isStatic=true;} ] t=<IDENTIFIER>{jjtThis.ast_className=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;} ["." t=<IDENTIFIER> {jjtThis.methodName=t.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}] ([<LPARENTHESIS> ["void" | ImportArgs()] <RPARENTHESIS> [t1=Type() |t1=<VOID> #Void] {{jjtThis.returnType = (t1==null)? "" : t1.image;jjtThis.line = t.beginLine; jjtThis.column = t.beginColumn;}} ]) ";"
 }
 
 void ImportArgs(): {}

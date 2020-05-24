@@ -6,7 +6,7 @@ public class ASTImportDeclaration extends SimpleNode {
   boolean isStatic = false;
   String ast_className;
   String methodName;
-  String returnType;
+  String returnType = "void";
 
   public ASTImportDeclaration(int id) {
     super(id);
@@ -31,6 +31,11 @@ public class ASTImportDeclaration extends SimpleNode {
     }
 
     if(methodName!=null){
+      if(returnType ==  null || returnType.equals("")){
+        returnType = "void";
+      }
+      // System.out.println("MMMMMMEEEETTOD: " + methodName + " " + returnType);
+        
       putSymbolInTable(new SymbolMethod(methodName, returnType, ast_className, args, isStatic));
       if (isStatic){
         try {

@@ -456,10 +456,12 @@ class ASTAcessMethod extends SimpleNode {
         code += ((SimpleNode)this.children[i]).generateCode(className);
       }
 
-     if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
-      System.out.println("DEC STACK: " + ((SimpleNode)this.children[0]).children.length);
-      CodeGenerator.decStack(((SimpleNode)this.children[0]).children.length+1,this);
-    }
+      if(this.children != null && ((SimpleNode)this.children[0]).children != null) {
+        System.out.println("DEC STACK: " + ((SimpleNode)this.children[0]).children.length);
+        CodeGenerator.decStack(((SimpleNode)this.children[0]).children.length,this);
+      }
+
+      CodeGenerator.decStack(1, this);
 
       code += "invokevirtual " + leftClass + "/" + ast_method + "(";        
     }

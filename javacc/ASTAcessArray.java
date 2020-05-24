@@ -53,9 +53,16 @@ class ASTAcessArray extends SimpleNode {
 
     Symbol symbol = getSymbolFromTable(ast_identifier);
 
-    code += "aload " + symbol.id_jasmin + "\n";
-    CodeGenerator.incStack(this);
 
+    
+    if (symbol.id_jasmin != -1){ //IF a Local Variable
+      code += "aload " + symbol.id_jasmin + "\n";
+      CodeGenerator.incStack(this);
+    } else {
+      code += "aload_0\n";
+      code +=  "getfield " + className + "/" + ast_identifier + " " + SimpleNode.getTypeJasmin(symbol.type) + "\n";
+      CodeGenerator.incStack(this);
+    }
     code += ((SimpleNode)this.children[0]).generateCode(className);
 
     code += "iaload\n";
