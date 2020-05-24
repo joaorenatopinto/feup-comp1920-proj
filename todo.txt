@@ -64,3 +64,16 @@ PRINTS:
 getstatic java/lang/System.out Ljava/io/PrintStream;
 iload 1 
 invokevirtual java/io/PrintStream.println(I)V
+
+
+The final submission is almost here and we want to explain a little bit what we want for this final version. Keep in mind that this is just a helper for the real project description! There are some info in the description that it is not mentioned here (e.g. command line format)
+1 First of all this is the final checklist:
+1.1. Have all the previous checkpoints implemented
+1.2. Instruction selection: the most optimized instructions must be selected depending on the code.
+e.g.
+a = 0; => iconst_0 instead of ldc 0 or sipush 0
+a = 14; => bipush 14 instead of ldc 14 or ...
+i = i + 1; => convert to iinc 3 (where 3 is the local variable i) instead of load->iconst->istore
+i < 0 => use 'load i => if_lt' instead of 'load i=>iconst_0=>if_icmpeq'
+NOTE1: this is a simple instruction selection! you don't need to use any specific algorithm for the selection (e.g. no need for maximal munch!). This is as simple as the example above: iconst, bipush, sipush, ldc to load a constant, iinc to replace the i=i+1, if_lt when operation is done with value 0.
+NOTE2: this topic is mentioned in the project description as follows: "We expect that by default (i.e., without the option “–o”), the compiler generates JVM code with lower cost instructions in the cases of: iload, istore, astore, aload, loading constants to the stack, use of iinc, etc." (page 7).

@@ -42,6 +42,7 @@ class ASTMethod extends SimpleNode {
   }
 
   public void preProcess(String className){
+    
     List<Symbol> args = new ArrayList<>();
 
     // if(!((SimpleNode)this.children[0] instanceof ASTMethodArgs))
@@ -66,6 +67,7 @@ class ASTMethod extends SimpleNode {
 
 
   public String generateCode(String className){
+    int localvars = 0;
     System.out.println("ResetStack()");
     CodeGenerator.resetStack();
 
@@ -93,6 +95,8 @@ class ASTMethod extends SimpleNode {
 
     if (this.children != null)
       for(int i = 0; i < this.children.length; i++) {
+        if(this.children[i] instanceof ASTVarDeclaration)
+          localvars++;
         if(i == this.children.length - 1) {
           while(CodeGenerator.totalStack != 0){
             code += "pop\n";
@@ -122,7 +126,7 @@ class ASTMethod extends SimpleNode {
     code += ".end method\n\n";
 
     prefix += ".limit stack "+ CodeGenerator.maxStack + "\n";
-    prefix += ".limit locals 99\n";
+    prefix += ".limit locals " + (1 /*non-static*/ + args.size() + localvars) + "\n";
 
     return (prefix + code);
   }
