@@ -270,8 +270,13 @@ void Cal4() #void: {Token t;} {
     )*
 }
 
+void Cal5() #void : {}
+{
+    Cal6() |
+    ("!" Cal5() #Neg(1))
+}
 
-void Cal5() #void: {} {
+void Cal6() #void: {} {
     "(" Cal1() ")"
     | Expression()
 }
@@ -289,7 +294,6 @@ void Expression() #void : {Token t1=null; String identifier;}
         t1=<INT> "[" Cal1() "]" {jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Array(1)
         | t1=<IDENTIFIER> "(" ")" { jjtThis.ast_identifier = t1.image; jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Object
     ) 
-    | "!" Cal1() #Neg(1)
     ) { if(t1==null) 
             identifier="none"; 
         else {
