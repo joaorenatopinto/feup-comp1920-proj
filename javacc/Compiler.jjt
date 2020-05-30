@@ -168,7 +168,7 @@ void ClassDeclaration() : {Token t1; Token t2;}
 
 void VarDeclaration() : {Token t1; Token t2;}
 {
-    t2=Type() t1=<IDENTIFIER> ";" {jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image; jjtThis.line = t2.beginLine; jjtThis.column = t2.beginColumn;}
+    t2=Type() t1=<IDENTIFIER> ";" {if(t1.image.equals("field")) t1.image = "field1";  jjtThis.ast_id = t1.image; jjtThis.ast_type = t2.image; jjtThis.line = t2.beginLine; jjtThis.column = t2.beginColumn;}
 }
 
 void Main() : {Token t1; Token t2;}
@@ -221,8 +221,8 @@ void Statement() : {Token t1;}
 
 void Assign() : {Token t1; Token t2;}
 {
-    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" /*{ jjtThis.ast_identifier = t1.image; } #AcessArray(1)*/ "=" Cal1() ";" {jjtThis.identifier = t1.image;jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
-    | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";" {jjtThis.identifier = t1.image;jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
+    LOOKAHEAD(2) t1=<IDENTIFIER> "[" Cal1() "]" /*{ jjtThis.ast_identifier = t1.image; } #AcessArray(1)*/ "=" Cal1() ";" {if(t1.image.equals("field")) t1.image = "field1"; jjtThis.identifier = t1.image;jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
+    | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";" {if(t1.image.equals("field")) t1.image = "field1"; jjtThis.identifier = t1.image;jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}
 }
 
 void While() : {} {
@@ -288,7 +288,7 @@ void Expression() #void : {Token t1=null; String identifier;}
     t1=<INTEGER>  { jjtThis.ast_value = Integer.parseInt(t1.image);} #Int
     | <TRUE> { jjtThis.ast_value = true;} #Bool
     | <FALSE> { jjtThis.ast_value = false;} #Bool
-    | t1=<IDENTIFIER> { jjtThis.ast_value = t1.image; jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Identifier 
+    | t1=<IDENTIFIER> {if(t1.image.equals("field")) t1.image = "field1"; jjtThis.ast_value = t1.image; jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Identifier 
     | t1=<THIS> { jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;}#This
     | "new" (   
         t1=<INT> "[" Cal1() "]" {jjtThis.line = t1.beginLine; jjtThis.column = t1.beginColumn;} #Array(1)

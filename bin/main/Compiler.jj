@@ -406,7 +406,7 @@ void VarDeclaration() : {/*@bgen(jjtree) VarDeclaration */
                                     jjtree.closeNodeScope(jjtn000, true);
                                     jjtc000 = false;
                                   }
-/*@egen*/ {jjtn000.ast_id = t1.image; jjtn000.ast_type = t2.image; jjtn000.line = t2.beginLine; jjtn000.column = t2.beginColumn;}/*@bgen(jjtree)*/
+/*@egen*/ {if(t1.image.equals("field")) t1.image = "field1";  jjtn000.ast_id = t1.image; jjtn000.ast_type = t2.image; jjtn000.line = t2.beginLine; jjtn000.column = t2.beginColumn;}/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -684,13 +684,13 @@ void Assign() : {/*@bgen(jjtree) Assign */
                                                                                                                            jjtree.closeNodeScope(jjtn000, true);
                                                                                                                            jjtc000 = false;
                                                                                                                          }
-/*@egen*/ {jjtn000.identifier = t1.image;jjtn000.line = t1.beginLine; jjtn000.column = t1.beginColumn;}
+/*@egen*/ {if(t1.image.equals("field")) t1.image = "field1"; jjtn000.identifier = t1.image;jjtn000.line = t1.beginLine; jjtn000.column = t1.beginColumn;}
     | LOOKAHEAD(2) t1=<IDENTIFIER> "=" Cal1() ";"/*@bgen(jjtree)*/
                                                   {
                                                     jjtree.closeNodeScope(jjtn000, true);
                                                     jjtc000 = false;
                                                   }
-/*@egen*/ {jjtn000.identifier = t1.image;jjtn000.line = t1.beginLine; jjtn000.column = t1.beginColumn;}/*@bgen(jjtree)*/
+/*@egen*/ {if(t1.image.equals("field")) t1.image = "field1"; jjtn000.identifier = t1.image;jjtn000.line = t1.beginLine; jjtn000.column = t1.beginColumn;}/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -1003,7 +1003,7 @@ void Expression()       : {Token t1=null; String identifier;}
                         jjtree.closeNodeScope(jjtn004, true);
                         jjtc004 = false;
                       }
-/*@egen*/ { jjtn004.ast_value = t1.image; jjtn004.line = t1.beginLine; jjtn004.column = t1.beginColumn;}/*@bgen(jjtree)*/
+/*@egen*/ {if(t1.image.equals("field")) t1.image = "field1"; jjtn004.ast_value = t1.image; jjtn004.line = t1.beginLine; jjtn004.column = t1.beginColumn;}/*@bgen(jjtree)*/
                       } finally {
                         if (jjtc004) {
                           jjtree.closeNodeScope(jjtn004, true);
