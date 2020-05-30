@@ -22,11 +22,19 @@ class ASTInt extends SimpleNode {
   }
 
   public String generateCode(String className){
-    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
     String code = "";
 
-    code += "ldc " + ast_value + "\n";
-    
+    if(ast_value >= 0 && ast_value <= 5) {
+      code += "iconst_" + ast_value + "\n";
+    } else if (ast_value == -1){
+      code += "iconst_m1\n";
+    } else if(ast_value >= -127 && ast_value <= 128){
+      code += "bipush " + ast_value + "\n";
+    } else if(ast_value >= -32768 && ast_value <= 32767) {
+      code += "sipush " + ast_value + "\n";
+    } else {
+      code += "ldc " + ast_value + "\n";
+    }
     CodeGenerator.incStack(this);
 
     return code;

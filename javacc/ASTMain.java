@@ -40,12 +40,15 @@ class ASTMain extends SimpleNode {
 
   public String generateCode(String className){
     CodeGenerator.resetStack();
+    int localvars = 0;
 
     String prefix = ".method static public main([Ljava/lang/String;)V\n";
     String code = "";
 
     if (this.children != null)
       for(int i = 0; i < this.children.length; i++) {
+        if(this.children[i] instanceof ASTVarDeclaration)
+          localvars++;
         code += ((SimpleNode)this.children[i]).generateCode(className);
       }
 
@@ -53,7 +56,8 @@ class ASTMain extends SimpleNode {
 
 
     prefix += ".limit stack "+ CodeGenerator.maxStack + "\n";
-    prefix += ".limit locals 99\n";
+    // prefix += ".limit locals 99\n";
+    prefix += ".limit locals " + (1 + localvars) + "\n";
 
     return (prefix + code);
   }

@@ -47,6 +47,7 @@ public class CodeGenerator {
 
     public CodeGenerator(SimpleNode root, String filename) {
         String code = root.generateCode(null);
+        code = optimize(code);
         try {
             FileWriter myWriter = new FileWriter(filename + ".j");
             myWriter.write(code);
@@ -55,5 +56,32 @@ public class CodeGenerator {
           } catch (IOException e) {
             e.printStackTrace();
           }
+    }
+
+    String optimize(String code){
+      String optCode = "";
+      String[] lines = code.split("\n");
+      
+      for (int i = 0; i < lines.length; i++){
+        if (i < lines.length - 3 &&
+            lines[i].contains("iload") &&
+            (lines[i+1].contains("iconst") || lines[i+1].contains("bipush") || lines[i+1].contains("sipush")) &&
+            (lines[i+2].equals("iadd") || lines[i+2].equals("isub")) && 
+            lines[i+3].contains("istore") &&
+            lines[i].split(" ")[1].equals(lines[i+3].split(" ")[1])) {
+              String[] s = lines[i+1].split(" ");
+              if (s.length == 1){
+                s = lines[i+1].split("_");
+              } 
+              optCode += "iinc " + lines[i].split(" ")[1] + " " +(lines[i+2].equals("isub")? "-":"") + s[1] + "\n";
+          // optCode += "iinc " + lines[i].split(" ")[1] + "\n";
+            i+= 3;
+        } else {
+          optCode += lines[i] + "\n";
+        }
+      }
+      
+
+      return optCode;
     }
 }

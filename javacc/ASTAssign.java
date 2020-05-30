@@ -57,30 +57,6 @@ class ASTAssign extends SimpleNode {
         var.initialize();
       }
 
-      // if (child.getType().equals(symbolLeft.type)){
-      //   // VERIFICAR SE É NEW INT OU ASSING DE ARRAY JA EXISTENTE PARA VER AS CHILDS
-      //     var.initialize();
-      //   return 1;
-      // }
-      // else if( child.getType().equals(Symbol.INT_ARRAY) ) { // se estiver a ser inicializado
-      //   var grandChild = (SimpleNode)child.children[0];
-      //   grandChild.process(className);
-      //   if( grandChild.getType().equals(Symbol.INT) ) {
-      //     var.initialize();
-      //   }
-      //   else {
-      //     throw new RuntimeException("ASTAssign: int array size must be integer."+ "\nLine: " + this.line + "; Col: " + this.column);
-      //   }
-        
-      // }
-      // else if ( var.isInitialized ) { // se estiver inicializado
-      //   if( !child.getType().equals(Symbol.INT) ) { // se nao for int
-      //     throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") can only store int types."+ "\nLine: " + this.line + "; Col: " + this.column);
-      //   }
-      // }
-      // else { // se n estiver inicializado
-      //   throw new RuntimeException("ASTAssign: int[] (" + symbolLeft.identifier + ") has not been initialized."+ "\nLine: " + this.line + "; Col: " + this.column);
-      // }
     }
     
     return 1;
@@ -91,7 +67,6 @@ class ASTAssign extends SimpleNode {
   }
 
   public String generateCode(String className){
-    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
     String code = "";
 
     Symbol symbolLeft = getSymbolFromTable(identifier);

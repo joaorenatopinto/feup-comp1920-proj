@@ -1,24 +1,11 @@
-import TestClass.otario(int, int) int;
-import TestClass;
+
 class T {
     public static void main(String[] args) { 
         int a;
         int b;
-        int c;
-        T t;
-        TestClass te;
         a = 0;
         b = 0;
-        while (a < 2){
-            a = a + 1;
-            b = b + 1;
-        }
-        t = new T();
-        a = t.test(3);
-        te = new TestClass();
-        c = te.otario(a,b);
-    }
-    public int test(int i) {
-        return i;
+        a = a - 1;
+        b = b + 1;
     }
 }
