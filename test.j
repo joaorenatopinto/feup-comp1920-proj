@@ -6,10 +6,14 @@
 .limit locals 3
 iconst_0
 istore 1
+iload 1
+iflt loopTRUE0
 iconst_0
+goto loopFALSE0
+loopTRUE0:
+iconst_1
+loopFALSE0:
 istore 2
-iinc 1 -1
-iinc 2 1
 return
 .end method
 

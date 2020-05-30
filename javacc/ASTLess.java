@@ -34,7 +34,6 @@ class ASTLess extends SimpleNode {
   }
 
   public String generateCode(String className){
-    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
     String code = "";
       for(int i = 0; i < this.children.length; i++) {
         code += ((SimpleNode)this.children[i]).generateCode(className);
@@ -50,7 +49,7 @@ class ASTLess extends SimpleNode {
 
     code += "goto " + loopFalse + "\n";
     code += loopTrue + ":\n";
-    code += "iconst_1\n";    
+    code += "iconst_1\n";
     code += loopFalse + ":\n";
 
 

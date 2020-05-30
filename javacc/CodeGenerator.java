@@ -47,7 +47,8 @@ public class CodeGenerator {
 
     public CodeGenerator(SimpleNode root, String filename) {
         String code = root.generateCode(null);
-        code = optimize(code);
+        code = optimizeIncrements(code);
+        code = optimizeLess(code);
         try {
             FileWriter myWriter = new FileWriter(filename + ".j");
             myWriter.write(code);
@@ -58,7 +59,7 @@ public class CodeGenerator {
           }
     }
 
-    String optimize(String code){
+    String optimizeIncrements(String code){
       String optCode = "";
       String[] lines = code.split("\n");
       
@@ -74,14 +75,29 @@ public class CodeGenerator {
                 s = lines[i+1].split("_");
               } 
               optCode += "iinc " + lines[i].split(" ")[1] + " " +(lines[i+2].equals("isub")? "-":"") + s[1] + "\n";
-          // optCode += "iinc " + lines[i].split(" ")[1] + "\n";
             i+= 3;
         } else {
           optCode += lines[i] + "\n";
         }
       }
-      
+      return optCode;
+    }
 
+    String optimizeLess(String code){
+      String optCode = "";
+      String[] lines = code.split("\n");
+      
+      for (int i = 0; i < lines.length; i++){
+        if (i < lines.length - 1 &&
+            lines[i].equals("iconst_0") &&
+            lines[i+1].contains("if_icmplt")) {
+            String[] s = lines[i+1].split(" ");
+            optCode += "iflt " + s[1] + "\n";
+            i+= 1;
+        } else {
+          optCode += lines[i] + "\n";
+        }
+      }
       return optCode;
     }
 }
