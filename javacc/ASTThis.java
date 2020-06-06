@@ -43,5 +43,15 @@ class ASTThis extends SimpleNode {
     return "ERROR: THIS NOT IN GOOD CONTEXT";
   }
 
+  public String generateCode(String className){
+    // System.out.println("CodeGenerator " + this.getClass() + " : SIMPLENODE");
+    String code = "";
+    code += "aload_0\n";
+
+    CodeGenerator.incStack(this);
+
+    return code;
+  }
+
 }
 /* JavaCC - OriginalChecksum=92c995de9628d38c8dea47cb7b4e2f95 (do not edit this line) */

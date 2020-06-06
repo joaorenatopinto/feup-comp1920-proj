@@ -25,10 +25,11 @@ class ASTMain extends SimpleNode {
     System.out.println(this.getClass());
     
     SimpleNode curr_node;
-    for (int i = 0; i < this.children.length; i++) {
-      curr_node = (SimpleNode)this.children[i];
-      curr_node.process(className);
-    }
+    if (this.children != null)
+      for (int i = 0; i < this.children.length; i++) {
+        curr_node = (SimpleNode)this.children[i];
+        curr_node.process(className);
+      }
     return 1;
   }
 

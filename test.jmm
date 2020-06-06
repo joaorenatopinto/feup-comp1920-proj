@@ -1,9 +1,0 @@
-
-class T {
-    public static void main(String[] args) { 
-        int a;
-        boolean b;
-        a = 0;
-        b = a < 0;
-    }
-}

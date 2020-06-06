@@ -239,9 +239,11 @@ class SimpleNode implements Node {
           return "Ljava/lang/String;";
         case "String[]":
           return "[Ljava/lang/String;";*/
+        default:
+          return "Ljava/lang/" + type + ";";
       }
   
-      return "ERROR";
+      // return "ERROR";
   }
 }
 

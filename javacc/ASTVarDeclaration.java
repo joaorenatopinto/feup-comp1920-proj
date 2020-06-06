@@ -25,6 +25,9 @@ class ASTVarDeclaration extends SimpleNode {
     if (!putSymbolInTable(new SymbolVar(ast_id, ast_type)))
       throw new RuntimeException("Couldn't put symbol (" + ast_id + ", " + ast_type + ") in symbols table" + "\nLine: " + this.line + "; Col: " + this.column);
     
+    if (this.parent instanceof ASTClassDeclaration) {
+      ((SymbolVar)getSymbolFromTable(ast_id)).initialize();
+    }
     return 1;
   }
 
