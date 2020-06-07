@@ -1,13 +1,18 @@
-**PROJECT TITLE: <title of the project>
-**GROUP: <identifier of the group>
+**PROJECT TITLE: Java-- Compiler
+**GROUP: 7F
 (Names, numbers, self assessment, and contribution of the members of the group to the project according to:)
-NAME1: <name>, NR1: <student number>, GRADE1: <0 to 20 value>, CONTRIBUTION1: <0 to 100 %>
-NAME2: <name>, NR2: < student number >, GRADE2: <0 to 20 value>, CONTRIBUTION2: <0 to 100 %>
+NAME1: Afonso Mendonça, NR1: 201706708, CONTRIBUTION1: 25%
+NAME2: Gonçalo Pereira, NR2: 201705971, CONTRIBUTION2: 20%
+NAME3: João Pinto, NR3: 201705547, CONTRIBUTION3: 27%
+NAME4: Tiago Verdade, Nr4: 201704003, CONTRIBUTION4: 28%
 ...
-(Note that the sum of the CONTRIBUTION? values must be 100 %)
-GLOBAL Grade of the project: <0 to 20>
-** SUMMARY: (Describe what your tool does and its main features.)
-** EXECUTE: (indicate how to run your tool)
+
+GLOBAL Grade of the project: 18
+** SUMMARY: Our tool does what the professors told us the tool should do.
+** EXECUTE: First, we need to run "Gradle build". This will compile the files and copy the .JAR file to the root of the project. The .JAR file will have the same name as the repository.
+After that, we run "Java -jar comp2020-7f.jar <FILE.jmm>", where the last argument is the .jmm file we intend to compile into Java ByteCodes.
+This latter step being done, our tool's job is completed. However, if we want to test the created Java ByteCode files, "Java -jar jasmin.jar <FILE.j>" should be run in order to use the Jasmin tool to convert the Java ByteCode file into Java's .class files.
+Finally, we can do "Java <FILE>" and see the output.
 **DEALING WITH SYNTACTIC ERRORS: (Describe how the syntactic error recovery of your tool does work. Does it exit after the first error?)
 **SEMANTIC ANALYSIS: (Refer the semantic rules implemented by your tool.)
 **INTERMEDIATE REPRESENTATIONS (IRs): (for example, when applicable, briefly describe the HLIR (high-level IR) and the LLIR (low-level IR) used, if your tool includes an LLIR with structure different from the HLIR)
