@@ -14,10 +14,12 @@ After that, we run "Java -jar comp2020-7f.jar <FILE.jmm>", where the last argume
 This latter step being done, our tool's job is completed. However, if we want to test the created Java ByteCode files, "Java -jar jasmin.jar <FILE.j>" should be run in order to use the Jasmin tool to convert the Java ByteCode file into Java's .class files.
 Finally, we can do "Java <FILE>" and see the output.
 **DEALING WITH SYNTACTIC ERRORS: It shows and recovers from the first 10 erros. After that, the process is terminated.
-**SEMANTIC ANALYSIS: (Refer the semantic rules implemented by your tool.)
+**SEMANTIC ANALYSIS: every semantic rule was implemented. 
 **INTERMEDIATE REPRESENTATIONS (IRs): (for example, when applicable, briefly describe the HLIR (high-level IR) and the LLIR (low-level IR) used, if your tool includes an LLIR with structure different from the HLIR)
 **CODE GENERATION: code generation works recursively by calling the "CodeGenerator" class and giving it the root of the tree. From then on each node's "generateCode()" method is called, returning the respective code for the node. Each returned code is added onto a string that will eventually add up to the final Java ByteCode file.
 **OVERVIEW: (refer the approach used in your tool, the main algorithms, the third-party tools and/or packages, etc.)
 **TASK DISTRIBUTION: Every team member worked pretty uniformly throughout the project without being assigned any specific task.
-**PROS: (Identify the most positive aspects of your tool)
-**CONS: (Identify the most negative aspects of your tool)\
+**PROS: 
+	- It works.
+**CONS: (Identify the most negative aspects of your tool)
+	- Doesn't check if given variable that is given a value to inside an if/else might eventually end up not being assigned a value to depending on the if clause condidition.\
