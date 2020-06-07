@@ -18,6 +18,6 @@ Finally, we can do "Java <FILE>" and see the output.
 **INTERMEDIATE REPRESENTATIONS (IRs): (for example, when applicable, briefly describe the HLIR (high-level IR) and the LLIR (low-level IR) used, if your tool includes an LLIR with structure different from the HLIR)
 **CODE GENERATION: code generation works recursively by calling the "CodeGenerator" class and giving it the root of the tree. From then on each node's "generateCode()" method is called, returning the respective code for the node. Each returned code is added onto a string that will eventually add up to the final Java ByteCode file.
 **OVERVIEW: (refer the approach used in your tool, the main algorithms, the third-party tools and/or packages, etc.)
-**TASK DISTRIBUTION: (Identify the set of tasks done by each member of the project. You can divide this by checkpoint it if helps)
+**TASK DISTRIBUTION: Every team member worked pretty uniformly throughout the project without being assigned any specific task.
 **PROS: (Identify the most positive aspects of your tool)
 **CONS: (Identify the most negative aspects of your tool)\
